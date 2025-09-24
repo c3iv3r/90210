@@ -1,592 +1,339 @@
--- Window.lua
--- Private module: Window ala Library.txt (draggable, minimize, close, optional resize)
--- Integrasi penuh: Theme.lua (warna, gradient, animasi)
--- API:
---   local Window = require(path.to.Window)
---   local win = Window.new({
---       Title = "UI Library",
---       Subtitle = nil,               -- optional teks kecil di topbar
---       Size = UDim2.fromOffset(560, 420),
---       Position = nil,               -- default: center of screen
---       Draggable = true,
---       Resizable = true,
---       Scrollable = true,
---       MinSize = Vector2.new(420, 260),
---       CanMinimize = true,
---       CanClose = true,
---       SaveKey = "main_window",     -- opsional: simpan pos/size di _G saat runtime
---       CloseOnDestroy = true,       -- destroy saat Close ditekan (default true)
---       OnClose = function() end,
---       OnMinimize = function(minimized) end,
---       OnMove = function(posUDim2) end,
---       OnResize = function(sizeUDim2) end,
---   })
---   win:GetBody() -> Instance (Frame/ScrollingFrame)
---   win:Show() :Hide() :Toggle()
---   win:Minimize() :Restore() :IsMinimized()
---   win:SetTitle(text) :SetSubtitle(textOrNil)
---   win:SetScrollable(bool)
---   win:Focus()  -- bring to front
---   win:Destroy()
+-- Window.lua (patched 1:1 style Library.txt)
+-- Requires: Theme.lua di folder yang sama
+-- API ringkas:
+--   local Window = require(...Window)
+--   local win = Window.new({ Title="Noctis - Fish It - Dev", Size=UDim2.fromOffset(720,460) })
+--   local tab = win:AddTab("Home", "rbxassetid://10734828463")  -- icon optional
+--   tab.Frame.Parent.Visible = true -- otomatis handle saat dipilih
+--   win:Minimize(); win:Restore(); win:Close()
 
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local RunService       = game:GetService("RunService")
-local CoreGui          = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
 
-local Theme = require("Theme")
+local ThemeOk, Theme = pcall(function() return require(script.Parent.Theme) end)
+Theme = ThemeOk and Theme or {}
 
+-- ====== Theme fallback (kalau Theme.lua belum lengkap) ======
+local C = Theme.colors or {
+    bg   = Color3.fromRGB(14,16,20),
+    card = Color3.fromRGB(22,25,31),
+    stroke = Color3.fromRGB(40,44,52),
+    input = Color3.fromRGB(28,31,38),
+    text = {
+        title  = Color3.fromRGB(235,239,255),
+        normal = Color3.fromRGB(210,215,230),
+        dim    = Color3.fromRGB(150,155,170),
+        onAcc  = Color3.fromRGB(255,255,255),
+    },
+    accent = Color3.fromRGB(88,140,255),
+    accent2 = Color3.fromRGB(99,160,255),
+    muted  = Color3.fromRGB(32,36,44),
+}
+local T = Theme.tweening or { base=0.18, fast=0.12, easingStyle=Enum.EasingStyle.Quint, easingDir=Enum.EasingDirection.Out }
+local function tween(o,props,dur) if not o then return end
+    local info = TweenInfo.new(dur or T.base, T.easingStyle, T.easingDir); TweenService:Create(o, info, props):Play()
+end
+
+local function mk(class, props, parent)
+    local obj = Instance.new(class)
+    if props then for k,v in pairs(props) do obj[k]=v end end
+    if parent then obj.Parent = parent end
+    return obj
+end
+
+local function uiStroke(parent, color, thickness)
+    return mk("UIStroke", { Color = color or C.stroke, Thickness = thickness or 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }, parent)
+end
+
+local function round(parent, r) return mk("UICorner", { CornerRadius = UDim.new(0, r or 10) }, parent) end
+
+-- ========= Module =========
 local Window = {}
 Window.__index = Window
 
--- ===== Root (ScreenGui) untuk semua window =====
-local ROOT_TAG = "LogicDev_WindowRoot"
-
-local function buildRoot()
-	local sg = Instance.new("ScreenGui")
-	sg.Name = ROOT_TAG
-	sg.ResetOnSpawn = false
-	sg.IgnoreGuiInset = true
-	sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	sg.Parent = (gethui and gethui()) or CoreGui
-	return { Gui = sg, TopIndex = 100 }
-end
-
-local ROOT = _G.__ld_window_root
-if not ROOT then
-	ROOT = buildRoot()
-	_G.__ld_window_root = ROOT
-end
-
--- ===== Utils =====
-local function viewportSize()
-	local cam = workspace.CurrentCamera
-	local v = cam and cam.ViewportSize or Vector2.new(1920, 1080)
-	return v.X, v.Y
-end
-
-local function clamp(n, a, b)
-	if n < a then return a end
-	if n > b then return b end
-	return n
-end
-
-local function setZRecursive(gui, z)
-	if not gui then return end
-	gui.ZIndex = z
-	for _, c in ipairs(gui:GetChildren()) do
-		if c:IsA("GuiObject") then
-			setZRecursive(c, z)
-		end
-	end
-end
-
-local function centerPosition(sizeUD)
-	local vw, vh = viewportSize()
-	local w = sizeUD.X.Offset
-	local h = sizeUD.Y.Offset
-	local x = (vw - w) / 2
-	local y = (vh - h) / 2
-	return UDim2.fromOffset(x, y)
-end
-
-local function saveState(key, pos, size)
-	if not key or key == "" then return end
-	_G.__ld_window_state = _G.__ld_window_state or {}
-	_G.__ld_window_state[key] = { Position = pos, Size = size }
-end
-
-local function loadState(key)
-	if not key or key == "" then return nil end
-	local st = _G.__ld_window_state and _G.__ld_window_state[key]
-	return st
-end
-
--- ===== Constructor =====
 function Window.new(opts)
-	opts = opts or {}
-	local self = setmetatable({}, Window)
+    opts = opts or {}
+    local self = setmetatable({}, Window)
 
-	self._titleTxt   = opts.Title or "Window"
-	self._subtitle   = opts.Subtitle
-	self._size       = opts.Size or UDim2.fromOffset(560, 420)
-	self._pos        = opts.Position or nil
-	self._draggable  = (opts.Draggable ~= false)
-	self._resizable  = not not opts.Resizable
-	self._scrollable = (opts.Scrollable ~= false)
-	self._minSize    = opts.MinSize or Vector2.new(420, 260)
-	self._canMin     = (opts.CanMinimize ~= false)
-	self._canClose   = (opts.CanClose ~= false)
-	self._saveKey    = opts.SaveKey
-	self._closeDestroy = (opts.CloseOnDestroy ~= false)
-	self._onClose    = (typeof(opts.OnClose) == "function") and opts.OnClose or function() end
-	self._onMinimize = (typeof(opts.OnMinimize) == "function") and opts.OnMinimize or function() end
-	self._onMove     = (typeof(opts.OnMove) == "function") and opts.OnMove or function() end
-	self._onResize   = (typeof(opts.OnResize) == "function") and opts.OnResize or function() end
+    -- ===== ScreenGui =====
+    local gui = mk("ScreenGui", {
+        Name = "NatHub",
+        ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+        ResetOnSpawn = false,
+        IgnoreGuiInset = true,
+    })
+    -- hijack ke gethui/secure
+    local okProtect = pcall(function() if protect_gui then protect_gui(gui) end end)
+    if not okProtect then
+        if gethui then gui.Parent = gethui()
+        else gui.Parent = (RunService:IsStudio() and Players.LocalPlayer:WaitForChild("PlayerGui")) or game:GetService("CoreGui") end
+    end
+    self.Gui = gui
 
-	-- restore state kalau ada
-	local restored = loadState(self._saveKey)
-	if restored then
-		if restored.Size then self._size = restored.Size end
-		if restored.Position then self._pos = restored.Position end
-	end
-	if not self._pos then
-		self._pos = centerPosition(self._size)
-	end
+    -- ===== Drop Shadow =====
+    local shadow = mk("ImageLabel", {
+        Name="Shadow",
+        BackgroundTransparency = 1,
+        Image = "rbxassetid://7912134082", -- soft shadow
+        ImageColor3 = Color3.fromRGB(0,0,0),
+        ImageTransparency = 0.35,
+        ScaleType = Enum.ScaleType.Slice,
+        SliceCenter = Rect.new(64,64,192,192),
+        AnchorPoint = Vector2.new(0.5,0.5),
+        Size = UDim2.fromOffset(740,480),
+        Position = UDim2.fromScale(0.5,0.5),
+        ZIndex = 0
+    }, gui)
 
-	-- ===== Window frame =====
-	local win = Instance.new("Frame")
-	win.Name = self._titleTxt
-	win.BackgroundColor3 = Theme.colors.card
-	win.BorderSizePixel = 0
-	win.Size = self._size
-	win.Position = self._pos
-	win.Parent = ROOT.Gui
+    -- ===== Window Root =====
+    local root = mk("Frame", {
+        Name = "Window",
+        BackgroundColor3 = C.card,
+        Size = opts.Size or UDim2.fromOffset(720,460),
+        AnchorPoint = Vector2.new(0.5,0.5),
+        Position = opts.Position or UDim2.fromScale(0.5,0.5),
+        BorderSizePixel = 0,
+        ZIndex = 1
+    }, gui)
+    round(root, 12); uiStroke(root, C.stroke, 1)
 
-	local corner = Instance.new("UICorner", win)
-	corner.CornerRadius = UDim.new(0, Theme.radius.popup)
+    -- sync shadow ke root
+    local function syncShadow()
+        shadow.Size = UDim2.new(0, root.AbsoluteSize.X+20, 0, root.AbsoluteSize.Y+20)
+        shadow.Position = UDim2.new(0, root.AbsolutePosition.X + root.AbsoluteSize.X/2, 0, root.AbsolutePosition.Y + root.AbsoluteSize.Y/2)
+    end
+    root:GetPropertyChangedSignal("AbsoluteSize"):Connect(syncShadow)
+    RunService.RenderStepped:Connect(syncShadow)
 
-	local stroke = Instance.new("UIStroke", win)
-	stroke.Color = Theme.colors.stroke
-	stroke.Thickness = 1.25
+    -- ===== Topbar =====
+    local topbar = mk("Frame", {
+        Name = "Topbar",
+        BackgroundColor3 = C.card,
+        Size = UDim2.new(1,0,0,42),
+        BorderSizePixel = 0,
+        ZIndex = 2
+    }, root)
+    uiStroke(topbar, C.stroke, 1)
+    round(topbar, 12)
 
-	-- stacking (bring to front)
-	ROOT.TopIndex += 1
-	setZRecursive(win, ROOT.TopIndex)
+    -- Logo kiri
+    local logo = mk("ImageLabel", {
+        Name="Logo",
+        BackgroundTransparency=1,
+        Size = UDim2.fromOffset(18,18),
+        Position = UDim2.new(0,14,0.5,-9),
+        Image = opts.Logo or "rbxassetid://17608657181", -- ganti kalau punya
+        ImageColor3 = Color3.fromRGB(255,255,255),
+        ZIndex = 3
+    }, topbar)
 
-	-- ===== Topbar =====
-	local top = Instance.new("Frame")
-	top.Name = "TopBar"
-	top.BackgroundColor3 = Theme.colors.input
-	top.BorderSizePixel = 0
-	top.Size = UDim2.new(1, -16, 0, (self._subtitle and 56 or 40))
-	top.Position = UDim2.new(0, 8, 0, 8)
-	top.Parent = win
-	local topCorner = Instance.new("UICorner", top)
-	topCorner.CornerRadius = UDim.new(0, Theme.radius.input)
-	local topStroke = Instance.new("UIStroke", top)
-	topStroke.Color = Theme.colors.stroke
-	topStroke.Thickness = 1
-	Theme.paintNormal(top, topStroke)
+    -- Title (center)
+    local title = mk("TextLabel", {
+        Name="Title",
+        BackgroundTransparency=1,
+        Size=UDim2.new(1,-160,1,0),
+        Position=UDim2.new(0.5,-( (root.AbsoluteSize.X-160)/2 ),0,0),
+        AnchorPoint = Vector2.new(0,0),
+        Text = opts.Title or "Noctis - Fish It - Dev",
+        TextColor3 = C.text and C.text.title or Color3.fromRGB(235,239,255),
+        TextScaled = false,
+        FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
+        TextSize = 16,
+        ZIndex = 3
+    }, topbar)
+    title.TextXAlignment = Enum.TextXAlignment.Center
 
-	local title = Instance.new("TextLabel")
-	title.Name = "Title"
-	title.BackgroundTransparency = 1
-	title.Text = self._titleTxt
-	title.TextColor3 = Theme.colors.text.title
-	title.Font = Enum.Font.GothamSemibold
-	title.TextSize = 16
-	title.TextXAlignment = Enum.TextXAlignment.Left
-	title.Position = UDim2.new(0, 12, 0, 4)
-	title.Size = UDim2.new(1, -140, 0, 20)
-	title.Parent = top
+    -- Minimize & Close (kanan)
+    local btnClose = mk("TextButton", {
+        Name="Close",
+        BackgroundTransparency=1,
+        Size = UDim2.fromOffset(34,34),
+        Position = UDim2.new(1,-40,0.5,-17),
+        Text = "✕",
+        TextSize = 18,
+        Font = Enum.Font.GothamBold,
+        TextColor3 = C.text and C.text.dim or Color3.fromRGB(200,205,220),
+        ZIndex = 3
+    }, topbar)
 
-	local sub
-	if self._subtitle then
-		sub = Instance.new("TextLabel")
-		sub.Name = "Subtitle"
-		sub.BackgroundTransparency = 1
-		sub.Text = tostring(self._subtitle)
-		sub.TextColor3 = Theme.colors.text.dim
-		sub.Font = Enum.Font.Gotham
-		sub.TextSize = 13
-		sub.TextXAlignment = Enum.TextXAlignment.Left
-		sub.Position = UDim2.new(0, 12, 0, 24)
-		sub.Size = UDim2.new(1, -140, 0, 18)
-		sub.Parent = top
-	end
+    local btnMini = mk("TextButton", {
+        Name="Minimize",
+        BackgroundTransparency=1,
+        Size = UDim2.fromOffset(34,34),
+        Position = UDim2.new(1,-80,0.5,-17),
+        Text = "–",
+        TextSize = 24,
+        Font = Enum.Font.GothamBold,
+        TextColor3 = C.text and C.text.dim or Color3.fromRGB(200,205,220),
+        ZIndex = 3
+    }, topbar)
 
-	-- Buttons (Minimize, Close)
-	local btnMin, btnClose
+    -- Hover effect
+    local function hover(btn)
+        btn.MouseEnter:Connect(function() tween(btn,{TextColor3=C.accent}, T.fast) end)
+        btn.MouseLeave:Connect(function() tween(btn,{TextColor3=C.text and C.text.dim or Color3.fromRGB(200,205,220)}, T.fast) end)
+    end; hover(btnClose); hover(btnMini)
 
-	if self._canMin then
-		btnMin = Instance.new("TextButton")
-		btnMin.Name = "Minimize"
-		btnMin.AutoButtonColor = false
-		btnMin.Text = "–"
-		btnMin.TextSize = 18
-		btnMin.Font = Enum.Font.Gotham
-		btnMin.TextColor3 = Theme.colors.text.muted
-		btnMin.BackgroundTransparency = 1
-		btnMin.AnchorPoint = Vector2.new(1, 0.5)
-		btnMin.Position = UDim2.new(1, -44, 0.5, 0)
-		btnMin.Size = UDim2.fromOffset(24, 24)
-		btnMin.Parent = top
-	end
+    -- Dragging (topbar as handle)
+    do
+        local dragging, startPos, startInput
+        topbar.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+                dragging = true
+                startInput = input
+                startPos = Vector2.new(input.Position.X, input.Position.Y) - Vector2.new(root.AbsolutePosition.X, root.AbsolutePosition.Y)
+                input.Changed:Connect(function()
+                    if input.UserInputState == Enum.UserInputState.End then dragging = false end
+                end)
+            end
+        end)
+        UserInputService.InputChanged:Connect(function(input)
+            if dragging and (input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch) then
+                local p = input.Position
+                root.Position = UDim2.fromOffset(p.X - startPos.X, p.Y - startPos.Y)
+            end
+        end)
+    end
 
-	if self._canClose then
-		btnClose = Instance.new("TextButton")
-		btnClose.Name = "Close"
-		btnClose.AutoButtonColor = false
-		btnClose.Text = "✕"
-		btnClose.TextSize = 16
-		btnClose.Font = Enum.Font.Gotham
-		btnClose.TextColor3 = Theme.colors.text.muted
-		btnClose.BackgroundTransparency = 1
-		btnClose.AnchorPoint = Vector2.new(1, 0.5)
-		btnClose.Position = UDim2.new(1, -14, 0.5, 0)
-		btnClose.Size = UDim2.fromOffset(24, 24)
-		btnClose.Parent = top
-	end
+    -- Minimize / Close
+    self._isMin = false
+    function self:Minimize()
+        if self._isMin then return end
+        self._isMin = true
+        tween(root, { Size = UDim2.new(root.Size.X.Scale, root.Size.X.Offset, 0, 42) })
+    end
+    function self:Restore()
+        if not self._isMin then return end
+        self._isMin = false
+        tween(root, { Size = opts.Size or UDim2.fromOffset(720,460) })
+    end
+    function self:IsMinimized() return self._isMin end
+    btnMini.MouseButton1Click:Connect(function() if self._isMin then self:Restore() else self:Minimize() end end)
+    btnClose.MouseButton1Click:Connect(function() self:Close() end)
 
-	-- ===== Body =====
-	local inset = 8
-	local topH = (self._subtitle and 56 or 40)
-	local body = self._scrollable and Instance.new("ScrollingFrame") or Instance.new("Frame")
-	body.Name = "Body"
-	body.BackgroundTransparency = 1
-	body.BorderSizePixel = 0
-	body.Position = UDim2.new(0, inset, 0, inset + topH + 4)
-	body.Size = UDim2.new(1, -inset*2, 1, -(inset*2 + topH + 4))
-	body.Parent = win
+    -- ===== Sidebar =====
+    local side = mk("Frame", {
+        Name="Sidebar",
+        BackgroundTransparency=1,
+        Size = UDim2.new(0, 180, 1, -42),
+        Position = UDim2.new(0,0,0,42),
+        ZIndex = 1,
+        Parent = root
+    })
+    local sidePad = mk("UIPadding", { PaddingTop = UDim.new(0,8), PaddingLeft = UDim.new(0,10), PaddingRight = UDim.new(0,8) }, side)
+    local sideList = mk("UIListLayout", {
+        FillDirection = Enum.FillDirection.Vertical,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0,8)
+    }, side)
 
-	if body:IsA("ScrollingFrame") then
-		body.Active = true
-		body.AutomaticCanvasSize = Enum.AutomaticSize.Y
-		body.ScrollBarThickness = 4
-		local lay = Instance.new("UIListLayout", body)
-		lay.FillDirection = Enum.FillDirection.Vertical
-		lay.Padding = UDim.new(0, 8)
-		lay.SortOrder = Enum.SortOrder.LayoutOrder
-	else
-		local lay = Instance.new("UIListLayout", body)
-		lay.FillDirection = Enum.FillDirection.Vertical
-		lay.Padding = UDim.new(0, 8)
-		lay.SortOrder = Enum.SortOrder.LayoutOrder
-	end
+    -- ===== Body =====
+    local body = mk("Frame", {
+        Name="Body",
+        BackgroundColor3 = C.bg,
+        Size = UDim2.new(1,-180,1,-42),
+        Position = UDim2.new(0,180,0,42),
+        BorderSizePixel = 0,
+        ZIndex = 1,
+        Parent = root
+    })
+    round(body, 10); uiStroke(body, C.stroke, 1)
 
-	-- ===== Resizer =====
-	local sizer
-	if self._resizable then
-		sizer = Instance.new("TextButton")
-		sizer.Name = "Sizer"
-		sizer.AutoButtonColor = false
-		sizer.Text = ""
-		sizer.BackgroundTransparency = 1
-		sizer.AnchorPoint = Vector2.new(1, 1)
-		sizer.Position = UDim2.new(1, -6, 1, -6)
-		sizer.Size = UDim2.fromOffset(16, 16)
-		sizer.Parent = win
+    -- API state
+    self.Gui, self.Root, self.Topbar, self.Sidebar, self.Body = gui, root, topbar, side, body
+    self._tabs = {}
+    self._active = nil
 
-		-- visual garis miring kecil (pakai label)
-		local sl = Instance.new("TextLabel")
-		sl.BackgroundTransparency = 1
-		sl.Text = "◢"
-		sl.TextColor3 = Theme.colors.text.dim
-		sl.Font = Enum.Font.Gotham
-		sl.TextSize = 14
-		sl.Size = UDim2.fromScale(1,1)
-		sl.Parent = sizer
-	end
+    -- Public small setters
+    function self:SetTitle(t) title.Text = t or "" end
+    function self:SetSubtitle(_) end -- (nggak dipakai di style ini)
+    function self:Show() self.Gui.Enabled = true end
+    function self:Hide() self.Gui.Enabled = false end
+    function self:Toggle() self.Gui.Enabled = not self.Gui.Enabled end
+    function self:Focus() root.ZIndex += 1 end
+    function self:GetBody() return self.Body end
+    function self:Close() self.Gui:Destroy() end
+    function self:Destroy() self:Close() end
 
-	-- ===== Refs & state =====
-	self._win = win
-	self._top = top
-	self._topStroke = topStroke
-	self._title = title
-	self._subtitleLbl = sub
-	self._btnMin = btnMin
-	self._btnClose = btnClose
-	self._body = body
-	self._sizer = sizer
+    -- ===== Tab API =====
+    function self:AddTab(name, icon)
+        local btn = mk("TextButton", {
+            Name = "Tab_"..name,
+            AutoButtonColor = false,
+            BackgroundColor3 = C.muted,
+            Size = UDim2.new(1,-0,0,44),
+            Text = "",
+            Parent = side
+        })
+        round(btn, 10); uiStroke(btn, C.stroke, 1)
 
-	self._minimized = false
-	self._restoredSize = self._size
+        local ic = mk("ImageLabel", {
+            BackgroundTransparency=1,
+            Size = UDim2.fromOffset(20,20),
+            Position = UDim2.new(0,12,0.5,-10),
+            Image = icon or "rbxassetid://10734828463", -- default icon
+            ImageColor3 = C.text and C.text.normal or Color3.new(1,1,1),
+            Parent = btn
+        })
+        local lb = mk("TextLabel", {
+            BackgroundTransparency=1,
+            AnchorPoint = Vector2.new(0,0.5),
+            Position = UDim2.new(0,40,0.5,0),
+            Size = UDim2.new(1,-52,1,-0),
+            FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
+            Text = name,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextSize = 14,
+            TextColor3 = C.text and C.text.normal or Color3.fromRGB(220,225,235),
+            Parent = btn
+        })
 
-	-- ===== Focus handling (bring to front) =====
-	local function focus()
-		ROOT.TopIndex += 1
-		setZRecursive(self._win, ROOT.TopIndex)
-		Theme.paintSelected(self._top, self._topStroke)
-		self._title.TextColor3 = Theme.colors.text.onAcc
-		if self._subtitleLbl then self._subtitleLbl.TextColor3 = Theme.colors.text.onAcc end
-	end
+        -- tab page
+        local page = mk("Frame", {
+            Name = "Page_"..name,
+            BackgroundTransparency = 1,
+            Size = UDim2.fromScale(1,1),
+            Visible = false,
+            Parent = body
+        })
 
-	local function unfocus()
-		Theme.paintNormal(self._top, self._topStroke)
-		self._title.TextColor3 = Theme.colors.text.title
-		if self._subtitleLbl then self._subtitleLbl.TextColor3 = Theme.colors.text.dim end
-	end
+        local function setActive(active)
+            if active then
+                tween(btn,{BackgroundColor3 = C.accent}, T.base)
+                lb.TextColor3 = C.text and C.text.onAcc or Color3.new(1,1,1)
+                ic.ImageColor3 = C.text and C.text.onAcc or Color3.new(1,1,1)
+                page.Visible = true
+                self._active = page
+            else
+                tween(btn,{BackgroundColor3 = C.muted}, T.base)
+                lb.TextColor3 = C.text and C.text.normal or Color3.fromRGB(220,225,235)
+                ic.ImageColor3 = C.text and C.text.normal or Color3.fromRGB(220,225,235)
+                page.Visible = false
+            end
+        end
 
-	self._win.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
-			focus()
-		end
-	end)
+        btn.MouseButton1Click:Connect(function()
+            for _,t in pairs(self._tabs) do setActive(false, t) end
+            setActive(true)
+        end)
 
-	-- ===== Dragging =====
-	if self._draggable then
-		local dragging = false
-		local startPos, startMouse
+        local tab = {
+            Button = btn,
+            Label = lb,
+            Icon = ic,
+            Frame = page,
+            SetActive = setActive
+        }
+        table.insert(self._tabs, tab)
+        if not self._active then btn:Activate() end
+        return tab
+    end
 
-		local function clampToScreen(posUD)
-			local vw, vh = viewportSize()
-			local w = self._win.AbsoluteSize.X
-			local h = self._win.AbsoluteSize.Y
-			local x = clamp(posUD.X.Offset, 4, vw - w - 4)
-			local y = clamp(posUD.Y.Offset, 4, vh - h - 4)
-			return UDim2.fromOffset(x, y)
-		end
-
-		self._top.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				dragging = true
-				startPos = self._win.Position
-				startMouse = input.Position
-				Theme.paintHover(self._top, self._topStroke)
-				focus()
-			end
-		end)
-
-		UserInputService.InputChanged:Connect(function(input)
-			if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-				local delta = input.Position - startMouse
-				local newPos = UDim2.fromOffset(startPos.X.Offset + delta.X, startPos.Y.Offset + delta.Y)
-				self._win.Position = clampToScreen(newPos)
-				saveState(self._saveKey, self._win.Position, self._win.Size)
-				self._onMove(self._win.Position)
-			end
-		end)
-
-		UserInputService.InputEnded:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				dragging = false
-				Theme.paintSelected(self._top, self._topStroke) -- tetap active color
-			end
-		end)
-	end
-
-	-- ===== Resizing =====
-	if self._resizable and self._sizer then
-		local resizing = false
-		local startSize, startMouse
-
-		self._sizer.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				resizing = true
-				startSize = self._win.Size
-				startMouse = input.Position
-				focus()
-			end
-		end)
-
-		UserInputService.InputChanged:Connect(function(input)
-			if resizing and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-				local delta = input.Position - startMouse
-				local newW = clamp(startSize.X.Offset + delta.X, self._minSize.X, math.huge)
-				local newH = clamp(startSize.Y.Offset + delta.Y, self._minSize.Y, math.huge)
-				self._win.Size = UDim2.fromOffset(newW, newH)
-				self._restoredSize = self._win.Size
-				saveState(self._saveKey, self._win.Position, self._win.Size)
-				self._onResize(self._win.Size)
-			end
-		end)
-
-		UserInputService.InputEnded:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				resizing = false
-			end
-		end)
-	end
-
-	-- ===== Buttons actions =====
-	if self._btnMin then
-		self._btnMin.MouseButton1Click:Connect(function()
-			if self._minimized then
-				self:Restore()
-			else
-				self:Minimize()
-			end
-		end)
-	end
-
-	if self._btnClose then
-		self._btnClose.MouseButton1Click:Connect(function()
-			local ok, err = pcall(self._onClose)
-			if not ok then warn("[Window] OnClose error:", err) end
-			if self._closeDestroy then
-				self:Destroy()
-			else
-				self:Hide()
-			end
-		end)
-	end
-
-	-- ===== Show with gentle anim =====
-	self._win.Visible = false
-	self:Show()
-	focus()
-
-	return self
-end
-
--- ===== Methods =====
-function Window:GetBody()
-	return self._body
-end
-
-function Window:SetTitle(t)
-	self._titleTxt = t or self._titleTxt
-	self._title.Text = self._titleTxt
-	self._win.Name = self._titleTxt
-end
-
-function Window:SetSubtitle(t)
-	self._subtitle = t
-	if t and t ~= "" then
-		if not self._subtitleLbl then
-			self._subtitleLbl = Instance.new("TextLabel")
-			self._subtitleLbl.Name = "Subtitle"
-			self._subtitleLbl.BackgroundTransparency = 1
-			self._subtitleLbl.TextColor3 = Theme.colors.text.dim
-			self._subtitleLbl.Font = Enum.Font.Gotham
-			self._subtitleLbl.TextSize = 13
-			self._subtitleLbl.TextXAlignment = Enum.TextXAlignment.Left
-			self._subtitleLbl.Position = UDim2.new(0, 12, 0, 24)
-			self._subtitleLbl.Size = UDim2.new(1, -140, 0, 18)
-			self._subtitleLbl.Parent = self._top
-			self._top.Size = UDim2.new(1, -16, 0, 56)
-		end
-		self._subtitleLbl.Text = tostring(t)
-	else
-		if self._subtitleLbl then
-			self._subtitleLbl:Destroy()
-			self._subtitleLbl = nil
-			self._top.Size = UDim2.new(1, -16, 0, 40)
-		end
-	end
-end
-
-function Window:SetScrollable(b)
-	b = not not b
-	if b == self._scrollable then return end
-	self._scrollable = b
-
-	local inset = 8
-	local topH = (self._subtitleLbl and 56) or 40
-	local old = self._body
-	local kids = old:GetChildren()
-
-	if b then
-		local sc = Instance.new("ScrollingFrame")
-		sc.Name = "Body"
-		sc.Active = true
-		sc.AutomaticCanvasSize = Enum.AutomaticSize.Y
-		sc.ScrollBarThickness = 4
-		sc.BackgroundTransparency = 1
-		sc.BorderSizePixel = 0
-		sc.Position = UDim2.new(0, inset, 0, inset + topH + 4)
-		sc.Size = UDim2.new(1, -inset*2, 1, -(inset*2 + topH + 4))
-		sc.Parent = self._win
-		local lay = Instance.new("UIListLayout", sc)
-		lay.FillDirection = Enum.FillDirection.Vertical
-		lay.Padding = UDim.new(0, 8)
-		lay.SortOrder = Enum.SortOrder.LayoutOrder
-		self._body = sc
-	else
-		local fr = Instance.new("Frame")
-		fr.Name = "Body"
-		fr.BackgroundTransparency = 1
-		fr.BorderSizePixel = 0
-		fr.Position = UDim2.new(0, inset, 0, inset + topH + 4)
-		fr.Size = UDim2.new(1, -inset*2, 1, -(inset*2 + topH + 4))
-		fr.Parent = self._win
-		local lay = Instance.new("UIListLayout", fr)
-		lay.FillDirection = Enum.FillDirection.Vertical
-		lay.Padding = UDim.new(0, 8)
-		lay.SortOrder = Enum.SortOrder.LayoutOrder
-		self._body = fr
-	end
-
-	for _, c in ipairs(kids) do
-		if not c:IsA("UIListLayout") then
-			c.Parent = self._body
-		else
-			c:Destroy()
-		end
-	end
-
-	old:Destroy()
-end
-
-function Window:Show()
-	if self._win.Visible then return end
-	self._win.Visible = true
-	Theme.popupIn(self._win)
-end
-
-function Window:Hide()
-	if not self._win.Visible then return end
-	Theme.popupOut(self._win, function()
-		if self._win then self._win.Visible = false end
-	end)
-end
-
-function Window:Toggle()
-	if self._win.Visible then self:Hide() else self:Show() end
-end
-
-function Window:Minimize()
-	if self._minimized then return end
-	self._minimized = true
-	self._restoredSize = self._win.Size
-	local newH = (self._subtitleLbl and 56 or 40) + 16
-	Theme.tween(self._win, { Size = UDim2.new(self._win.Size.X.Scale, self._win.Size.X.Offset, 0, newH) }, Theme.tweening.base)
-	self._body.Visible = false
-	if self._sizer then self._sizer.Visible = false end
-	local ok, err = pcall(self._onMinimize, true); if not ok then warn("[Window] OnMinimize error:", err) end
-end
-
-function Window:Restore()
-	if not self._minimized then return end
-	self._minimized = false
-	self._body.Visible = true
-	if self._sizer then self._sizer.Visible = true end
-	Theme.tween(self._win, { Size = self._restoredSize }, Theme.tweening.base)
-	local ok, err = pcall(self._onMinimize, false); if not ok then warn("[Window] OnMinimize error:", err) end
-end
-
-function Window:IsMinimized()
-	return self._minimized
-end
-
-function Window:Focus()
-	ROOT.TopIndex += 1
-	setZRecursive(self._win, ROOT.TopIndex)
-end
-
-function Window:Destroy()
-	if self._win then
-		self._win:Destroy()
-		self._win = nil
-	end
+    -- initial shadow sync
+    syncShadow()
+    return self
 end
 
 return Window
-
---[[local Window = require(path.to.Window)
-local Section = require(path.to.Section)
-local Button  = require(path.to.Button)
-
-local win = Window.new({
-    Title = "My Library",
-    Subtitle = "v1.0",
-    Size = UDim2.fromOffset(560, 420),
-    Draggable = true,
-    Resizable = true,
-    Scrollable = true,
-    SaveKey = "main_win",
-    OnClose = function() print("Window closed") end,
-})
-
--- Tambah konten
-local body = win:GetBody()
-local sec = Section.new(body, { Title = "Controls", DefaultOpen = true })
-local btn = Button.new(sec:GetBody(), { Title = "Run", Callback = function() print("Run!") end })
-
--- Kontrol
--- win:Minimize(); win:Restore(); print(win:IsMinimized())
--- win:SetTitle("New Title"); win:SetSubtitle(nil)
--- win:SetScrollable(false)
--- win:Hide(); win:Show(); win:Toggle()
--- win:Focus()
--- win:Destroy()]]
