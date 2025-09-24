@@ -8,7 +8,7 @@ local HttpService = game:GetService("HttpService")
 local BASE_URL = "https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/" -- ganti sesuai repo kamu
 local MODULES = {
 	"Theme","Window","Tab","Section","Dropdown","Button","Input","Toggle",
-	"Dialog","Popup","Divider","Notify","OpenButton","Paragraph","Slider",
+	"Dialog","Popup","Divider", "OpenButton","Paragraph","Slider",
 }
 
 -- ====== Registry require/provide ======
@@ -63,7 +63,6 @@ local Toggle       = require_local("Toggle")
 local Dialog       = require_local("Dialog")
 local Popup        = require_local("Popup")
 local Divider      = require_local("Divider")
-local Notify       = require_local("Notification")
 local OpenButton   = require_local("OpenButton")
 local Paragraph    = require_local("Paragraph")
 local Slider       = require_local("Slider")
@@ -71,7 +70,7 @@ local Slider       = require_local("Slider")
 local UI = {
 	Theme=Theme, Window=Window, Tab=Tab, Section=Section, Dropdown=Dropdown,
 	Button=Button, Input=Input, Toggle=Toggle, Dialog=Dialog, Popup=Popup,
-	Divider=Divider, Notification=Notify, OpenButton=OpenButton,
+	Divider=Divider, OpenButton=OpenButton,
 	Paragraph=Paragraph, Slider=Slider,
 
 	NewWindow=function(opts) return Window.new(opts or {}) end,
