@@ -96,9 +96,9 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
--- Input Module
-local function CreateInput(parent, config)
-    local InputData = {
+-- TextBox Module
+local function CreateTextBox(parent, config)
+    local TextBoxData = {
         Title = config.Title or "Input Textbox",
         Desc = config.Desc,
         Placeholder = config.Placeholder or "Input here...",
@@ -109,119 +109,121 @@ local function CreateInput(parent, config)
         MultiLine = config.MultiLine or false,
         Callback = config.Callback or function() end
     }
-    
-    local InputMethods = {}
 
-    -- Create Main TextBox Frame
-    local InputFrame = Instance.new("Frame")
-    InputFrame.Visible = false
-    InputFrame.BorderSizePixel = 0
-    InputFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
-    InputFrame.AutomaticSize = Enum.AutomaticSize.Y
-    InputFrame.Size = UDim2.new(1, 0, 0, 35)
-    InputFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
-    InputFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputFrame.Name = "TextBox"
-    InputFrame.Parent = TabContent
+    local TextBoxMethods = {}
 
-    local InputCorner = Instance.new("UICorner")
-    InputCorner.CornerRadius = UDim.new(0, 6)
-    InputCorner.Parent = InputFrame
+    -- Main TextBox Frame
+    local TextBoxFrame = Instance.new("Frame")
+    TextBoxFrame.Visible = false
+    TextBoxFrame.BorderSizePixel = 0
+    TextBoxFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    TextBoxFrame.AutomaticSize = Enum.AutomaticSize.Y
+    TextBoxFrame.Size = UDim2.new(1, 0, 0, 35)
+    TextBoxFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
+    TextBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TextBoxFrame.Name = "TextBox"
+    TextBoxFrame.Parent = parent
 
-    local InputStroke = Instance.new("UIStroke")
-    InputStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    InputStroke.Thickness = 1.5
-    InputStroke.Color = Color3.fromRGB(61, 61, 75)
-    InputStroke.Parent = InputFrame
+    local TextBoxCorner = Instance.new("UICorner")
+    TextBoxCorner.CornerRadius = UDim.new(0, 6)
+    TextBoxCorner.Parent = TextBoxFrame
 
-    local InputPadding = Instance.new("UIPadding")
-    InputPadding.PaddingTop = UDim.new(0, 10)
-    InputPadding.PaddingRight = UDim.new(0, 10)
-    InputPadding.PaddingLeft = UDim.new(0, 10)
-    InputPadding.PaddingBottom = UDim.new(0, 10)
-    InputPadding.Parent = InputFrame
+    local TextBoxStroke = Instance.new("UIStroke")
+    TextBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    TextBoxStroke.Thickness = 1.5
+    TextBoxStroke.Color = Color3.fromRGB(61, 61, 75)
+    TextBoxStroke.Parent = TextBoxFrame
 
-    local InputLayout = Instance.new("UIListLayout")
-    InputLayout.Padding = UDim.new(0, 10)
-    InputLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    InputLayout.Parent = InputFrame
+    -- Title Label
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.TextWrapped = true
+    TitleLabel.Interactable = false
+    TitleLabel.BorderSizePixel = 0
+    TitleLabel.TextSize = 16
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    TitleLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Size = UDim2.new(1, 0, 0, 15)
+    TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.Text = TextBoxData.Title
+    TitleLabel.AutomaticSize = Enum.AutomaticSize.Y
+    TitleLabel.Name = "Title"
+    TitleLabel.Parent = TextBoxFrame
 
-    -- Create Title
-    local InputTitle = Instance.new("TextLabel")
-    InputTitle.TextWrapped = true
-    InputTitle.Interactable = false
-    InputTitle.BorderSizePixel = 0
-    InputTitle.TextSize = 16
-    InputTitle.TextXAlignment = Enum.TextXAlignment.Left
-    InputTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    InputTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-    InputTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
-    InputTitle.BackgroundTransparency = 1
-    InputTitle.Size = UDim2.new(1, 0, 0, 15)
-    InputTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputTitle.Text = InputData.Title
-    InputTitle.AutomaticSize = Enum.AutomaticSize.Y
-    InputTitle.Name = "Title"
-    InputTitle.Parent = InputFrame
+    -- Padding for the main frame
+    local MainPadding = Instance.new("UIPadding")
+    MainPadding.PaddingTop = UDim.new(0, 10)
+    MainPadding.PaddingRight = UDim.new(0, 10)
+    MainPadding.PaddingLeft = UDim.new(0, 10)
+    MainPadding.PaddingBottom = UDim.new(0, 10)
+    MainPadding.Parent = TextBoxFrame
 
-    -- Create Description (if provided)
-    local InputDescription = nil
-    if InputData.Desc and InputData.Desc ~= "" then
-        InputDescription = Instance.new("TextLabel")
-        InputDescription.TextWrapped = true
-        InputDescription.Interactable = false
-        InputDescription.BorderSizePixel = 0
-        InputDescription.TextSize = 16
-        InputDescription.TextXAlignment = Enum.TextXAlignment.Left
-        InputDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        InputDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-        InputDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
-        InputDescription.BackgroundTransparency = 1
-        InputDescription.Size = UDim2.new(1, 0, 0, 15)
-        InputDescription.Visible = true
-        InputDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        InputDescription.Text = InputData.Desc
-        InputDescription.LayoutOrder = 1
-        InputDescription.AutomaticSize = Enum.AutomaticSize.Y
-        InputDescription.Name = "Description"
-        InputDescription.Parent = InputFrame
+    -- Layout for main frame
+    local MainLayout = Instance.new("UIListLayout")
+    MainLayout.Padding = UDim.new(0, 10)
+    MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    MainLayout.Parent = TextBoxFrame
+
+    -- Description Label (if provided)
+    local DescriptionLabel = nil
+    if TextBoxData.Desc and TextBoxData.Desc ~= "" then
+        DescriptionLabel = Instance.new("TextLabel")
+        DescriptionLabel.TextWrapped = true
+        DescriptionLabel.Interactable = false
+        DescriptionLabel.BorderSizePixel = 0
+        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        DescriptionLabel.BackgroundTransparency = 1
+        DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+        DescriptionLabel.Visible = true
+        DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        DescriptionLabel.Text = TextBoxData.Desc
+        DescriptionLabel.LayoutOrder = 1
+        DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+        DescriptionLabel.Name = "Description"
+        DescriptionLabel.Parent = TextBoxFrame
     end
 
-    -- Create Input Box Container
-    local InputBoxFrame = Instance.new("Frame")
-    InputBoxFrame.ZIndex = 0
-    InputBoxFrame.BorderSizePixel = 0
-    InputBoxFrame.AutomaticSize = Enum.AutomaticSize.Y
-    InputBoxFrame.Size = UDim2.new(1, 0, 0, 25)
-    InputBoxFrame.Name = "BoxFrame"
-    InputBoxFrame.LayoutOrder = 2
-    InputBoxFrame.BackgroundTransparency = 1
-    InputBoxFrame.Parent = InputFrame
+    -- Box Frame Container
+    local BoxFrame = Instance.new("Frame")
+    BoxFrame.ZIndex = 0
+    BoxFrame.BorderSizePixel = 0
+    BoxFrame.AutomaticSize = Enum.AutomaticSize.Y
+    BoxFrame.Size = UDim2.new(1, 0, 0, 25)
+    BoxFrame.Name = "BoxFrame"
+    BoxFrame.LayoutOrder = 2
+    BoxFrame.BackgroundTransparency = 1
+    BoxFrame.Parent = TextBoxFrame
 
-    -- Create Drop Shadow
-    local InputShadow = Instance.new("ImageLabel")
-    InputShadow.ZIndex = 0
-    InputShadow.BorderSizePixel = 0
-    InputShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    InputShadow.ScaleType = Enum.ScaleType.Slice
-    InputShadow.ImageTransparency = 0.75
-    InputShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    InputShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    InputShadow.Image = "rbxassetid://6014261993"
-    InputShadow.Size = UDim2.new(1, 35, 1, 30)
-    InputShadow.BackgroundTransparency = 1
-    InputShadow.Name = "DropShadow"
-    InputShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    InputShadow.Parent = InputBoxFrame
+    -- Drop Shadow for Box
+    local DropShadow = Instance.new("ImageLabel")
+    DropShadow.ZIndex = 0
+    DropShadow.BorderSizePixel = 0
+    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    DropShadow.ScaleType = Enum.ScaleType.Slice
+    DropShadow.ImageTransparency = 0.75
+    DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropShadow.Image = "rbxassetid://6014261993"
+    DropShadow.Size = UDim2.new(1, 35, 1, 30)
+    DropShadow.BackgroundTransparency = 1
+    DropShadow.Name = "DropShadow"
+    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropShadow.Parent = BoxFrame
 
-    -- Create Input Box Background
+    -- Input Box Container
     local InputBox = Instance.new("Frame")
     InputBox.BorderSizePixel = 0
     InputBox.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     InputBox.AutomaticSize = Enum.AutomaticSize.Y
     InputBox.Size = UDim2.new(1, 0, 0, 25)
     InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputBox.Parent = InputBoxFrame
+    InputBox.Parent = BoxFrame
 
     local InputBoxCorner = Instance.new("UICorner")
     InputBoxCorner.CornerRadius = UDim.new(0, 5)
@@ -233,6 +235,7 @@ local function CreateInput(parent, config)
     InputBoxStroke.Color = Color3.fromRGB(61, 61, 75)
     InputBoxStroke.Parent = InputBox
 
+    -- Layout for Input Box
     local InputBoxLayout = Instance.new("UIListLayout")
     InputBoxLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     InputBoxLayout.Padding = UDim.new(0, 5)
@@ -240,163 +243,185 @@ local function CreateInput(parent, config)
     InputBoxLayout.SortOrder = Enum.SortOrder.LayoutOrder
     InputBoxLayout.Parent = InputBox
 
-    -- Create Actual TextBox
-    local TextBox = Instance.new("TextBox")
-    TextBox.TextXAlignment = Enum.TextXAlignment.Left
-    TextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-    TextBox.BorderSizePixel = 0
-    TextBox.TextWrapped = true
-    TextBox.TextTruncate = Enum.TextTruncate.AtEnd
-    TextBox.TextSize = 14
-    TextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
-    TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    TextBox.AutomaticSize = Enum.AutomaticSize.Y
-    TextBox.ClipsDescendants = true
-    TextBox.PlaceholderText = InputData.Placeholder
-    TextBox.Size = UDim2.new(1, 0, 0, 25)
-    TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextBox.Text = InputData.Default
-    TextBox.BackgroundTransparency = 1
-    TextBox.MultiLine = InputData.MultiLine
-    TextBox.ClearTextOnFocus = InputData.ClearTextOnFocus
-    TextBox.Parent = InputBox
+    -- Actual TextBox
+    local ActualTextBox = Instance.new("TextBox")
+    ActualTextBox.TextXAlignment = Enum.TextXAlignment.Left
+    ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+    ActualTextBox.BorderSizePixel = 0
+    ActualTextBox.TextWrapped = true
+    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
+    ActualTextBox.TextSize = 14
+    ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
+    ActualTextBox.ClipsDescendants = true
+    ActualTextBox.PlaceholderText = TextBoxData.Placeholder
+    ActualTextBox.Size = UDim2.new(1, 0, 0, 25)
+    ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ActualTextBox.Text = TextBoxData.Default
+    ActualTextBox.BackgroundTransparency = 1
+    ActualTextBox.MultiLine = TextBoxData.MultiLine
+    ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
+    ActualTextBox.Parent = InputBox
 
+    -- TextBox Padding
     local TextBoxPadding = Instance.new("UIPadding")
     TextBoxPadding.PaddingTop = UDim.new(0, 5)
     TextBoxPadding.PaddingRight = UDim.new(0, 10)
     TextBoxPadding.PaddingLeft = UDim.new(0, 10)
     TextBoxPadding.PaddingBottom = UDim.new(0, 5)
-    TextBoxPadding.Parent = TextBox
+    TextBoxPadding.Parent = ActualTextBox
 
-    -- Set MultiLine properties
-    if InputData.MultiLine then
-        TextBox.AutomaticSize = Enum.AutomaticSize.Y
+    -- Apply MultiLine settings
+    if TextBoxData.MultiLine then
+        ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
     else
-        TextBox.AutomaticSize = Enum.AutomaticSize.None
+        ActualTextBox.AutomaticSize = Enum.AutomaticSize.None
     end
 
     -- Apply locked state if needed
-    if InputData.Locked then
-        InputStroke.Color = Color3.fromRGB(47, 47, 58)
-        InputFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
-        InputTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
-        if InputDescription then
-            InputDescription.TextColor3 = Color3.fromRGB(75, 77, 83)
+    if TextBoxData.Locked then
+        TextBoxStroke.Color = Color3.fromRGB(47, 47, 58)
+        TextBoxFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        TitleLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
+        if DescriptionLabel then
+            DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
         InputBox.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
         InputBoxStroke.Color = Color3.fromRGB(47, 47, 58)
-        TextBox.TextColor3 = Color3.fromRGB(75, 77, 83)
-        TextBox.PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
-        TextBox.Active = false
-        TextBox.Interactable = false
-        TextBox.TextEditable = false
+        ActualTextBox.TextColor3 = Color3.fromRGB(75, 77, 83)
+        ActualTextBox.PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
+        ActualTextBox.Active = false
+        ActualTextBox.Interactable = false
+        ActualTextBox.TextEditable = false
     end
 
-    -- Event Handlers
-    TextBox.MouseEnter:Connect(function()
-        if not InputData.Locked then
-            CreateTween(InputStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+    -- TextBox Interaction Events
+    ActualTextBox.MouseEnter:Connect(function()
+        if not TextBoxData.Locked then
+            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
         end
     end)
 
-    TextBox.MouseLeave:Connect(function()
-        if not InputData.Locked then
-            CreateTween(InputStroke, {Color = Color3.fromRGB(61, 61, 75)}, AnimationConfig.Global)
+    ActualTextBox.MouseLeave:Connect(function()
+        if not TextBoxData.Locked then
+            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         end
     end)
 
-    TextBox.Focused:Connect(function()
-        if not InputData.Locked then
-            CreateTween(InputStroke, {Color = Color3.fromRGB(61, 61, 75)}, AnimationConfig.Global)
+    ActualTextBox.Focused:Connect(function()
+        if not TextBoxData.Locked then
+            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
         end
     end)
 
-    TextBox.FocusLost:Connect(function()
-        if not InputData.Locked then
-            CreateTween(InputBoxStroke, {Color = Color3.fromRGB(61, 61, 75)}, AnimationConfig.Global)
-            InputData.Text = TextBox.Text
-            InputData.Callback(InputData.Text)
+    ActualTextBox.FocusLost:Connect(function()
+        if not TextBoxData.Locked then
+            CreateTween(InputBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            TextBoxData.Text = ActualTextBox.Text
+            TextBoxData.Callback(TextBoxData.Text)
         end
     end)
 
-    -- Make visible
-    InputFrame.Visible = true
+    -- Show TextBox
+    TextBoxFrame.Visible = true
 
-    -- Input Methods
-    function InputMethods:Set(text)
-        TextBox.Text = text
-        InputData.Text = text
-        InputData.Callback(text)
+    -- TextBox Methods
+    function TextBoxMethods:Set(text)
+        ActualTextBox.Text = text
+        TextBoxData.Text = text
+        TextBoxData.Callback(text)
     end
 
-    function InputMethods:SetTitle(title)
-        InputData.Title = title
-        InputTitle.Text = title
+    function TextBoxMethods:SetTitle(title)
+        TextBoxData.Title = title
+        TitleLabel.Text = title
     end
 
-    function InputMethods:SetDesc(desc)
-        if InputDescription and desc and desc ~= "" then
-            InputData.Desc = desc
-            InputDescription.Text = desc
-            InputDescription.Visible = true
+    function TextBoxMethods:SetDesc(desc)
+        if desc and desc ~= "" then
+            TextBoxData.Desc = desc
+            if not DescriptionLabel then
+                -- Create description label if it doesn't exist
+                DescriptionLabel = Instance.new("TextLabel")
+                DescriptionLabel.TextWrapped = true
+                DescriptionLabel.Interactable = false
+                DescriptionLabel.BorderSizePixel = 0
+                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+                DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+                DescriptionLabel.BackgroundTransparency = 1
+                DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+                DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                DescriptionLabel.LayoutOrder = 1
+                DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+                DescriptionLabel.Name = "Description"
+                DescriptionLabel.Parent = TextBoxFrame
+            end
+            DescriptionLabel.Text = desc
+            DescriptionLabel.Visible = true
+        elseif DescriptionLabel then
+            DescriptionLabel.Visible = false
         end
     end
 
-    function InputMethods:SetPlaceholder(placeholder)
+    function TextBoxMethods:SetPlaceholder(placeholder)
         if placeholder then
-            InputData.Placeholder = placeholder
-            TextBox.PlaceholderText = placeholder
+            TextBoxData.Placeholder = placeholder
+            ActualTextBox.PlaceholderText = placeholder
         end
     end
 
-    function InputMethods:Lock()
-        InputData.Locked = true
-        CreateTween(InputStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(InputFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
-        CreateTween(InputTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
-        if InputDescription then
-            CreateTween(InputDescription, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+    function TextBoxMethods:Lock()
+        TextBoxData.Locked = true
+        CreateTween(TextBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
+        CreateTween(TextBoxFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(TitleLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
         CreateTween(InputBox, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
         CreateTween(InputBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(TextBox, {
+        CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(75, 77, 83),
             PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
         }, AnimationConfig.Global)
-        TextBox.Active = false
-        TextBox.Interactable = false
-        TextBox.TextEditable = false
+        ActualTextBox.Active = false
+        ActualTextBox.Interactable = false
+        ActualTextBox.TextEditable = false
     end
 
-    function InputMethods:Unlock()
-        InputData.Locked = false
-        CreateTween(InputStroke, {Color = Color3.fromRGB(61, 61, 75)}, AnimationConfig.Global)
-        CreateTween(InputFrame, {BackgroundColor3 = Color3.fromRGB(43, 46, 53)}, AnimationConfig.Global)
-        CreateTween(InputTitle, {TextColor3 = Color3.fromRGB(197, 204, 219)}, AnimationConfig.Global)
-        if InputDescription then
-            CreateTween(InputDescription, {TextColor3 = Color3.fromRGB(197, 204, 219)}, AnimationConfig.Global)
+    function TextBoxMethods:Unlock()
+        TextBoxData.Locked = false
+        CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(TextBoxFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(TitleLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = Color3.fromRGB(43, 46, 53)}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = Color3.fromRGB(61, 61, 75)}, AnimationConfig.Global)
-        CreateTween(TextBox, {
-            TextColor3 = Color3.fromRGB(197, 204, 219),
-            PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+        CreateTween(InputBox, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(InputBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ActualTextBox, {
+            TextColor3 = Color3.fromRGB(196, 203, 218),
+            PlaceholderColor3 = Color3.fromRGB(139, 139, 139)
         }, AnimationConfig.Global)
-        TextBox.Active = true
-        TextBox.Interactable = true
-        TextBox.TextEditable = true
+        ActualTextBox.Active = true
+        ActualTextBox.Interactable = true
+        ActualTextBox.TextEditable = true
     end
 
-    function InputMethods:Destroy()
-        InputFrame:Destroy()
+    function TextBoxMethods:Destroy()
+        TextBoxFrame:Destroy()
     end
 
-    -- Call callback with initial value
-    InputData.Callback(InputData.Text)
+    -- Initialize callback with current text
+    TextBoxData.Callback(TextBoxData.Text)
 
-    return InputMethods
+    return TextBoxMethods
 end
 
 -- Toggle Module
@@ -1979,9 +2004,11 @@ end
     return CreateToggle(SectionContent, config)
 end
 
+
     function SectionMethods:Input(config)
-    return CreateInput(SectionContent, config)
+    return CreateTextBox(SectionContent, config)
 end
+    
 
     return SectionMethods
 end
