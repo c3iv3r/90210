@@ -96,6 +96,304 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Toggle Module
+local function CreateToggle(parent, config)
+    local ToggleData = {
+        Title = config.Title or "Toggle",
+        Desc = config.Desc,
+        State = config.Default or config.Value or false,
+        Locked = config.Locked or false,
+        Icon = config.Icon,
+        Callback = config.Callback or function() end
+    }
+
+    local ToggleMethods = {}
+
+    -- Main Toggle Frame
+    local ToggleFrame = Instance.new("ImageButton")
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.AutoButtonColor = false
+    ToggleFrame.Visible = false
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ToggleFrame.Selectable = false
+    ToggleFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 35)
+    ToggleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleFrame.Name = "Toggle"
+    ToggleFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
+    ToggleFrame.Parent = parent
+
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 6)
+    ToggleCorner.Parent = ToggleFrame
+
+    local ToggleStroke = Instance.new("UIStroke")
+    ToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ToggleStroke.Thickness = 1.5
+    ToggleStroke.Color = Color3.fromRGB(61, 61, 75)
+    ToggleStroke.Parent = ToggleFrame
+
+    local TogglePadding = Instance.new("UIPadding")
+    TogglePadding.PaddingTop = UDim.new(0, 10)
+    TogglePadding.PaddingRight = UDim.new(0, 10)
+    TogglePadding.PaddingLeft = UDim.new(0, 10)
+    TogglePadding.PaddingBottom = UDim.new(0, 10)
+    TogglePadding.Parent = ToggleFrame
+
+    local ToggleLayout = Instance.new("UIListLayout")
+    ToggleLayout.Padding = UDim.new(0, 5)
+    ToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ToggleLayout.Parent = ToggleFrame
+
+    -- Description Label (if provided)
+    local DescriptionLabel = nil
+    if ToggleData.Desc and ToggleData.Desc ~= "" then
+        DescriptionLabel = Instance.new("TextLabel")
+        DescriptionLabel.TextWrapped = true
+        DescriptionLabel.Interactable = false
+        DescriptionLabel.BorderSizePixel = 0
+        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        DescriptionLabel.BackgroundTransparency = 1
+        DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+        DescriptionLabel.Visible = true
+        DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        DescriptionLabel.Text = ToggleData.Desc
+        DescriptionLabel.LayoutOrder = 1
+        DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+        DescriptionLabel.Name = "Description"
+        DescriptionLabel.Parent = ToggleFrame
+    end
+
+    -- Toggle Title with Switch
+    local ToggleTitle = Instance.new("TextLabel")
+    ToggleTitle.TextWrapped = true
+    ToggleTitle.BorderSizePixel = 0
+    ToggleTitle.TextSize = 16
+    ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ToggleTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ToggleTitle.BackgroundTransparency = 1
+    ToggleTitle.Size = UDim2.new(1, 0, 0, 15)
+    ToggleTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleTitle.Text = ToggleData.Title
+    ToggleTitle.Name = "Title"
+    ToggleTitle.Parent = ToggleFrame
+
+    -- Toggle Switch Container
+    local ToggleSwitch = Instance.new("ImageButton")
+    ToggleSwitch.BorderSizePixel = 0
+    ToggleSwitch.AutoButtonColor = false
+    ToggleSwitch.BackgroundColor3 = Color3.fromRGB(54, 57, 63)
+    ToggleSwitch.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    ToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
+    ToggleSwitch.Size = UDim2.new(0, 45, 0, 25)
+    ToggleSwitch.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleSwitch.Name = "Fill"
+    ToggleSwitch.Position = UDim2.new(1, 0, 0.5, 0)
+    ToggleSwitch.Parent = ToggleTitle
+
+    local ToggleSwitchCorner = Instance.new("UICorner")
+    ToggleSwitchCorner.CornerRadius = UDim.new(100, 0)
+    ToggleSwitchCorner.Parent = ToggleSwitch
+
+    local ToggleSwitchPadding = Instance.new("UIPadding")
+    ToggleSwitchPadding.PaddingTop = UDim.new(0, 2)
+    ToggleSwitchPadding.PaddingRight = UDim.new(0, 2)
+    ToggleSwitchPadding.PaddingLeft = UDim.new(0, 2)
+    ToggleSwitchPadding.PaddingBottom = UDim.new(0, 2)
+    ToggleSwitchPadding.Parent = ToggleSwitch
+
+    -- Toggle Ball (the sliding part)
+    local ToggleBall = Instance.new("ImageButton")
+    ToggleBall.Active = false
+    ToggleBall.Interactable = false
+    ToggleBall.BorderSizePixel = 0
+    ToggleBall.AutoButtonColor = false
+    ToggleBall.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleBall.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    ToggleBall.AnchorPoint = Vector2.new(0, 0.5)
+    ToggleBall.Size = UDim2.new(0, 20, 0, 20)
+    ToggleBall.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleBall.Name = "Ball"
+    ToggleBall.Position = UDim2.new(0, 0, 0.5, 0)
+    ToggleBall.Parent = ToggleSwitch
+
+    local ToggleBallCorner = Instance.new("UICorner")
+    ToggleBallCorner.CornerRadius = UDim.new(100, 0)
+    ToggleBallCorner.Parent = ToggleBall
+
+    -- Toggle Icon (inside the ball)
+    local ToggleIcon = Instance.new("ImageLabel")
+    ToggleIcon.BorderSizePixel = 0
+    ToggleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleIcon.ImageColor3 = Color3.fromRGB(54, 57, 63)
+    ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+    ToggleIcon.Size = UDim2.new(1, -5, 1, -5)
+    ToggleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleIcon.BackgroundTransparency = 1
+    ToggleIcon.Name = "Icon"
+    ToggleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ToggleIcon.Parent = ToggleBall
+
+    -- Set icon if provided
+    if ToggleData.Icon then
+        if string.find(ToggleData.Icon, "rbxassetid") or string.match(ToggleData.Icon, "%d") then
+            ToggleIcon.Image = ToggleData.Icon
+        else
+            -- For non-rbxassetid icons, assume it's a placeholder
+            ToggleIcon.Image = ""
+        end
+    end
+
+    -- Helper Functions
+    local function UpdateToggleVisual(state)
+        if state == true then
+            -- ON state
+            CreateTween(ToggleBall, {Position = UDim2.new(0.5, 0, 0.5, 0)}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(192, 209, 199)}, AnimationConfig.Global)
+            CreateTween(ToggleIcon, {ImageTransparency = 0}, AnimationConfig.Global)
+        elseif state == false then
+            -- OFF state
+            CreateTween(ToggleBall, {Position = UDim2.new(0, 0, 0.5, 0)}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(53, 56, 62)}, AnimationConfig.Global)
+            CreateTween(ToggleIcon, {ImageTransparency = 1}, AnimationConfig.Global)
+        end
+    end
+
+    local function SetToggleState(state)
+        if state ~= nil then
+            UpdateToggleVisual(state)
+        else
+            UpdateToggleVisual(not ToggleData.State)
+        end
+        ToggleData.State = state or not ToggleData.State
+        ToggleData.Callback(ToggleData.State)
+    end
+
+    -- Apply initial state
+    UpdateToggleVisual(ToggleData.State)
+
+    -- Apply locked state if needed
+    if ToggleData.Locked then
+        ToggleStroke.Color = Color3.fromRGB(47, 47, 58)
+        ToggleFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ToggleTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
+        if DescriptionLabel then
+            DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
+        end
+        ToggleSwitch.BackgroundTransparency = 0.7
+        ToggleBall.BackgroundTransparency = 0.7
+    end
+
+    -- Toggle Interaction Events
+    ToggleSwitch.MouseEnter:Connect(function()
+        if not ToggleData.Locked then
+            CreateTween(ToggleStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+        end
+    end)
+
+    ToggleSwitch.MouseLeave:Connect(function()
+        if not ToggleData.Locked then
+            CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            ToggleFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            if DescriptionLabel then
+                CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            end
+        end
+    end)
+
+    ToggleSwitch.MouseButton1Click:Connect(function()
+        if not ToggleData.Locked then
+            SetToggleState()
+        end
+    end)
+
+    -- Show toggle
+    ToggleFrame.Visible = true
+
+    -- Toggle Methods
+    function ToggleMethods:SetTitle(title)
+        ToggleData.Title = title
+        ToggleTitle.Text = title
+    end
+
+    function ToggleMethods:SetDesc(desc)
+        if desc and desc ~= "" then
+            ToggleData.Desc = desc
+            if not DescriptionLabel then
+                -- Create description label if it doesn't exist
+                DescriptionLabel = Instance.new("TextLabel")
+                DescriptionLabel.TextWrapped = true
+                DescriptionLabel.Interactable = false
+                DescriptionLabel.BorderSizePixel = 0
+                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+                DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+                DescriptionLabel.BackgroundTransparency = 1
+                DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+                DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                DescriptionLabel.LayoutOrder = 1
+                DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+                DescriptionLabel.Name = "Description"
+                DescriptionLabel.Parent = ToggleFrame
+            end
+            DescriptionLabel.Text = desc
+            DescriptionLabel.Visible = true
+        elseif DescriptionLabel then
+            DescriptionLabel.Visible = false
+        end
+    end
+
+    function ToggleMethods:Set(state)
+        SetToggleState(state)
+    end
+
+    function ToggleMethods:GetValue()
+        return ToggleData.State
+    end
+
+    function ToggleMethods:Lock()
+        ToggleData.Locked = true
+        CreateTween(ToggleFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(ToggleStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
+        CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        end
+        CreateTween(ToggleSwitch, {BackgroundTransparency = 0.7}, AnimationConfig.Global)
+        CreateTween(ToggleBall, {BackgroundTransparency = 0.7}, AnimationConfig.Global)
+    end
+
+    function ToggleMethods:Unlock()
+        ToggleData.Locked = false
+        CreateTween(ToggleFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        end
+        CreateTween(ToggleSwitch, {BackgroundTransparency = 0}, AnimationConfig.Global)
+        CreateTween(ToggleBall, {BackgroundTransparency = 0}, AnimationConfig.Global)
+    end
+
+    function ToggleMethods:Destroy()
+        ToggleFrame:Destroy()
+    end
+
+    -- Initial callback
+    ToggleData.Callback(ToggleData.State)
+
+    return ToggleMethods
+end
+
 -- Button Module
 local function CreateButton(parent, config)
     local ButtonData = {
@@ -1372,6 +1670,10 @@ local function CreateSection(parent, config)
 
     function SectionMethods:Button(config)
     return CreateButton(SectionContent, config)
+end
+ 
+    function SectionMethods:Toggle(config)
+    return CreateToggle(SectionContent, config)
 end
 
     return SectionMethods
