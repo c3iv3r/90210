@@ -289,4 +289,11 @@ function SectionModule.CreateSection(parent, config)
     return SectionMethods
 end
 
+-- Tambahan BARU untuk mendukung Tab:Section()
+function SectionModule:Section(config)
+    -- "self" adalah Tab yang memanggil
+    local parent = self.Content or self.Frame or self
+    return SectionModule.CreateSection(parent, config)
+end
+
 return SectionModule
