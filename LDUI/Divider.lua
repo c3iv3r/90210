@@ -96,6 +96,536 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Slider Module
+local function CreateSlider(parent, config)
+    local SliderData = {
+        Title = config.Title or "Slider",
+        Desc = config.Desc,
+        Step = config.Step or 1,
+        Value = {
+            Min = config.Value.Min or 0,
+            Max = config.Value.Max or 100,
+            Default = nil
+        },
+        Locked = config.Locked or false,
+        Callback = config.Callback or function() end
+    }
+    
+    SliderData.Value.Default = config.Value.Default or config.Default or SliderData.Value.Min
+    
+    local SliderMethods = {}
+    local Mouse = Players.LocalPlayer:GetMouse()
+    
+    -- Create Main Slider Frame
+    local SliderFrame = Instance.new("Frame")
+    SliderFrame.Visible = false
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    SliderFrame.AutomaticSize = Enum.AutomaticSize.Y
+    SliderFrame.Size = UDim2.new(1, 0, 0, 35)
+    SliderFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
+    SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderFrame.Name = "Slider"
+    SliderFrame.Parent = parent
+    
+    local SliderCorner = Instance.new("UICorner")
+    SliderCorner.CornerRadius = UDim.new(0, 6)
+    SliderCorner.Parent = SliderFrame
+    
+    local SliderStroke = Instance.new("UIStroke")
+    SliderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SliderStroke.Thickness = 1.5
+    SliderStroke.Color = Color3.fromRGB(61, 61, 75)
+    SliderStroke.Parent = SliderFrame
+    
+    local SliderPadding = Instance.new("UIPadding")
+    SliderPadding.PaddingTop = UDim.new(0, 10)
+    SliderPadding.PaddingRight = UDim.new(0, 10)
+    SliderPadding.PaddingLeft = UDim.new(0, 10)
+    SliderPadding.PaddingBottom = UDim.new(0, 10)
+    SliderPadding.Parent = SliderFrame
+    
+    local SliderLayout = Instance.new("UIListLayout")
+    SliderLayout.Padding = UDim.new(0, 5)
+    SliderLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    SliderLayout.Parent = SliderFrame
+    
+    -- Create Slider Title
+    local SliderTitle = Instance.new("TextLabel")
+    SliderTitle.TextWrapped = true
+    SliderTitle.Interactable = false
+    SliderTitle.BorderSizePixel = 0
+    SliderTitle.TextSize = 16
+    SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
+    SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    SliderTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    SliderTitle.BackgroundTransparency = 1
+    SliderTitle.Size = UDim2.new(1, 0, 0, 15)
+    SliderTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTitle.Text = SliderData.Title
+    SliderTitle.AutomaticSize = Enum.AutomaticSize.Y
+    SliderTitle.Name = "Title"
+    SliderTitle.Parent = SliderFrame
+    
+    -- Create Description (if provided)
+    local SliderDescription = nil
+    if SliderData.Desc and SliderData.Desc ~= "" then
+        SliderDescription = Instance.new("TextLabel")
+        SliderDescription.TextWrapped = true
+        SliderDescription.Interactable = false
+        SliderDescription.BorderSizePixel = 0
+        SliderDescription.TextSize = 16
+        SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
+        SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        SliderDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+        SliderDescription.BackgroundTransparency = 1
+        SliderDescription.Size = UDim2.new(1, 0, 0, 15)
+        SliderDescription.Visible = true
+        SliderDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        SliderDescription.Text = SliderData.Desc
+        SliderDescription.LayoutOrder = 1
+        SliderDescription.AutomaticSize = Enum.AutomaticSize.Y
+        SliderDescription.Name = "Description"
+        SliderDescription.Parent = SliderFrame
+    end
+    
+    -- Create Slider Container Frame
+    local SliderContainer = Instance.new("Frame")
+    SliderContainer.ZIndex = 0
+    SliderContainer.BorderSizePixel = 0
+    SliderContainer.Size = UDim2.new(1, 0, 0, 25)
+    SliderContainer.Name = "SliderFrame"
+    SliderContainer.LayoutOrder = 2
+    SliderContainer.BackgroundTransparency = 1
+    SliderContainer.Parent = SliderFrame
+    
+    -- Create Slider Track Container
+    local SliderTrackContainer = Instance.new("Frame")
+    SliderTrackContainer.ZIndex = 0
+    SliderTrackContainer.BorderSizePixel = 0
+    SliderTrackContainer.AnchorPoint = Vector2.new(0, 0.5)
+    SliderTrackContainer.Size = UDim2.new(1, 0, 0, 20)
+    SliderTrackContainer.Position = UDim2.new(0, 0, 0.5, 0)
+    SliderTrackContainer.BackgroundTransparency = 1
+    SliderTrackContainer.Parent = SliderContainer
+    
+    -- Create Drop Shadow
+    local SliderShadow = Instance.new("ImageLabel")
+    SliderShadow.ZIndex = 0
+    SliderShadow.BorderSizePixel = 0
+    SliderShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    SliderShadow.ScaleType = Enum.ScaleType.Slice
+    SliderShadow.ImageTransparency = 0.75
+    SliderShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    SliderShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    SliderShadow.Image = "rbxassetid://6014261993"
+    SliderShadow.Size = UDim2.new(1, 25, 1, 25)
+    SliderShadow.BackgroundTransparency = 1
+    SliderShadow.Name = "DropShadow"
+    SliderShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    SliderShadow.Parent = SliderTrackContainer
+    
+    -- Create Slider Track
+    local SliderTrack = Instance.new("CanvasGroup")
+    SliderTrack.BorderSizePixel = 0
+    SliderTrack.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    SliderTrack.Size = UDim2.new(1, 0, 1, 0)
+    SliderTrack.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTrack.Name = "Slider"
+    SliderTrack.Parent = SliderTrackContainer
+    
+    local SliderTrackCorner = Instance.new("UICorner")
+    SliderTrackCorner.CornerRadius = UDim.new(0, 5)
+    SliderTrackCorner.Parent = SliderTrack
+    
+    local SliderTrackStroke = Instance.new("UIStroke")
+    SliderTrackStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SliderTrackStroke.Thickness = 1.5
+    SliderTrackStroke.Color = Color3.fromRGB(61, 61, 75)
+    SliderTrackStroke.Parent = SliderTrack
+    
+    local SliderTrackPadding = Instance.new("UIPadding")
+    SliderTrackPadding.PaddingTop = UDim.new(0, 2)
+    SliderTrackPadding.PaddingRight = UDim.new(0, 2)
+    SliderTrackPadding.PaddingLeft = UDim.new(0, 2)
+    SliderTrackPadding.PaddingBottom = UDim.new(0, 2)
+    SliderTrackPadding.Parent = SliderTrack
+    
+    -- Create Invisible Trigger Button
+    local SliderTrigger = Instance.new("TextButton")
+    SliderTrigger.BorderSizePixel = 0
+    SliderTrigger.TextSize = 14
+    SliderTrigger.AutoButtonColor = false
+    SliderTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderTrigger.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    SliderTrigger.BackgroundTransparency = 1
+    SliderTrigger.Size = UDim2.new(1, 0, 1, 0)
+    SliderTrigger.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderTrigger.Text = ""
+    SliderTrigger.Name = "Trigger"
+    SliderTrigger.Parent = SliderTrack
+    
+    -- Create Slider Fill
+    local SliderFill = Instance.new("ImageButton")
+    SliderFill.Active = false
+    SliderFill.Interactable = false
+    SliderFill.BorderSizePixel = 0
+    SliderFill.AutoButtonColor = false
+    SliderFill.BackgroundTransparency = 1
+    SliderFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderFill.Selectable = false
+    SliderFill.AnchorPoint = Vector2.new(0, 0.5)
+    SliderFill.Size = UDim2.new(0, 0, 1, 0)
+    SliderFill.ClipsDescendants = true
+    SliderFill.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderFill.Name = "Fill"
+    SliderFill.Position = UDim2.new(0, 0, 0.5, 0)
+    SliderFill.Parent = SliderTrack
+    
+    local SliderFillCorner = Instance.new("UICorner")
+    SliderFillCorner.CornerRadius = UDim.new(0, 4)
+    SliderFillCorner.Parent = SliderFill
+    
+    local SliderFillStroke = Instance.new("UIStroke")
+    SliderFillStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    SliderFillStroke.Thickness = 1.5
+    SliderFillStroke.Color = Color3.fromRGB(11, 136, 214)
+    SliderFillStroke.Parent = SliderFill
+    
+    -- Create Fill Background with Gradient
+    local SliderFillBackground = Instance.new("ImageButton")
+    SliderFillBackground.Active = false
+    SliderFillBackground.Interactable = false
+    SliderFillBackground.BorderSizePixel = 0
+    SliderFillBackground.AutoButtonColor = false
+    SliderFillBackground.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderFillBackground.Selectable = false
+    SliderFillBackground.AnchorPoint = Vector2.new(0, 0.5)
+    SliderFillBackground.Size = UDim2.new(1, 0, 1, 0)
+    SliderFillBackground.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SliderFillBackground.Name = "BackgroundGradient"
+    SliderFillBackground.Position = UDim2.new(0, 0, 0.5, 0)
+    SliderFillBackground.Parent = SliderFill
+    
+    local SliderFillBgCorner = Instance.new("UICorner")
+    SliderFillBgCorner.CornerRadius = UDim.new(0, 4)
+    SliderFillBgCorner.Parent = SliderFillBackground
+    
+    -- Create Fill Gradients
+    local FillGradients = {}
+    
+    local FillGradient1 = Instance.new("UIGradient")
+    FillGradient1.Enabled = false
+    FillGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient1.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient1)
+    
+    local FillGradient2 = Instance.new("UIGradient")
+    FillGradient2.Enabled = false
+    FillGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient2.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient2)
+    
+    local FillGradient3 = Instance.new("UIGradient")
+    FillGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient3.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient3)
+    
+    -- Create Value Display
+    local ValueText = Instance.new("TextLabel")
+    ValueText.TextWrapped = true
+    ValueText.Interactable = false
+    ValueText.ZIndex = 2
+    ValueText.BorderSizePixel = 0
+    ValueText.TextSize = 14
+    ValueText.TextXAlignment = Enum.TextXAlignment.Left
+    ValueText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ValueText.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    ValueText.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ValueText.BackgroundTransparency = 1
+    ValueText.RichText = true
+    ValueText.AnchorPoint = Vector2.new(0.5, 0.5)
+    ValueText.Size = UDim2.new(1, -15, 1, 0)
+    ValueText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ValueText.Text = tostring(SliderData.Value.Default)
+    ValueText.Name = "ValueText"
+    ValueText.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ValueText.Parent = SliderTrackContainer
+    
+    -- Slider Logic Variables
+    local currentValue = SliderData.Value.Default
+    local isDragging = false
+    local isHovering = false
+    local dragRatio = 0
+    
+    -- Gradient cycling function
+    local function CycleGradient()
+        for _, gradient in ipairs(FillGradients) do
+            gradient.Enabled = false
+        end
+        local randomGradient = FillGradients[math.random(1, #FillGradients)]
+        randomGradient.Enabled = true
+        return randomGradient
+    end
+    
+    -- Initialize gradient and fill size
+    CycleGradient()
+    SliderFillBackground.Size = UDim2.new(0, SliderTrack.AbsoluteSize.X, 1, 0)
+    SliderTrack:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        SliderFillBackground.Size = UDim2.new(0, SliderTrack.AbsoluteSize.X, 1, 0)
+    end)
+    
+    -- Monitor fill size changes for gradient cycling
+    local lastFillSize = nil
+    SliderFill:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        if SliderFill.AbsoluteSize.X <= 3 then
+            lastFillSize = SliderFill.AbsoluteSize.X
+        end
+        if lastFillSize and SliderFill.AbsoluteSize.X > lastFillSize then
+            CycleGradient()
+            lastFillSize = nil
+        end
+    end)
+    
+    -- Apply locked state if needed
+    if SliderData.Locked then
+        SliderStroke.Color = Color3.fromRGB(47, 47, 58)
+        SliderFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        SliderTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
+        if SliderDescription then
+            SliderDescription.TextColor3 = Color3.fromRGB(75, 77, 83)
+        end
+        SliderTrackStroke.Color = Color3.fromRGB(47, 47, 58)
+        SliderTrack.BackgroundTransparency = 0.5
+        SliderFillStroke.Transparency = 0.5
+        SliderFillBackground.BackgroundTransparency = 0.5
+        ValueText.TextTransparency = 0.6
+    end
+    
+    -- Helper Functions
+    local function GetValueRatio(value)
+        return (value - SliderData.Value.Min) / (SliderData.Value.Max - SliderData.Value.Min)
+    end
+    
+    local function SetSliderValue(value)
+        if not value or value > SliderData.Value.Max or value < SliderData.Value.Min then
+            return
+        end
+        local steppedValue = math.round(value / SliderData.Step) * SliderData.Step
+        currentValue = math.clamp(steppedValue, SliderData.Value.Min, SliderData.Value.Max)
+        
+        CreateTween(SliderFill, {
+            Size = UDim2.fromScale(GetValueRatio(currentValue), 1)
+        }, AnimationConfig.Global)
+        
+        ValueText.Text = tostring(currentValue)
+        SliderData.Value = currentValue
+        task.spawn(SliderData.Callback, currentValue)
+    end
+    
+    local function StartDragging()
+        isDragging = true
+        if SliderData.Locked then
+            return
+        end
+        
+        repeat
+            task.wait()
+            dragRatio = math.clamp((Mouse.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+            local newValue = SliderData.Value.Min + (dragRatio * (SliderData.Value.Max - SliderData.Value.Min))
+            local steppedValue = math.round(newValue / SliderData.Step) * SliderData.Step
+            currentValue = math.clamp(steppedValue, SliderData.Value.Min, SliderData.Value.Max)
+            
+            CreateTween(SliderFill, {
+                Size = UDim2.fromScale(GetValueRatio(currentValue), 1)
+            }, AnimationConfig.Global)
+            
+            ValueText.Text = tostring(currentValue)
+            SliderData.Value = currentValue
+            task.spawn(SliderData.Callback, currentValue)
+        until isDragging == false or SliderData.Locked == true
+        
+        if not isHovering then
+            CreateTween(SliderStroke, {
+                Color = Color3.fromRGB(60, 60, 74)
+            }, AnimationConfig.Global)
+        end
+    end
+    
+    -- Set initial value
+    ValueText.Text = tostring(currentValue)
+    SliderFill.Size = UDim2.fromScale(GetValueRatio(currentValue), 1)
+    
+    -- Mouse Events
+    SliderTrigger.MouseEnter:Connect(function()
+        isHovering = true
+        if not SliderData.Locked then
+            CreateTween(SliderStroke, {
+                Color = Color3.fromRGB(10, 135, 213)
+            }, AnimationConfig.Global)
+        end
+    end)
+    
+    SliderTrigger.MouseLeave:Connect(function()
+        isHovering = false
+        if not SliderData.Locked and not isDragging then
+            CreateTween(SliderStroke, {
+                Color = Color3.fromRGB(60, 60, 74)
+            }, AnimationConfig.Global)
+        end
+    end)
+    
+    SliderTrigger.MouseButton1Down:Connect(function()
+        StartDragging()
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            isDragging = false
+        end
+    end)
+    
+    -- Show slider
+    SliderFrame.Visible = true
+    
+    -- Slider Methods
+    function SliderMethods:SetTitle(title)
+        SliderData.Title = title
+        SliderTitle.Text = title
+    end
+    
+    function SliderMethods:SetDesc(desc)
+        if desc and desc ~= "" then
+            SliderData.Desc = desc
+            if not SliderDescription then
+                SliderDescription = Instance.new("TextLabel")
+                SliderDescription.TextWrapped = true
+                SliderDescription.Interactable = false
+                SliderDescription.BorderSizePixel = 0
+                SliderDescription.TextSize = 16
+                SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
+                SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                SliderDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+                SliderDescription.BackgroundTransparency = 1
+                SliderDescription.Size = UDim2.new(1, 0, 0, 15)
+                SliderDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                SliderDescription.LayoutOrder = 1
+                SliderDescription.AutomaticSize = Enum.AutomaticSize.Y
+                SliderDescription.Name = "Description"
+                SliderDescription.Parent = SliderFrame
+            end
+            SliderDescription.Text = desc
+            SliderDescription.Visible = true
+        elseif SliderDescription then
+            SliderDescription.Visible = false
+        end
+    end
+    
+    function SliderMethods:Set(value)
+        SetSliderValue(value)
+    end
+    
+    function SliderMethods:Lock()
+        SliderData.Locked = true
+        CreateTween(SliderFrame, {
+            BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        }, AnimationConfig.Global)
+        CreateTween(SliderStroke, {
+            Color = Color3.fromRGB(47, 47, 58)
+        }, AnimationConfig.Global)
+        CreateTween(SliderTitle, {
+            TextColor3 = Color3.fromRGB(75, 77, 83)
+        }, AnimationConfig.Global)
+        if SliderDescription then
+            CreateTween(SliderDescription, {
+                TextColor3 = Color3.fromRGB(75, 77, 83)
+            }, AnimationConfig.Global)
+        end
+        CreateTween(SliderTrackStroke, {
+            Color = Color3.fromRGB(47, 47, 58)
+        }, AnimationConfig.Global)
+        CreateTween(SliderTrack, {
+            BackgroundTransparency = 0.5
+        }, AnimationConfig.Global)
+        CreateTween(SliderFillStroke, {
+            Transparency = 0.5
+        }, AnimationConfig.Global)
+        CreateTween(SliderFillBackground, {
+            BackgroundTransparency = 0.5
+        }, AnimationConfig.Global)
+        CreateTween(ValueText, {
+            TextTransparency = 0.6
+        }, AnimationConfig.Global)
+    end
+    
+    function SliderMethods:Unlock()
+        SliderData.Locked = false
+        CreateTween(SliderFrame, {
+            BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+        }, AnimationConfig.Global)
+        CreateTween(SliderStroke, {
+            Color = Color3.fromRGB(60, 60, 74)
+        }, AnimationConfig.Global)
+        CreateTween(SliderTitle, {
+            TextColor3 = Color3.fromRGB(196, 203, 218)
+        }, AnimationConfig.Global)
+        if SliderDescription then
+            CreateTween(SliderDescription, {
+                TextColor3 = Color3.fromRGB(196, 203, 218)
+            }, AnimationConfig.Global)
+        end
+        CreateTween(SliderTrackStroke, {
+            Color = Color3.fromRGB(60, 60, 74)
+        }, AnimationConfig.Global)
+        CreateTween(SliderTrack, {
+            BackgroundTransparency = 0
+        }, AnimationConfig.Global)
+        CreateTween(SliderFillStroke, {
+            Transparency = 0
+        }, AnimationConfig.Global)
+        CreateTween(SliderFillBackground, {
+            BackgroundTransparency = 0
+        }, AnimationConfig.Global)
+        CreateTween(ValueText, {
+            TextTransparency = 0
+        }, AnimationConfig.Global)
+    end
+    
+    function SliderMethods:Destroy()
+        SliderFrame:Destroy()
+    end
+    
+    -- Call callback with initial value
+    SliderData.Callback(currentValue)
+    
+    return SliderMethods
+end
+
 -- TextBox Module
 local function CreateTextBox(parent, config)
     local TextBoxData = {
@@ -2007,6 +2537,10 @@ end
 
     function SectionMethods:Input(config)
     return CreateTextBox(SectionContent, config)
+end
+
+    function SectionMethods:Slider(config)
+    return CreateSlider(SectionContent, config)
 end
     
 
