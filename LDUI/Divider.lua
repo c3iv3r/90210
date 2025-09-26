@@ -96,6 +96,315 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Button Module
+local function CreateButton(parent, config)
+    local ButtonData = {
+        Title = config.Title or "Button",
+        Desc = config.Desc,
+        Locked = config.Locked or false,
+        Callback = config.Callback or function() end
+    }
+
+    local ButtonMethods = {}
+
+    -- Main Button Frame
+    local ButtonFrame = Instance.new("ImageButton")
+    ButtonFrame.BorderSizePixel = 0
+    ButtonFrame.AutoButtonColor = false
+    ButtonFrame.Visible = false
+    ButtonFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ButtonFrame.Selectable = false
+    ButtonFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ButtonFrame.Size = UDim2.new(1, 0, 0, 35)
+    ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonFrame.Name = "Button"
+    ButtonFrame.Position = UDim2.new(0, 0, 0.384, 0)
+    ButtonFrame.Parent = parent
+
+    local ButtonCorner = Instance.new("UICorner")
+    ButtonCorner.CornerRadius = UDim.new(0, 6)
+    ButtonCorner.Parent = ButtonFrame
+
+    local ButtonStroke = Instance.new("UIStroke")
+    ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ButtonStroke.Thickness = 1.5
+    ButtonStroke.Color = Color3.fromRGB(61, 61, 75)
+    ButtonStroke.Parent = ButtonFrame
+
+    -- Button Content Frame
+    local ButtonContent = Instance.new("Frame")
+    ButtonContent.BorderSizePixel = 0
+    ButtonContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonContent.AutomaticSize = Enum.AutomaticSize.Y
+    ButtonContent.Size = UDim2.new(1, 0, 0, 35)
+    ButtonContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonContent.BackgroundTransparency = 1
+    ButtonContent.Parent = ButtonFrame
+
+    local ButtonLayout = Instance.new("UIListLayout")
+    ButtonLayout.Padding = UDim.new(0, 5)
+    ButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ButtonLayout.Parent = ButtonContent
+
+    local ButtonPadding = Instance.new("UIPadding")
+    ButtonPadding.PaddingTop = UDim.new(0, 10)
+    ButtonPadding.PaddingRight = UDim.new(0, 10)
+    ButtonPadding.PaddingLeft = UDim.new(0, 10)
+    ButtonPadding.PaddingBottom = UDim.new(0, 10)
+    ButtonPadding.Parent = ButtonContent
+
+    -- Button Title
+    local ButtonTitle = Instance.new("TextLabel")
+    ButtonTitle.TextWrapped = true
+    ButtonTitle.Interactable = false
+    ButtonTitle.BorderSizePixel = 0
+    ButtonTitle.TextSize = 16
+    ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ButtonTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ButtonTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ButtonTitle.BackgroundTransparency = 1
+    ButtonTitle.Size = UDim2.new(1, 0, 0, 15)
+    ButtonTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonTitle.Text = ButtonData.Title
+    ButtonTitle.Name = "Title"
+    ButtonTitle.Parent = ButtonContent
+
+    -- Click Icon (for visual feedback)
+    local ClickIcon = Instance.new("ImageButton")
+    ClickIcon.BorderSizePixel = 0
+    ClickIcon.AutoButtonColor = false
+    ClickIcon.BackgroundTransparency = 1
+    ClickIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ClickIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
+    ClickIcon.Image = "rbxassetid://91877599529856"
+    ClickIcon.Size = UDim2.new(0, 23, 0, 23)
+    ClickIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ClickIcon.Name = "ClickIcon"
+    ClickIcon.Position = UDim2.new(1, 0, 0.5, 0)
+    ClickIcon.Parent = ButtonTitle
+
+    -- Description Label (if provided)
+    local DescriptionLabel = nil
+    if ButtonData.Desc and ButtonData.Desc ~= "" then
+        DescriptionLabel = Instance.new("TextLabel")
+        DescriptionLabel.TextWrapped = true
+        DescriptionLabel.Interactable = false
+        DescriptionLabel.BorderSizePixel = 0
+        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        DescriptionLabel.BackgroundTransparency = 1
+        DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+        DescriptionLabel.Visible = true
+        DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        DescriptionLabel.Text = ButtonData.Desc
+        DescriptionLabel.LayoutOrder = 1
+        DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+        DescriptionLabel.Name = "Description"
+        DescriptionLabel.Parent = ButtonContent
+    end
+
+    -- Button Gradients (matching OGLIB style)
+    local ButtonGradients = {}
+    
+    local ButtonGradient1 = Instance.new("UIGradient")
+    ButtonGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient1.Enabled = false
+    ButtonGradient1.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient1)
+
+    local ButtonGradient2 = Instance.new("UIGradient")
+    ButtonGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient2.Enabled = false
+    ButtonGradient2.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient2)
+
+    local ButtonGradient3 = Instance.new("UIGradient")
+    ButtonGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient3.Enabled = false
+    ButtonGradient3.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient3)
+
+    local ButtonContentCorner = Instance.new("UICorner")
+    ButtonContentCorner.CornerRadius = UDim.new(0, 6)
+    ButtonContentCorner.Parent = ButtonContent
+
+    -- Gradient cycling function
+    local function CycleGradient()
+        -- Disable all gradients
+        for _, gradient in ipairs(ButtonGradients) do
+            gradient.Enabled = false
+        end
+        -- Enable random gradient
+        local randomGradient = ButtonGradients[math.random(1, #ButtonGradients)]
+        randomGradient.Enabled = true
+        return randomGradient
+    end
+
+    -- Initialize with random gradient
+    CycleGradient()
+
+    -- Apply locked state if needed
+    if ButtonData.Locked then
+        ButtonStroke.Color = Color3.fromRGB(47, 47, 58)
+        ButtonFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ButtonTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
+        ClickIcon.ImageColor3 = Color3.fromRGB(75, 77, 83)
+        if DescriptionLabel then
+            DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
+        end
+    end
+
+    -- Button Interaction Events
+    ButtonFrame.MouseEnter:Connect(function()
+        if not ButtonData.Locked then
+            CreateTween(ButtonStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+        end
+    end)
+
+    ButtonFrame.MouseLeave:Connect(function()
+        if not ButtonData.Locked then
+            CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            ButtonFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            if DescriptionLabel then
+                CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            end
+        end
+    end)
+
+    ButtonFrame.MouseButton1Down:Connect(function()
+        if not ButtonData.Locked then
+            CycleGradient()
+            CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+            if DescriptionLabel then
+                CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+            end
+            CreateTween(ButtonContent, {BackgroundTransparency = 0}, AnimationConfig.Global)
+        end
+    end)
+
+    ButtonFrame.MouseButton1Up:Connect(function()
+        if not ButtonData.Locked then
+            CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            if DescriptionLabel then
+                CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            end
+            CreateTween(ButtonContent, {BackgroundTransparency = 1}, AnimationConfig.Global)
+        end
+    end)
+
+    ButtonFrame.MouseLeave:Connect(function()
+        if not ButtonData.Locked then
+            CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            if DescriptionLabel then
+                CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            end
+            CreateTween(ButtonContent, {BackgroundTransparency = 1}, AnimationConfig.Global)
+        end
+    end)
+
+    ButtonFrame.MouseButton1Click:Connect(function()
+        if not ButtonData.Locked then
+            ButtonData.Callback()
+        end
+    end)
+
+    -- Show button
+    ButtonFrame.Visible = true
+
+    -- Button Methods
+    function ButtonMethods:SetTitle(title)
+        ButtonData.Title = title
+        ButtonTitle.Text = title
+    end
+
+    function ButtonMethods:SetDesc(desc)
+        if desc and desc ~= "" then
+            ButtonData.Desc = desc
+            if not DescriptionLabel then
+                -- Create description label if it doesn't exist
+                DescriptionLabel = Instance.new("TextLabel")
+                DescriptionLabel.TextWrapped = true
+                DescriptionLabel.Interactable = false
+                DescriptionLabel.BorderSizePixel = 0
+                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+                DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+                DescriptionLabel.BackgroundTransparency = 1
+                DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
+                DescriptionLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                DescriptionLabel.LayoutOrder = 1
+                DescriptionLabel.AutomaticSize = Enum.AutomaticSize.Y
+                DescriptionLabel.Name = "Description"
+                DescriptionLabel.Parent = ButtonContent
+            end
+            DescriptionLabel.Text = desc
+            DescriptionLabel.Visible = true
+        elseif DescriptionLabel then
+            DescriptionLabel.Visible = false
+        end
+    end
+
+    function ButtonMethods:Lock()
+        ButtonData.Locked = true
+        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(ButtonStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
+        CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        end
+    end
+
+    function ButtonMethods:Unlock()
+        ButtonData.Locked = false
+        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        if DescriptionLabel then
+            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        end
+    end
+
+    function ButtonMethods:Destroy()
+        ButtonFrame:Destroy()
+    end
+
+    return ButtonMethods
+end
+
 -- Dropdown Module
 local function CreateDropdown(parent, config)
     local DropdownData = {
@@ -1060,6 +1369,10 @@ local function CreateSection(parent, config)
     function SectionMethods:Dropdown(config)
         return CreateDropdown(SectionContent, config)
     end
+
+    function SectionMethods:Button(config)
+    return CreateButton(SectionContent, config)
+end
 
     return SectionMethods
 end
