@@ -1,91 +1,83 @@
--- PackedLoader.lua
--- Single-file loader: ambil semua modul LDUI dari repo kamu, sekali loadstring.
--- Cukup edit BASE_URL ke folder LDUI (raw GitHub) kamu.
+-- Init.lua  — Packed Loader w/ virtual require()
+-- Load 2 modul (Window, Section) dari 1 folder repo GitHub
+-- Return: Library table dgn :CreateWindow(opts)
 
-local HttpService = game:GetService("HttpService")
+local HttpGet = (syn and syn.request) and function(url)
+    local r = syn.request({Url = url, Method = "GET"})
+    if r.StatusCode ~= 200 then error("[Init] HTTP "..r.StatusCode.." for "..url) end
+    return r.Body
+end or function(url)
+    return game:HttpGet(url)
+end
 
--- ====== KONFIG ======
-local BASE_URL = "https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/" -- ganti sesuai repo kamu
-local MODULES = {
-	"Theme","Window","Tab","Section","Dropdown","Button","Input","Toggle",
-	"Dialog","Popup","Divider", "OpenButton","Paragraph","Slider",
+-- ====== CONFIG: ganti ini ke folder raw repo kamu ======
+local BASE = "https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/"
+local SOURCES = {
+    Window  = BASE .. "Button.lua",
+    Section = BASE .. "Dialog.lua",
 }
+-- =======================================================
 
--- ====== Registry require/provide ======
-local REG = {}
-local function provide(name, loader) REG[name] = {loader=loader, value=nil, loaded=false} end
-local function require_local(name)
-	local m = REG[name]
-	assert(m, "[PackedLoader] Module tidak ditemukan: "..tostring(name))
-	if not m.loaded then m.value = m.loader(); m.loaded = true end
-	return m.value
+-- Safe fenv helpers
+local _getfenv = getfenv or function() return _ENV end
+local _setfenv = setfenv or function(fn, env)
+    -- Luau fallback: bind env fields into upvalues
+    local envUp = debug.getupvalue(fn, 1)
+    if type(envUp) == "table" then for k,v in pairs(env) do envUp[k] = v end end
+    return fn
 end
 
--- ====== Fetch & Patch ======
-local function http_get(u)
-	local ok, res = pcall(function() return game:HttpGet(u) end)
-	assert(ok and type(res)=="string" and #res>0, "[PackedLoader] Gagal HttpGet: "..u)
-	return res
+-- ===== Module registry with virtual require =====
+local Registry = {}
+local Cache    = {}
+
+local function fetch_source(name)
+    local url = SOURCES[name]
+    if not url then
+        error(("[Init] Unknown module '%s' (no URL mapping)"):format(name))
+    end
+    return HttpGet(url), url
 end
 
-local function patch_requires(src)
-	-- Ubah require(script.Parent.X) -> require("X")
-	src = src:gsub("require%s*%(%s*script%.Parent%.Theme%s*%)", "require(\"Theme\")")
-	src = src:gsub("require%s*%(%s*script%.Parent%.([%w_]+)%s*%)", "require(\"%1\")")
-	return src
+local function compile(name, src)
+    local chunk, err = loadstring(src, "="..name)
+    if not chunk then error(("[Init] compile error in %s: %s"):format(name, err)) end
+    -- per-module environment inherits caller env
+    local env = setmetatable({require = function(n) return Registry.require(n) end}, {__index = _getfenv()})
+    _setfenv(chunk, env)
+    return chunk
 end
 
--- ====== Registrasi semua modul (lazy) ======
-for _, name in ipairs(MODULES) do
-	provide(name, function()
-		local url = BASE_URL .. name .. ".lua"
-		local src = patch_requires(http_get(url))
-		local chunk, err = loadstring(src, "="..name..".lua")
-		assert(chunk, "[PackedLoader] loadstring error di "..name..": "..tostring(err))
-		-- beri akses require lokal ke modul
-		local env = setmetatable({ require = require_local }, { __index = getfenv() })
-		setfenv(chunk, env)
-		local exports = chunk()
-		assert(exports ~= nil, "[PackedLoader] Modul "..name.." tidak me-return apa pun")
-		return exports
-	end)
+Registry.require = function(name)
+    if Cache[name] ~= nil then return Cache[name] end
+    local src, url = fetch_source(name)
+    local chunk = compile(name, src)
+    local ok, ret = pcall(chunk)
+    if not ok then
+        error(("[Init] runtime error in %s (%s): %s"):format(name, tostring(url), tostring(ret)))
+    end
+    Cache[name] = (ret == nil and true or ret) -- allow modules that return true
+    return Cache[name]
 end
 
--- ====== Build API setara Loader.lua ======
-local Theme        = require_local("Theme")
-local Window       = require_local("Window")
-local Tab          = require_local("Tab")
-local Section      = require_local("Section")
-local Dropdown     = require_local("Dropdown")
-local Button       = require_local("Button")
-local Input        = require_local("Input")
-local Toggle       = require_local("Toggle")
-local Dialog       = require_local("Dialog")
-local Popup        = require_local("Popup")
-local Divider      = require_local("Divider")
-local OpenButton   = require_local("OpenButton")
-local Paragraph    = require_local("Paragraph")
-local Slider       = require_local("Slider")
+-- ===== Facade: Library =====
+local Library = {}
+Library.__index = Library
 
-local UI = {
-	Theme=Theme, Window=Window, Tab=Tab, Section=Section, Dropdown=Dropdown,
-	Button=Button, Input=Input, Toggle=Toggle, Dialog=Dialog, Popup=Popup,
-	Divider=Divider, OpenButton=OpenButton,
-	Paragraph=Paragraph, Slider=Slider,
+-- CreateWindow: prefer Window.new(opts) -> Window.CreateWindow(opts) -> call table as fn
+function Library:CreateWindow(opts)
+    local Window = Registry.require("Window")
+    local ctor = (type(Window) == "table" and (Window.new or Window.CreateWindow)) or Window
+    if type(ctor) ~= "function" then
+        error("[Init] 'Window' module must expose .new(opts) or .CreateWindow(opts) or be a callable")
+    end
+    local win = ctor(opts)
+    -- Optional: attach Section factory so Window/Tab can use if needed
+    win.__SectionModule = function() return Registry.require("Section") end
+    return win
+end
 
-	NewWindow=function(opts) return Window.new(opts or {}) end,
-	NewTab=function(parent, opts) return Tab.new(parent, opts or {}) end,
-	NewSection=function(parent, opts) return Section.new(parent, opts or {}) end,
-	NewDropdown=function(parent, opts) return Dropdown.new(parent, opts or {}) end,
-	NewButton=function(parent, opts) return Button.new(parent, opts or {}) end,
-	NewInput=function(parent, opts) return Input.new(parent, opts or {}) end,
-	NewToggle=function(parent, opts) return Toggle.new(parent, opts or {}) end,
-	NewSlider=function(parent, opts) return Slider.new(parent, opts or {}) end,
-	NewParagraph=function(parent, opts) return Paragraph.new(parent, opts or {}) end,
-	NewDivider=function(parent, textOrOpts) return Divider.new(parent, textOrOpts) end,
-	NewDialog=function(opts) return Dialog.new(opts or {}) end,
-	NewPopup=function(opts) return Popup.new(opts or {}) end,
-	NewOpenButton=function(opts) return OpenButton.new(opts or {}) end,
-}
+-- (Opsional) expose raw modules kalau kamu mau akses langsung:
+function Library.Require(name) return Registry.require(name) end
 
-return UI
+return setmetatable({}, { __index = Library })
