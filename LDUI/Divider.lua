@@ -443,7 +443,7 @@ local function CreateSlider(parent, config)
         }, AnimationConfig.Global)
         
         ValueText.Text = tostring(currentValue)
-        SliderData.Value = currentValue
+        -- HAPUS BARIS INI: SliderData.Value = currentValue
         task.spawn(SliderData.Callback, currentValue)
     end
     
@@ -465,7 +465,7 @@ local function CreateSlider(parent, config)
             }, AnimationConfig.Global)
             
             ValueText.Text = tostring(currentValue)
-            SliderData.Value = currentValue
+            -- HAPUS BARIS INI: SliderData.Value = currentValue
             task.spawn(SliderData.Callback, currentValue)
         until isDragging == false or SliderData.Locked == true
         
@@ -2257,7 +2257,7 @@ local function CreateDropdown(parent, config)
     DropdownData.Callback(CurrentValue)
 
     return DropdownMethods
-end
+ end
 
 -- Section Module
 local function CreateSection(parent, config)
