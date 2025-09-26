@@ -96,6 +96,321 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Notification Module
+function Library:Notify(config)
+    local NotificationData = {
+        Title = config.Title or "Notification",
+        Content = config.Content or "This is a notification",
+        Icon = config.Icon or "rbxassetid://92049322344253",
+        Duration = config.Duration or 5
+    }
+    
+    local NotificationMethods = {}
+
+    -- Find notification parent (prioritize window if visible, otherwise global)
+    local notificationParent = nil
+    for _, window in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+        if window:IsA("ScreenGui") and window:FindFirstChild("Window") then
+            local windowFrame = window.Window
+            if windowFrame.Visible and windowFrame.Tabs.Visible then
+                notificationParent = windowFrame.NotificationFrame.NotificationList
+                break
+            end
+        end
+    end
+    
+    -- If no window found or not visible, create global notification list
+    if not notificationParent then
+        local globalNotificationGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("GlobalNotifications")
+        if not globalNotificationGui then
+            globalNotificationGui = Instance.new("ScreenGui")
+            globalNotificationGui.Name = "GlobalNotifications"
+            globalNotificationGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            globalNotificationGui.ResetOnSpawn = false
+            
+            -- Parent to appropriate location
+            if gethui then
+                globalNotificationGui.Parent = gethui()
+            elseif pcall(function() game.CoreGui:GetChildren() end) then
+                globalNotificationGui.Parent = game.CoreGui
+            else
+                globalNotificationGui.Parent = game.Players.LocalPlayer.PlayerGui
+            end
+            
+            local globalList = Instance.new("Frame")
+            globalList.ZIndex = 10
+            globalList.BorderSizePixel = 0
+            globalList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            globalList.AnchorPoint = Vector2.new(0.5, 0)
+            globalList.Size = UDim2.new(0, 630, 1, 0)
+            globalList.Position = UDim2.new(1, 0, 0, 0)
+            globalList.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            globalList.Name = "NotificationList"
+            globalList.BackgroundTransparency = 1
+            globalList.Parent = globalNotificationGui
+            
+            local globalLayout = Instance.new("UIListLayout")
+            globalLayout.Padding = UDim.new(0, 12)
+            globalLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            globalLayout.Parent = globalList
+            
+            local globalPadding = Instance.new("UIPadding")
+            globalPadding.PaddingTop = UDim.new(0, 10)
+            globalPadding.PaddingRight = UDim.new(0, 40)
+            globalPadding.PaddingLeft = UDim.new(0, 40)
+            globalPadding.Parent = globalList
+        end
+        notificationParent = globalNotificationGui.NotificationList
+    end
+
+    -- Create Notification Frame
+    local Notification = Instance.new("Frame")
+    Notification.Visible = false
+    Notification.BorderSizePixel = 0
+    Notification.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    Notification.AnchorPoint = Vector2.new(0.5, 0.5)
+    Notification.AutomaticSize = Enum.AutomaticSize.Y
+    Notification.Size = UDim2.new(1, 0, 0, 65)
+    Notification.Position = UDim2.new(0.8244, 0, 0.88221, 0)
+    Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Notification.Name = "Notification"
+    Notification.BackgroundTransparency = 1
+    Notification.Parent = notificationParent
+
+    -- Create Items Container (CanvasGroup for group transparency)
+    local NotificationItems = Instance.new("CanvasGroup")
+    NotificationItems.ZIndex = 2
+    NotificationItems.BorderSizePixel = 0
+    NotificationItems.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationItems.Size = UDim2.new(0, 265, 0, 70)
+    NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationItems.Name = "Items"
+    NotificationItems.Parent = Notification
+
+    -- Create Content Frame
+    local NotificationContent = Instance.new("Frame")
+    NotificationContent.BorderSizePixel = 0
+    NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationContent.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationContent.Size = UDim2.new(0, 265, 0, 70)
+    NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationContent.BackgroundTransparency = 1
+    NotificationContent.Parent = NotificationItems
+
+    local NotificationLayout = Instance.new("UIListLayout")
+    NotificationLayout.Padding = UDim.new(0, 5)
+    NotificationLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    NotificationLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    NotificationLayout.Parent = NotificationContent
+
+    local NotificationPadding = Instance.new("UIPadding")
+    NotificationPadding.PaddingTop = UDim.new(0, 15)
+    NotificationPadding.PaddingLeft = UDim.new(0, 15)
+    NotificationPadding.PaddingBottom = UDim.new(0, 15)
+    NotificationPadding.Parent = NotificationContent
+
+    -- Create SubContent (Optional - for additional info)
+    local NotificationSubContent = Instance.new("TextLabel")
+    NotificationSubContent.TextWrapped = true
+    NotificationSubContent.BorderSizePixel = 0
+    NotificationSubContent.TextSize = 12
+    NotificationSubContent.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationSubContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationSubContent.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    NotificationSubContent.TextColor3 = Color3.fromRGB(181, 181, 181)
+    NotificationSubContent.BackgroundTransparency = 1
+    NotificationSubContent.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationSubContent.Size = UDim2.new(0, 218, 0, 10)
+    NotificationSubContent.Visible = false
+    NotificationSubContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationSubContent.Text = "This is a notification"
+    NotificationSubContent.LayoutOrder = 1
+    NotificationSubContent.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationSubContent.Name = "SubContent"
+    NotificationSubContent.Position = UDim2.new(0, 0, 0, 19)
+    NotificationSubContent.Parent = NotificationContent
+
+    -- Create SubContent Gradient (matching OGLIB)
+    local SubContentGradient = Instance.new("UIGradient")
+    SubContentGradient.Enabled = false
+    SubContentGradient.Rotation = -90
+    SubContentGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+    }
+    SubContentGradient.Parent = NotificationSubContent
+
+    -- Create Title
+    local NotificationTitle = Instance.new("TextLabel")
+    NotificationTitle.TextWrapped = true
+    NotificationTitle.BorderSizePixel = 0
+    NotificationTitle.TextSize = 16
+    NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationTitle.TextScaled = true
+    NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationTitle.BackgroundTransparency = 1
+    NotificationTitle.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationTitle.Size = UDim2.new(0, 235, 0, 18)
+    NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationTitle.Text = NotificationData.Title
+    NotificationTitle.Name = "Title"
+    NotificationTitle.Position = UDim2.new(0, 0, 0, 9)
+    NotificationTitle.Parent = NotificationContent
+
+    -- Create Close Button
+    local CloseButton = Instance.new("ImageButton")
+    CloseButton.BorderSizePixel = 0
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
+    CloseButton.Image = "rbxassetid://132453323679056"
+    CloseButton.Size = UDim2.new(0.09706, 0, 1.33333, 0)
+    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CloseButton.Name = "Close"
+    CloseButton.Position = UDim2.new(0.92, 0, 0.5, 0)
+    CloseButton.Parent = NotificationTitle
+
+    local CloseAspect = Instance.new("UIAspectRatioConstraint")
+    CloseAspect.Parent = CloseButton
+
+    -- Create Title Padding
+    local TitlePadding = Instance.new("UIPadding")
+    TitlePadding.PaddingLeft = UDim.new(0, 30)
+    TitlePadding.Parent = NotificationTitle
+
+    -- Create Icon
+    local NotificationIcon = Instance.new("ImageButton")
+    NotificationIcon.BorderSizePixel = 0
+    NotificationIcon.BackgroundTransparency = 1
+    NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationIcon.Image = NotificationData.Icon
+    NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
+    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationIcon.Name = "Icon"
+    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
+    NotificationIcon.Parent = NotificationTitle
+
+    local IconAspect = Instance.new("UIAspectRatioConstraint")
+    IconAspect.Parent = NotificationIcon
+
+    -- Create Content Text
+    local NotificationContentText = Instance.new("TextLabel")
+    NotificationContentText.TextWrapped = true
+    NotificationContentText.BorderSizePixel = 0
+    NotificationContentText.TextSize = 16
+    NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    NotificationContentText.TextColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationContentText.BackgroundTransparency = 1
+    NotificationContentText.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationContentText.Size = UDim2.new(0, 218, 0, 10)
+    NotificationContentText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationContentText.Text = NotificationData.Content
+    NotificationContentText.LayoutOrder = 2
+    NotificationContentText.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationContentText.Name = "Content"
+    NotificationContentText.Position = UDim2.new(0, 0, 0, 19)
+    NotificationContentText.Parent = NotificationContent
+
+    -- Create Content Gradient (matching OGLIB)
+    local ContentGradient = Instance.new("UIGradient")
+    ContentGradient.Enabled = false
+    ContentGradient.Rotation = -90
+    ContentGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+    }
+    ContentGradient.Parent = NotificationContentText
+
+    -- Create Timer Bar Container
+    local TimerBarFill = Instance.new("Frame")
+    TimerBarFill.BorderSizePixel = 0
+    TimerBarFill.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBarFill.AnchorPoint = Vector2.new(0, 1)
+    TimerBarFill.Size = UDim2.new(1, 0, 0, 5)
+    TimerBarFill.Position = UDim2.new(0, 0, 1, 0)
+    TimerBarFill.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TimerBarFill.Name = "TimerBarFill"
+    TimerBarFill.BackgroundTransparency = 0.7
+    TimerBarFill.Parent = NotificationItems
+
+    local TimerCorner = Instance.new("UICorner")
+    TimerCorner.Parent = TimerBarFill
+
+    -- Create Timer Bar
+    local TimerBar = Instance.new("Frame")
+    TimerBar.BorderSizePixel = 0
+    TimerBar.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBar.Size = UDim2.new(1, 0, 1, 0)
+    TimerBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TimerBar.Name = "Bar"
+    TimerBar.Parent = TimerBarFill
+
+    local TimerBarCorner = Instance.new("UICorner")
+    TimerBarCorner.Parent = TimerBar
+
+    -- Create Stroke for Items
+    local ItemsStroke = Instance.new("UIStroke")
+    ItemsStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ItemsStroke.Thickness = 1.5
+    ItemsStroke.Color = Color3.fromRGB(61, 61, 75)
+    ItemsStroke.Parent = NotificationItems
+
+    local ItemsCorner = Instance.new("UICorner")
+    ItemsCorner.Parent = NotificationItems
+
+    -- Close Function
+    local function CloseNotification()
+        if Notification then
+            CreateTween(NotificationItems, {
+                Position = UDim2.new(0.75, 0, 0, 0)
+            }, AnimationConfig.Notification)
+            task.wait(AnimationConfig.Notification.Duration - (AnimationConfig.Notification.Duration / 2))
+            if Notification then
+                Notification:Destroy()
+            end
+            Notification = nil
+        end
+    end
+
+    -- Close Button Event
+    CloseButton.MouseButton1Click:Connect(CloseNotification)
+
+    -- Show Notification Animation
+    NotificationItems.Position = UDim2.new(0.75, 0, 0, 0)
+    Notification.Visible = true
+    
+    local showTween = CreateTween(NotificationItems, {
+        Position = UDim2.new(0, 0, 0, 0)
+    }, AnimationConfig.Notification)
+    
+    showTween.Completed:Connect(function()
+        -- Start timer bar animation
+        CreateTween(TimerBar, {
+            Size = UDim2.new(0, 0, 1, 0)
+        }, {
+            Duration = NotificationData.Duration
+        })
+        
+        -- Auto close after duration
+        task.delay(NotificationData.Duration, CloseNotification)
+    end)
+
+    -- Notification Methods
+    function NotificationMethods:Close()
+        CloseNotification()
+    end
+
+    return NotificationMethods
+end
+
 -- Paragraph Module
 local function CreateParagraph(parent, config)
     local ParagraphData = {
