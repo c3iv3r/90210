@@ -1235,7 +1235,7 @@ function Library:CreateWindow(config)
     end)
 
     CloseButton.MouseButton1Click:Connect(function()
-        Window:Dialog({
+        WindowMethods:Dialog({
         Title   = "Close window?",
         Content = "Yakin mau nutup & destroy window ini?",
         Buttons = {
