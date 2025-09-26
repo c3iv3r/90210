@@ -1578,6 +1578,20 @@ local function CreateDropdown(parent, config)
     local CurrentValue = DropdownData.Multi and (type(DropdownData.Value) == "table" and DropdownData.Value or {}) or DropdownData.Value
     local IsDropdownOpen = false
 
+    -- Global popup management variables
+    local GlobalDropdownSystem = nil
+    local DropdownPopup = nil
+    local PopupFrame = nil
+    local PopupList = nil
+    local PopupListSearch = nil
+    local SearchBox = nil
+    local DarkOverlay = nil
+
+    -- Forward declarations
+    local RefreshDropdownItems
+    local CloseDropdown
+    local CreateDropdownItem
+
     -- Main Dropdown Frame
     local DropdownFrame = Instance.new("ImageButton")
     DropdownFrame.BorderSizePixel = 0
@@ -1756,7 +1770,7 @@ local function CreateDropdown(parent, config)
         DescriptionLabel.Parent = DropdownFrame
     end
 
-    -- Add Gradient Effects to main dropdown (matching OGLIB style)
+    -- Add Gradient Effects to main dropdown
     local DropdownGradient1 = Instance.new("UIGradient")
     DropdownGradient1.Enabled = false
     DropdownGradient1.Color = ColorSequence.new{
@@ -1793,15 +1807,6 @@ local function CreateDropdown(parent, config)
     }
     DropdownGradient3.Parent = DropdownFrame
 
-    -- Global popup management variables
-    local GlobalDropdownSystem = nil
-    local DropdownPopup = nil
-    local PopupFrame = nil
-    local PopupList = nil
-    local PopupListSearch = nil
-    local SearchBox = nil
-    local DarkOverlay = nil
-
     -- Helper Functions
     local function FormatValueText(value)
         if DropdownData.Multi then
@@ -1819,7 +1824,7 @@ local function CreateDropdown(parent, config)
         ValueLabel.Text = FormatValueText(CurrentValue)
     end
 
-    -- Handle duplicate values with counter (matching OGLIB logic)
+    -- Handle duplicate values with counter
     local function ProcessValues(values, reset)
         local processed = {}
         local counter = {}
@@ -1843,7 +1848,7 @@ local function CreateDropdown(parent, config)
         return processed
     end
 
-    -- Random gradient selector (matching OGLIB behavior)
+    -- Random gradient selector
     local function GetRandomGradient(frame)
         local gradients = {}
         for _, child in ipairs(frame:GetChildren()) do
@@ -1870,7 +1875,7 @@ local function CreateDropdown(parent, config)
 
         if not window then return end
 
-        -- Create DropdownSelection system (matches OGLIB structure)
+        -- Create DropdownSelection system
         DropdownPopup = Instance.new("Frame")
         DropdownPopup.Visible = false
         DropdownPopup.ZIndex = 4
@@ -1920,7 +1925,7 @@ local function CreateDropdown(parent, config)
         PopupHeader.BackgroundTransparency = 1
         PopupHeader.Parent = DropdownPopup
 
-        -- Search Box Frame (matching OGLIB structure)
+        -- Search Box Frame
         local SearchFrame = Instance.new("Frame")
         SearchFrame.BorderSizePixel = 0
         SearchFrame.AnchorPoint = Vector2.new(1, 0.5)
@@ -2039,7 +2044,7 @@ local function CreateDropdown(parent, config)
         PopupTitle.Position = UDim2.new(0, 12, 0.5, 0)
         PopupTitle.Parent = PopupHeader
 
-        -- Dropdowns Folder (matches OGLIB structure)
+        -- Dropdowns Folder
         local DropdownsFolder = Instance.new("Folder")
         DropdownsFolder.Name = "Dropdowns"
         DropdownsFolder.Parent = DropdownPopup
@@ -2071,7 +2076,7 @@ local function CreateDropdown(parent, config)
         PopupList.BackgroundTransparency = 1
         PopupList.Parent = DropdownContainer
 
-        -- Search Results List (separate from main list)
+        -- Search Results List
         PopupListSearch = Instance.new("ScrollingFrame")
         PopupListSearch.Visible = false
         PopupListSearch.Active = true
@@ -2122,14 +2127,13 @@ local function CreateDropdown(parent, config)
             CloseDropdown()
         end)
 
-        -- Search functionality (matching OGLIB live search behavior)
+        -- Search functionality
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             local searchText = SearchBox.Text
             if string.gsub(searchText, " ", "") ~= "" then
                 PopupList.Visible = false
                 PopupListSearch.Visible = true
                 
-                -- Filter search results
                 for _, child in pairs(PopupListSearch:GetChildren()) do
                     if child:IsA("GuiButton") then
                         if string.find(child.Name:lower(), searchText:lower()) then
@@ -2154,7 +2158,8 @@ local function CreateDropdown(parent, config)
         }
     end
 
-    local function CreateDropdownItem(value, targetList)
+    -- Define function implementations
+    CreateDropdownItem = function(value, targetList)
         local ItemButton = Instance.new("ImageButton")
         ItemButton.BorderSizePixel = 0
         ItemButton.AutoButtonColor = false
@@ -2208,7 +2213,6 @@ local function CreateDropdown(parent, config)
         ItemTitle.Name = "Title"
         ItemTitle.Parent = ItemFrame
 
-        -- Item description (if needed)
         local ItemDescription = Instance.new("TextLabel")
         ItemDescription.TextWrapped = true
         ItemDescription.Interactable = false
@@ -2234,7 +2238,7 @@ local function CreateDropdown(parent, config)
         ItemStroke.Color = Color3.fromRGB(61, 61, 75)
         ItemStroke.Parent = ItemButton
 
-        -- Item gradients (matching OGLIB style)
+        -- Item gradients
         local ItemGradient1 = Instance.new("UIGradient")
         ItemGradient1.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
@@ -2275,11 +2279,8 @@ local function CreateDropdown(parent, config)
         ItemFrameCorner.Parent = ItemFrame
 
         ItemButton.Visible = true
-
-        -- Random gradient selection (matching OGLIB behavior)
         GetRandomGradient(ItemFrame)
 
-        -- Update visual based on selection
         local function UpdateItemVisual()
             local isSelected = false
             if DropdownData.Multi then
@@ -2289,56 +2290,31 @@ local function CreateDropdown(parent, config)
             end
 
             if isSelected then
-                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
-                CreateTween(ItemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
+                ItemTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ItemDescription.TextColor3 = Color3.fromRGB(255, 255, 255)
+                ItemStroke.Color = Color3.fromRGB(10, 135, 213)
+                ItemFrame.BackgroundTransparency = 0
             else
-                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-                CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
-            end
-        end
-        
-      local function RefreshDropdownItems()
-        if not PopupList or not PopupListSearch then return end
-        
-        -- Clear existing items
-        for _, child in ipairs(PopupList:GetChildren()) do
-            if child:IsA("GuiButton") then
-                child:Destroy()
-            end
-        end
-        
-        for _, child in ipairs(PopupListSearch:GetChildren()) do
-            if child:IsA("GuiButton") then
-                child:Destroy()
+                ItemTitle.TextColor3 = Color3.fromRGB(196, 203, 218)
+                ItemDescription.TextColor3 = Color3.fromRGB(196, 203, 218)
+                ItemStroke.Color = Color3.fromRGB(60, 60, 74)
+                ItemFrame.BackgroundTransparency = 1
             end
         end
 
-        -- Process and create new items
-        local processedValues = ProcessValues(DropdownData.Values)
-        for _, value in ipairs(processedValues) do
-            CreateDropdownItem(value, PopupList)
-            CreateDropdownItem(value, PopupListSearch)
-        end
-    end
-        -- Item click handler
         ItemButton.MouseButton1Click:Connect(function()
             if not DropdownData.Locked then
                 if DropdownData.Multi then
                     local index = table.find(CurrentValue, value)
                     if index then
                         if not DropdownData.AllowNone and #CurrentValue == 1 then
-                            return -- Can't remove last item if AllowNone is false
+                            return
                         end
                         table.remove(CurrentValue, index)
                     else
                         table.insert(CurrentValue, value)
                     end
                     
-                    -- Update all items in both lists
                     RefreshDropdownItems()
                 else
                     CurrentValue = value
@@ -2354,43 +2330,54 @@ local function CreateDropdown(parent, config)
         return ItemButton
     end
 
+    RefreshDropdownItems = function()
+        if not PopupList or not PopupListSearch then return end
+        
+        for _, child in ipairs(PopupList:GetChildren()) do
+            if child:IsA("GuiButton") then
+                child:Destroy()
+            end
+        end
+        
+        for _, child in ipairs(PopupListSearch:GetChildren()) do
+            if child:IsA("GuiButton") then
+                child:Destroy()
+            end
+        end
+
+        local processedValues = ProcessValues(DropdownData.Values)
+        for _, value in ipairs(processedValues) do
+            CreateDropdownItem(value, PopupList)
+            CreateDropdownItem(value, PopupListSearch)
+        end
+    end
+
     local function OpenDropdown()
         if not GlobalDropdownSystem then
             CreateGlobalDropdownSystem()
         end
 
-        -- Set current dropdown context
         GlobalDropdownSystem.CurrentDropdown = DropdownData.Title
         GlobalDropdownSystem.Title.Text = DropdownData.Title
         
-        -- Clear search
         GlobalDropdownSystem.SearchBox.Text = ""
         
-        -- Show correct lists
         PopupList.Visible = true
         PopupListSearch.Visible = false
 
         RefreshDropdownItems()
         
-        -- Show popup with animation (matching OGLIB)
         GlobalDropdownSystem.Overlay.BackgroundTransparency = 1
         GlobalDropdownSystem.Overlay.Visible = true
         GlobalDropdownSystem.Popup.Size = UDim2.new(0, 0, 0, 0)
         GlobalDropdownSystem.Popup.Visible = true
         
-        CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, AnimationConfig.PopupOpen)
-        CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0.7281, 0, 0.68367, 0)}, AnimationConfig.PopupOpen)
-        
         IsDropdownOpen = true
     end
 
-    function CloseDropdown()
+    CloseDropdown = function()
         if not GlobalDropdownSystem then return end
         
-        local closeTween = CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, AnimationConfig.PopupClose)
-        CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0, 0, 0, 0)}, AnimationConfig.PopupClose)
-        
-        closeTween.Completed:Wait()
         GlobalDropdownSystem.Overlay.Visible = false
         GlobalDropdownSystem.Popup.Visible = false
         
@@ -2398,16 +2385,16 @@ local function CreateDropdown(parent, config)
         GlobalDropdownSystem.CurrentDropdown = nil
     end
 
-    -- Handle hover effects (matching OGLIB)
+    -- Handle hover effects
     DropdownFrame.MouseEnter:Connect(function()
         if not DropdownData.Locked then
-            CreateTween(DropdownStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            DropdownStroke.Color = Color3.fromRGB(10, 135, 213)
         end
     end)
 
     DropdownFrame.MouseLeave:Connect(function()
         if not DropdownData.Locked then
-            CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            DropdownStroke.Color = Color3.fromRGB(60, 60, 74)
         end
     end)
 
@@ -2427,15 +2414,12 @@ local function CreateDropdown(parent, config)
         DropdownFrame.Interactable = false
     end
 
-    -- Update initial display
     UpdateValueDisplay()
 
-    -- Multi icon support
     if DropdownData.Multi then
         DropdownArrow.Image = "rbxassetid://91415671397056"
     end
 
-    -- Process initial values
     DropdownData.Values = ProcessValues(DropdownData.Values, true)
 
     -- Click events
@@ -2459,7 +2443,6 @@ local function CreateDropdown(parent, config)
         end
     end)
 
-    -- Show dropdown
     DropdownFrame.Visible = true
 
     -- Dropdown Methods
@@ -2479,7 +2462,6 @@ local function CreateDropdown(parent, config)
         elseif DescriptionLabel then
             DescriptionLabel.Visible = false
         elseif desc and desc ~= "" then
-            -- Create description label if it doesn't exist
             DescriptionLabel = Instance.new("TextLabel")
             DescriptionLabel.TextWrapped = true
             DescriptionLabel.Interactable = false
@@ -2506,7 +2488,6 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Refresh(values)
         DropdownData.Values = ProcessValues(values or DropdownData.Values, true)
         
-        -- Reset current value if it's not in new values
         if DropdownData.Multi then
             local newValue = {}
             for _, val in ipairs(CurrentValue) do
@@ -2542,7 +2523,7 @@ local function CreateDropdown(parent, config)
                 local index = table.find(CurrentValue, value)
                 if index then
                     if not DropdownData.AllowNone and #CurrentValue == 1 then
-                        return -- Can't remove last item if AllowNone is false
+                        return
                     end
                     table.remove(CurrentValue, index)
                 else
@@ -2571,32 +2552,32 @@ local function CreateDropdown(parent, config)
 
     function DropdownMethods:Lock()
         DropdownData.Locked = true
-        CreateTween(DropdownStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
-        CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        DropdownStroke.Color = Color3.fromRGB(47, 47, 58)
+        DropdownFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        DropdownTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
-            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+            DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
-        CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
-        CreateTween(ValueButton, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
-        CreateTween(ValueStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
+        DropdownArrow.ImageColor3 = Color3.fromRGB(75, 77, 83)
+        ValueButton.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ValueStroke.Color = Color3.fromRGB(47, 47, 58)
+        ValueLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         DropdownFrame.Active = false
         DropdownFrame.Interactable = false
     end
 
     function DropdownMethods:Unlock()
         DropdownData.Locked = false
-        CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
-        CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        DropdownStroke.Color = Color3.fromRGB(60, 60, 74)
+        DropdownFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+        DropdownTitle.TextColor3 = Color3.fromRGB(196, 203, 218)
         if DescriptionLabel then
-            CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            DescriptionLabel.TextColor3 = Color3.fromRGB(196, 203, 218)
         end
-        CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-        CreateTween(ValueButton, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
-        CreateTween(ValueStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        DropdownArrow.ImageColor3 = Color3.fromRGB(196, 203, 218)
+        ValueButton.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+        ValueStroke.Color = Color3.fromRGB(60, 60, 74)
+        ValueLabel.TextColor3 = Color3.fromRGB(196, 203, 218)
         DropdownFrame.Active = true
         DropdownFrame.Interactable = true
     end
@@ -2608,23 +2589,10 @@ local function CreateDropdown(parent, config)
         DropdownFrame:Destroy()
     end
 
-    -- Initial callback
     DropdownData.Callback(CurrentValue)
 
     return DropdownMethods
 end
-
--- Integration example for Section
---[[function CreateSection(parent, config)
-    -- ... existing section code ...
-    
-    -- Add Dropdown method to Section
-    function SectionMethods:Dropdown(config)
-        return CreateDropdown(SectionContent, config)
-    end
-    
-    return SectionMethods
-end]]
 
 -- Section Module
 local function CreateSection(parent, config)
