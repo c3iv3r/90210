@@ -96,6 +96,146 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Paragraph Module
+local function CreateParagraph(parent, config)
+    local ParagraphData = {
+        Title = config.Title or "Title",
+        Desc = config.Desc,
+        RichText = config.RichText or false
+    }
+    
+    local ParagraphMethods = {}
+
+    -- Create Main Paragraph Frame
+    local ParagraphFrame = Instance.new("Frame")
+    ParagraphFrame.Visible = false
+    ParagraphFrame.BorderSizePixel = 0
+    ParagraphFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ParagraphFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ParagraphFrame.Size = UDim2.new(1, 0, 0, 35)
+    ParagraphFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
+    ParagraphFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphFrame.Name = "Paragraph"
+    ParagraphFrame.Parent = parent
+
+    local ParagraphCorner = Instance.new("UICorner")
+    ParagraphCorner.CornerRadius = UDim.new(0, 6)
+    ParagraphCorner.Parent = ParagraphFrame
+
+    local ParagraphStroke = Instance.new("UIStroke")
+    ParagraphStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ParagraphStroke.Thickness = 1.5
+    ParagraphStroke.Color = Color3.fromRGB(61, 61, 75)
+    ParagraphStroke.Parent = ParagraphFrame
+
+    local ParagraphPadding = Instance.new("UIPadding")
+    ParagraphPadding.PaddingTop = UDim.new(0, 10)
+    ParagraphPadding.PaddingRight = UDim.new(0, 10)
+    ParagraphPadding.PaddingLeft = UDim.new(0, 10)
+    ParagraphPadding.PaddingBottom = UDim.new(0, 10)
+    ParagraphPadding.Parent = ParagraphFrame
+
+    local ParagraphLayout = Instance.new("UIListLayout")
+    ParagraphLayout.Padding = UDim.new(0, 5)
+    ParagraphLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ParagraphLayout.Parent = ParagraphFrame
+
+    -- Create Title
+    local ParagraphTitle = Instance.new("TextLabel")
+    ParagraphTitle.TextWrapped = true
+    ParagraphTitle.Interactable = false
+    ParagraphTitle.BorderSizePixel = 0
+    ParagraphTitle.TextSize = 16
+    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    ParagraphTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ParagraphTitle.BackgroundTransparency = 1
+    ParagraphTitle.Size = UDim2.new(1, 0, 0, 15)
+    ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphTitle.Text = ParagraphData.Title
+    ParagraphTitle.AutomaticSize = Enum.AutomaticSize.Y
+    ParagraphTitle.Name = "Title"
+    ParagraphTitle.RichText = ParagraphData.RichText
+    ParagraphTitle.Parent = ParagraphFrame
+
+    -- Create Description (if provided)
+    local ParagraphDescription = nil
+    if ParagraphData.Desc and ParagraphData.Desc ~= "" then
+        ParagraphDescription = Instance.new("TextLabel")
+        ParagraphDescription.TextWrapped = true
+        ParagraphDescription.Interactable = false
+        ParagraphDescription.BorderSizePixel = 0
+        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+        ParagraphDescription.BackgroundTransparency = 1
+        ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
+        ParagraphDescription.Visible = true
+        ParagraphDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ParagraphDescription.Text = ParagraphData.Desc
+        ParagraphDescription.LayoutOrder = 1
+        ParagraphDescription.AutomaticSize = Enum.AutomaticSize.Y
+        ParagraphDescription.Name = "Description"
+        ParagraphDescription.RichText = ParagraphData.RichText
+        ParagraphDescription.Parent = ParagraphFrame
+    else
+        -- If no description, hide the description placeholder
+        ParagraphDescription = Instance.new("TextLabel")
+        ParagraphDescription.TextWrapped = true
+        ParagraphDescription.Interactable = false
+        ParagraphDescription.BorderSizePixel = 0
+        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+        ParagraphDescription.BackgroundTransparency = 1
+        ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
+        ParagraphDescription.Visible = false
+        ParagraphDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ParagraphDescription.Text = ""
+        ParagraphDescription.LayoutOrder = 1
+        ParagraphDescription.AutomaticSize = Enum.AutomaticSize.Y
+        ParagraphDescription.Name = "Description"
+        ParagraphDescription.RichText = ParagraphData.RichText
+        ParagraphDescription.Parent = ParagraphFrame
+    end
+
+    -- Make visible
+    ParagraphFrame.Visible = true
+
+    -- Paragraph Methods
+    function ParagraphMethods:SetTitle(title)
+        ParagraphData.Title = title
+        ParagraphTitle.Text = title
+    end
+
+    function ParagraphMethods:SetDesc(desc)
+        ParagraphData.Desc = desc
+        ParagraphDescription.Text = desc
+        if desc and desc ~= "" then
+            ParagraphDescription.Visible = true
+        else
+            ParagraphDescription.Visible = false
+        end
+    end
+
+    function ParagraphMethods:SetRichText(enabled)
+        ParagraphData.RichText = enabled
+        ParagraphTitle.RichText = enabled
+        ParagraphDescription.RichText = enabled
+    end
+
+    function ParagraphMethods:Destroy()
+        ParagraphFrame:Destroy()
+    end
+
+    return ParagraphMethods
+end
+
 -- Slider Module
 local function CreateSlider(parent, config)
     local SliderData = {
@@ -2543,6 +2683,9 @@ end
     return CreateSlider(SectionContent, config)
 end
     
+    function SectionMethods:Paragraph(config)
+    return CreateParagraph(SectionContent, config)
+end
 
     return SectionMethods
 end
