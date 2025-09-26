@@ -2300,7 +2300,30 @@ local function CreateDropdown(parent, config)
                 CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
             end
         end
+        
+      local function RefreshDropdownItems()
+        if not PopupList or not PopupListSearch then return end
+        
+        -- Clear existing items
+        for _, child in ipairs(PopupList:GetChildren()) do
+            if child:IsA("GuiButton") then
+                child:Destroy()
+            end
+        end
+        
+        for _, child in ipairs(PopupListSearch:GetChildren()) do
+            if child:IsA("GuiButton") then
+                child:Destroy()
+            end
+        end
 
+        -- Process and create new items
+        local processedValues = ProcessValues(DropdownData.Values)
+        for _, value in ipairs(processedValues) do
+            CreateDropdownItem(value, PopupList)
+            CreateDropdownItem(value, PopupListSearch)
+        end
+    end
         -- Item click handler
         ItemButton.MouseButton1Click:Connect(function()
             if not DropdownData.Locked then
@@ -2329,30 +2352,6 @@ local function CreateDropdown(parent, config)
 
         UpdateItemVisual()
         return ItemButton
-    end
-
-    local function RefreshDropdownItems()
-        if not PopupList or not PopupListSearch then return end
-        
-        -- Clear existing items
-        for _, child in ipairs(PopupList:GetChildren()) do
-            if child:IsA("GuiButton") then
-                child:Destroy()
-            end
-        end
-        
-        for _, child in ipairs(PopupListSearch:GetChildren()) do
-            if child:IsA("GuiButton") then
-                child:Destroy()
-            end
-        end
-
-        -- Process and create new items
-        local processedValues = ProcessValues(DropdownData.Values)
-        for _, value in ipairs(processedValues) do
-            CreateDropdownItem(value, PopupList)
-            CreateDropdownItem(value, PopupListSearch)
-        end
     end
 
     local function OpenDropdown()
@@ -2614,6 +2613,18 @@ local function CreateDropdown(parent, config)
 
     return DropdownMethods
 end
+
+-- Integration example for Section
+--[[function CreateSection(parent, config)
+    -- ... existing section code ...
+    
+    -- Add Dropdown method to Section
+    function SectionMethods:Dropdown(config)
+        return CreateDropdown(SectionContent, config)
+    end
+    
+    return SectionMethods
+end]]
 
 -- Section Module
 local function CreateSection(parent, config)
