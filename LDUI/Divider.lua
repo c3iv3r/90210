@@ -3688,6 +3688,7 @@ end
 function Library:CreateWindow(config)
     local WindowData = {
         Title = config.Title or "Window",
+        Subtitle = config.Subtitle or "Subtitle",
         Icon = config.Icon or "rbxassetid://113216930555884",
         Version = config.Author or config.Version or "v1.0.0",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
@@ -3899,8 +3900,26 @@ function Library:CreateWindow(config)
     TopTitle.Size = UDim2.new(1, 0, 0, 16)
     TopTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TopTitle.Text = WindowData.Title .. " - " .. WindowData.Version
-    TopTitle.Position = UDim2.new(0.5, 0, 0.5, -1)
+    TopTitle.Position = UDim2.new(0.5, 0, 0.5, -6)
     TopTitle.Parent = TopFrame
+
+    -- TopFrame Subtitle
+    local TopSubtitle = Instance.new("TextLabel")
+    TopSubtitle.TextWrapped = true
+    TopSubtitle.Interactable = false
+    TopSubtitle.BorderSizePixel = 0
+    TopSubtitle.TextSize = 7
+    TopSubtitle.TextScaled = true
+    TopSubtitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TopSubtitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Italic)
+    TopSubtitle.TextColor3 = Color3.fromRGB(150, 155, 165)
+    TopSubtitle.BackgroundTransparency = 1
+    TopSubtitle.AnchorPoint = Vector2.new(0.5, 0)
+    TopSubtitle.Size = UDim2.new(1, 0, 0, 12)
+    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, 8) 
+    TopSubtitle.Text = WindowData.Subtitle
+    TopSubtitle.TextTransparency = 0.3
+    TopSubtitle.Parent = TopFrame
 
     -- TopFrame Buttons
     local CloseButton = Instance.new("ImageButton")
