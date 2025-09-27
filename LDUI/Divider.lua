@@ -3919,7 +3919,7 @@ function Library:CreateWindow(config)
     TopSubtitle.BackgroundTransparency = 1
     TopSubtitle.AnchorPoint = Vector2.new(0.5, 0)
     TopSubtitle.Size = UDim2.new(1, 0, 0, 12)
-    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, -1) 
+    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, 0) 
     TopSubtitle.Text = WindowData.Subtitle
     TopSubtitle.TextTransparency = 0.3
     TopSubtitle.Parent = TopFrame
@@ -4175,7 +4175,7 @@ local BottomCorner = Instance.new("UICorner")
 local BottomBorder = Instance.new("Frame")
 BottomBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
 BottomBorder.BorderSizePixel = 0
-BottomBorder.Size = UDim2.new(1, 0, 0, 2)
+BottomBorder.Size = UDim2.new(1, 0, 0, 1)
 BottomBorder.Position = UDim2.new(0, 0, 0, 0)
 BottomBorder.Parent = BottomFrame
 
@@ -4186,7 +4186,7 @@ FooterLabel.BackgroundTransparency = 1
 FooterLabel.BorderSizePixel = 0
 FooterLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 FooterLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-FooterLabel.Size = UDim2.new(1, -20, 1, 0)
+FooterLabel.Size = UDim2.new(1, 0, 0, 16)
 FooterLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 FooterLabel.TextSize = 12
 FooterLabel.TextColor3 = Color3.fromRGB(150, 155, 165)
