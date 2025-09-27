@@ -2921,6 +2921,14 @@ local function CreateDropdown(parent, config)
             SearchBox = SearchBox,
             CurrentDropdown = nil
         }
+        
+        DarkOverlay.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
+    CloseButton.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
+        
     end
 
     local function CreateDropdownItem(value, targetList)
@@ -3165,13 +3173,6 @@ local function CreateDropdown(parent, config)
         IsDropdownOpen = false
         GlobalDropdownSystem.CurrentDropdown = nil
     end
-
-    DarkOverlay.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
-    CloseButton.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
 
     -- Handle hover effects (matching OGLIB)
     DropdownFrame.MouseEnter:Connect(function()
