@@ -3078,9 +3078,6 @@ local function CreateDropdown(parent, config)
                     else
                         table.insert(CurrentValue, value)
                     end
-                    
-                    -- Update all items in both lists
-                    RefreshDropdownItems()
                 else
                     CurrentValue = value
                     CloseDropdown()
