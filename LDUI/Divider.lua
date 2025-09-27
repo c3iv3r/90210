@@ -2637,7 +2637,6 @@ local function CreateDropdown(parent, config)
         -- Create DropdownSelection system (matches OGLIB structure)
         DropdownPopup = Instance.new("Frame")
         DropdownPopup.Visible = false
-        DropdownPopup.ZIndex = 51
         DropdownPopup.BorderSizePixel = 0
         DropdownPopup.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
         DropdownPopup.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2646,6 +2645,7 @@ local function CreateDropdown(parent, config)
         DropdownPopup.Position = UDim2.new(0.5, 0, 0.5, 0)
         DropdownPopup.BorderColor3 = Color3.fromRGB(61, 61, 75)
         DropdownPopup.Name = "DropdownSelection"
+        DropdownPopup.ZIndex = 51
         DropdownPopup.Parent = window
 
         local PopupCorner = Instance.new("UICorner")
@@ -2667,6 +2667,8 @@ local function CreateDropdown(parent, config)
         DarkOverlay.BorderColor3 = Color3.fromRGB(0, 0, 0)
         DarkOverlay.Name = "DarkOverlay"
         DarkOverlay.BackgroundTransparency = 0.6
+        DarkOverlay.Text = ""
+        DarkOverlay.AutoButtonColor = false
         DarkOverlay.ZIndex = 50
         DarkOverlay.Parent = window
 
@@ -2889,7 +2891,7 @@ local function CreateDropdown(parent, config)
             end
         end
     end
-    
+    SetPopupZIndex()
         
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
