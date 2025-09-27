@@ -2670,7 +2670,7 @@ DarkOverlay.Name = "DarkOverlay"
 DarkOverlay.BackgroundTransparency = 0.6
 DarkOverlay.Text = ""
 DarkOverlay.AutoButtonColor = false
-DarkOverlay.ZIndex = 50 -Set ZIndex tinggi
+DarkOverlay.ZIndex = 50 
 DarkOverlay.Parent = window
 
         local OverlayCorner = Instance.new("UICorner")
