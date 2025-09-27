@@ -2326,7 +2326,6 @@ local function CreateButton(parent, config)
 end
 
 -- Dropdown Module
--- Modul Dropdown
 local function CreateDropdown(parent, config)
     local DropdownData = {
         Title = config.Title or "Dropdown",
@@ -2647,7 +2646,15 @@ local function CreateDropdown(parent, config)
         DropdownPopup.Position = UDim2.new(0.5, 0, 0.5, 0)
         DropdownPopup.BorderColor3 = Color3.fromRGB(61, 61, 75)
         DropdownPopup.Name = "DropdownSelection"
-        DropdownPopup.Parent = window     
+        DropdownPopup.Parent = window
+        
+        local function SetPopupZIndex()
+    for _, child in pairs(DropdownPopup:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            child.ZIndex = 51
+        end
+    end
+end
 
         local PopupCorner = Instance.new("UICorner")
         PopupCorner.CornerRadius = UDim.new(0, 6)
@@ -2670,13 +2677,13 @@ DarkOverlay.Name = "DarkOverlay"
 DarkOverlay.BackgroundTransparency = 0.6
 DarkOverlay.Text = ""
 DarkOverlay.AutoButtonColor = false
-DarkOverlay.ZIndex = 50 
+DarkOverlay.ZIndex = 50 -- Set ZIndex tinggi
 DarkOverlay.Parent = window
 
         local OverlayCorner = Instance.new("UICorner")
         OverlayCorner.CornerRadius = UDim.new(0, 10)
         OverlayCorner.Parent = DarkOverlay
-        
+
         -- Popup Header
         local PopupHeader = Instance.new("Frame")
         PopupHeader.BorderSizePixel = 0
@@ -2889,6 +2896,18 @@ DarkOverlay.Parent = window
         CloseButton.MouseButton1Click:Connect(function()
             CloseDropdown()
         end)
+        
+        DarkOverlay.MouseButton1Click:Connect(function(input)
+    -- Check if click is outside popup bounds
+    local mousePos = input.Position
+    local popupPos = DropdownPopup.AbsolutePosition
+    local popupSize = DropdownPopup.AbsoluteSize
+    
+    if mousePos.X < popupPos.X or mousePos.X > popupPos.X + popupSize.X or
+       mousePos.Y < popupPos.Y or mousePos.Y > popupPos.Y + popupSize.Y then
+        CloseDropdown()
+    end
+end)
 
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -2912,23 +2931,6 @@ DarkOverlay.Parent = window
                 PopupListSearch.Visible = false
             end
         end)
-
-        -- Update DarkOverlay click handler
-    DarkOverlay.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
-
-        -- Set ZIndex untuk semua child popup elements
-local function SetPopupZIndex()
-    for _, child in pairs(DropdownPopup:GetDescendants()) do
-        if child:IsA("GuiObject") then
-            child.ZIndex = 51
-        end
-    end
-end
-
--- Panggil setelah create popup structure
-SetPopupZIndex()
 
         GlobalDropdownSystem = {
             Popup = DropdownPopup,
@@ -3085,30 +3087,65 @@ SetPopupZIndex()
                 CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
             end
         end
-
-        -- Item click handler
-        ItemButton.MouseButton1Click:Connect(function()
-            if not DropdownData.Locked then
+         
+         local function UpdateAllItemsVisual()
+    -- Update both PopupList and PopupListSearch items
+    for _, list in ipairs({PopupList, PopupListSearch}) do
+        for _, child in ipairs(list:GetChildren()) do
+            if child:IsA("GuiButton") then
+                local value = child.Name
+                local isSelected = false
+                
                 if DropdownData.Multi then
-                    local index = table.find(CurrentValue, value)
-                    if index then
-                        if not DropdownData.AllowNone and #CurrentValue == 1 then
-                            return -- Can't remove last item if AllowNone is false
-                        end
-                        table.remove(CurrentValue, index)
-                    else
-                        table.insert(CurrentValue, value)
-                    end
+                    isSelected = table.find(CurrentValue, value) ~= nil
                 else
-                    CurrentValue = value
-                    CloseDropdown()
+                    isSelected = CurrentValue == value
                 end
                 
-                UpdateValueDisplay()
-                UpdateItemVisual()
-                DropdownData.Callback(CurrentValue)
+                local itemFrame = child:FindFirstChild("Frame")
+                local itemTitle = itemFrame and itemFrame:FindFirstChild("Title")
+                local itemDescription = itemFrame and itemFrame:FindFirstChild("Description")
+                local itemStroke = child:FindFirstChild("UIStroke")
+                
+                if isSelected then
+                    CreateTween(itemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+                    CreateTween(itemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+                    CreateTween(itemStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+                    CreateTween(itemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
+                else
+                    CreateTween(itemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+                    CreateTween(itemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+                    CreateTween(itemStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+                    CreateTween(itemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
+                end
             end
-        end)
+        end
+    end
+end
+        -- Item click handler
+        -- Item click handler
+ItemButton.MouseButton1Click:Connect(function()
+    if not DropdownData.Locked then
+        if DropdownData.Multi then
+            local index = table.find(CurrentValue, value)
+            if index then
+                if not DropdownData.AllowNone and #CurrentValue == 1 then
+                    return
+                end
+                table.remove(CurrentValue, index)
+            else
+                table.insert(CurrentValue, value)
+            end
+        else
+            CurrentValue = value
+            CloseDropdown()
+        end
+        
+        UpdateValueDisplay()
+        UpdateAllItemsVisual() -- Ganti UpdateItemVisual() jadi ini
+        DropdownData.Callback(CurrentValue)
+    end
+end)
 
         UpdateItemVisual()
         return ItemButton
@@ -3136,6 +3173,7 @@ SetPopupZIndex()
             CreateDropdownItem(value, PopupList)
             CreateDropdownItem(value, PopupListSearch)
         end
+        UpdateAllItemsVisual()
     end
 
     local function OpenDropdown()
