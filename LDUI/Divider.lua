@@ -96,6 +96,770 @@ local function CreateDraggable(dragHandle, targetFrame)
     return dragData
 end
 
+-- Dialog Module
+local function CreateDialog(parent, config)
+    local DialogData = {
+        Title = config.Title or "Dialog",
+        Content = config.Content or "",
+        Icon = config.Icon,
+        Buttons = config.Buttons or {},
+        Size = nil,
+        PressDecreaseSize = UDim2.fromOffset(5, 5)
+    }
+
+    local DialogMethods = {}
+
+    -- Dark Overlay
+    local DarkOverlay = Instance.new("Frame")
+    DarkOverlay.Visible = false
+    DarkOverlay.BorderSizePixel = 0
+    DarkOverlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    DarkOverlay.Size = UDim2.new(1, 0, 1, 0)
+    DarkOverlay.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    DarkOverlay.Name = "DarkOverlayDialog"
+    DarkOverlay.BackgroundTransparency = 0.6
+    DarkOverlay.Parent = parent
+
+    local DarkOverlayCorner = Instance.new("UICorner")
+    DarkOverlayCorner.CornerRadius = UDim.new(0, 10)
+    DarkOverlayCorner.Parent = DarkOverlay
+
+    -- Main Dialog Frame
+    local DialogFrame = Instance.new("Frame")
+    DialogFrame.Visible = false
+    DialogFrame.ZIndex = 4
+    DialogFrame.BorderSizePixel = 0
+    DialogFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+    DialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    DialogFrame.ClipsDescendants = true
+    DialogFrame.AutomaticSize = Enum.AutomaticSize.Y
+    DialogFrame.Size = UDim2.new(0, 250, 0, 0)
+    DialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DialogFrame.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    DialogFrame.Name = "Dialog"
+    DialogFrame.Parent = parent
+
+    local DialogCorner = Instance.new("UICorner")
+    DialogCorner.CornerRadius = UDim.new(0, 6)
+    DialogCorner.Parent = DialogFrame
+
+    local DialogStroke = Instance.new("UIStroke")
+    DialogStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    DialogStroke.Thickness = 1.5
+    DialogStroke.Color = Color3.fromRGB(61, 61, 75)
+    DialogStroke.Parent = DialogFrame
+
+    local DialogLayout = Instance.new("UIListLayout")
+    DialogLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    DialogLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    DialogLayout.Parent = DialogFrame
+
+    local DialogPadding = Instance.new("UIPadding")
+    DialogPadding.PaddingTop = UDim.new(0, 10)
+    DialogPadding.PaddingBottom = UDim.new(0, 10)
+    DialogPadding.Parent = DialogFrame
+
+    -- Title Frame
+    local TitleFrame = Instance.new("Frame")
+    TitleFrame.BorderSizePixel = 0
+    TitleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TitleFrame.AutomaticSize = Enum.AutomaticSize.Y
+    TitleFrame.Size = UDim2.new(1, 0, 0, 25)
+    TitleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleFrame.Name = "Title"
+    TitleFrame.BackgroundTransparency = 1
+    TitleFrame.Parent = DialogFrame
+
+    local TitleLayout = Instance.new("UIListLayout")
+    TitleLayout.Padding = UDim.new(0, 10)
+    TitleLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    TitleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TitleLayout.FillDirection = Enum.FillDirection.Horizontal
+    TitleLayout.Parent = TitleFrame
+
+    local TitlePadding = Instance.new("UIPadding")
+    TitlePadding.PaddingTop = UDim.new(0, 5)
+    TitlePadding.PaddingRight = UDim.new(0, 15)
+    TitlePadding.PaddingLeft = UDim.new(0, 15)
+    TitlePadding.PaddingBottom = UDim.new(0, 5)
+    TitlePadding.Parent = TitleFrame
+
+    -- Title Icon (optional)
+    local TitleIcon = nil
+    if DialogData.Icon then
+        TitleIcon = Instance.new("ImageButton")
+        TitleIcon.BorderSizePixel = 0
+        TitleIcon.Visible = true
+        TitleIcon.BackgroundTransparency = 1
+        TitleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TitleIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+        TitleIcon.Size = UDim2.new(0, 33, 0, 25)
+        TitleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TitleIcon.Name = "Icon"
+        TitleIcon.Position = UDim2.new(0, 0, 0.2125, 0)
+        TitleIcon.Image = DialogData.Icon
+        TitleIcon.Parent = TitleFrame
+
+        local IconAspectRatio = Instance.new("UIAspectRatioConstraint")
+        IconAspectRatio.Parent = TitleIcon
+    end
+
+    -- Title Label
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Interactable = false
+    TitleLabel.ZIndex = 0
+    TitleLabel.BorderSizePixel = 0
+    TitleLabel.TextSize = 20
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    TitleLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.AnchorPoint = Vector2.new(0, 0.5)
+    TitleLabel.Size = UDim2.new(0, 0, 0, 20)
+    TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleLabel.Text = DialogData.Title
+    TitleLabel.LayoutOrder = 1
+    TitleLabel.AutomaticSize = Enum.AutomaticSize.XY
+    TitleLabel.Position = UDim2.new(-0.05455, 12, 0.5, 0)
+    TitleLabel.Parent = TitleFrame
+
+    -- Content Frame (optional)
+    local ContentFrame = nil
+    local ContentLabel = nil
+    if DialogData.Content and DialogData.Content ~= "" then
+        ContentFrame = Instance.new("Frame")
+        ContentFrame.Visible = true
+        ContentFrame.ZIndex = 2
+        ContentFrame.BorderSizePixel = 0
+        ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ContentFrame.AutomaticSize = Enum.AutomaticSize.Y
+        ContentFrame.Size = UDim2.new(1, 0, 0, 0)
+        ContentFrame.Position = UDim2.new(0, 0, 0.21886, 0)
+        ContentFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ContentFrame.Name = "Content"
+        ContentFrame.BackgroundTransparency = 1
+        ContentFrame.Parent = DialogFrame
+
+        local ContentLayout = Instance.new("UIListLayout")
+        ContentLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        ContentLayout.Parent = ContentFrame
+
+        local ContentPadding = Instance.new("UIPadding")
+        ContentPadding.PaddingTop = UDim.new(0, 5)
+        ContentPadding.PaddingRight = UDim.new(0, 15)
+        ContentPadding.PaddingLeft = UDim.new(0, 15)
+        ContentPadding.PaddingBottom = UDim.new(0, 5)
+        ContentPadding.Parent = ContentFrame
+
+        ContentLabel = Instance.new("TextLabel")
+        ContentLabel.TextWrapped = true
+        ContentLabel.Interactable = false
+        ContentLabel.BorderSizePixel = 0
+        ContentLabel.TextSize = 15
+        ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+        ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+        ContentLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ContentLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        ContentLabel.TextColor3 = Color3.fromRGB(145, 154, 173)
+        ContentLabel.BackgroundTransparency = 1
+        ContentLabel.Size = UDim2.new(1, 0, 0, 0)
+        ContentLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ContentLabel.Text = DialogData.Content
+        ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
+        ContentLabel.Position = UDim2.new(0, 0, 0.125, 0)
+        ContentLabel.Parent = ContentFrame
+    end
+
+    -- Buttons Frame
+    local ButtonsFrame = Instance.new("Frame")
+    ButtonsFrame.ZIndex = 3
+    ButtonsFrame.BorderSizePixel = 0
+    ButtonsFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ButtonsFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ButtonsFrame.Size = UDim2.new(1, 0, 0, 0)
+    ButtonsFrame.Position = UDim2.new(0, 0, 0.53017, 0)
+    ButtonsFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ButtonsFrame.Name = "Buttons"
+    ButtonsFrame.BackgroundTransparency = 1
+    ButtonsFrame.Parent = DialogFrame
+
+    local ButtonsLayout = Instance.new("UIListLayout")
+    ButtonsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    ButtonsLayout.Padding = UDim.new(0, 10)
+    ButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ButtonsLayout.Parent = ButtonsFrame
+
+    local ButtonsPadding = Instance.new("UIPadding")
+    ButtonsPadding.PaddingTop = UDim.new(0, 5)
+    ButtonsPadding.PaddingRight = UDim.new(0, 10)
+    ButtonsPadding.PaddingLeft = UDim.new(0, 10)
+    ButtonsPadding.Parent = ButtonsFrame
+
+    -- Create Dialog Buttons
+    for index, buttonConfig in ipairs(DialogData.Buttons) do
+        local ButtonData = {
+            Title = buttonConfig.Title or "Button",
+            Callback = buttonConfig.Callback or function() end
+        }
+
+        -- Button Container
+        local ButtonContainer = Instance.new("Frame")
+        ButtonContainer.Visible = true
+        ButtonContainer.BorderSizePixel = 0
+        ButtonContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ButtonContainer.AnchorPoint = Vector2.new(0.5, 1)
+        ButtonContainer.Size = UDim2.new(1, 0, 0, 30)
+        ButtonContainer.Position = UDim2.new(0.5, 0, 0.327, 0)
+        ButtonContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ButtonContainer.Name = "DialogButton"
+        ButtonContainer.BackgroundTransparency = 1
+        ButtonContainer.Parent = ButtonsFrame
+
+        -- Button
+        local DialogButton = Instance.new("TextButton")
+        DialogButton.BorderSizePixel = 0
+        DialogButton.AutoButtonColor = false
+        DialogButton.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+        DialogButton.Selectable = false
+        DialogButton.AnchorPoint = Vector2.new(0.5, 0.5)
+        DialogButton.Size = UDim2.new(1, 0, 1, 0)
+        DialogButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        DialogButton.Name = "Button"
+        DialogButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+        DialogButton.Text = ""
+        DialogButton.Parent = ButtonContainer
+
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 5)
+        ButtonCorner.Parent = DialogButton
+
+        local ButtonStroke = Instance.new("UIStroke")
+        ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        ButtonStroke.Thickness = 1.5
+        ButtonStroke.Color = Color3.fromRGB(61, 61, 75)
+        ButtonStroke.Parent = DialogButton
+
+        local ButtonLayout = Instance.new("UIListLayout")
+        ButtonLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        ButtonLayout.Padding = UDim.new(0, 5)
+        ButtonLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+        ButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        ButtonLayout.Parent = DialogButton
+
+        -- Button Label
+        local ButtonLabel = Instance.new("TextLabel")
+        ButtonLabel.TextWrapped = true
+        ButtonLabel.Interactable = false
+        ButtonLabel.BorderSizePixel = 0
+        ButtonLabel.TextSize = 14
+        ButtonLabel.TextScaled = true
+        ButtonLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ButtonLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+        ButtonLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        ButtonLabel.BackgroundTransparency = 1
+        ButtonLabel.Size = UDim2.new(1, 0, 0.45, 0)
+        ButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ButtonLabel.Text = ButtonData.Title
+        ButtonLabel.Name = "Label"
+        ButtonLabel.Position = UDim2.new(0, 45, 0.083, 0)
+        ButtonLabel.Parent = DialogButton
+
+        -- Store original size for press effect
+        local originalSize = DialogButton.Size
+
+        -- Button Events
+        DialogButton.MouseButton1Click:Connect(function()
+            ButtonData.Callback()
+            -- Close dialog after button click
+            local closeTween = CreateTween(DarkOverlay, {BackgroundTransparency = 1}, AnimationConfig.Global)
+            DialogFrame:Destroy()
+            closeTween.Completed:Wait()
+            DarkOverlay:Destroy()
+        end)
+
+        DialogButton.MouseButton1Down:Connect(function()
+            CreateTween(DialogButton, {Size = originalSize - DialogData.PressDecreaseSize}, AnimationConfig.Global)
+        end)
+
+        DialogButton.MouseButton1Up:Connect(function()
+            CreateTween(DialogButton, {Size = originalSize}, AnimationConfig.Global)
+        end)
+
+        DialogButton.MouseLeave:Connect(function()
+            CreateTween(DialogButton, {Size = originalSize}, AnimationConfig.Global)
+        end)
+    end
+
+    -- Store dialog size
+    DialogData.Size = UDim2.fromOffset(DialogFrame.AbsoluteSize.X, DialogFrame.AbsoluteSize.Y)
+
+    -- Show Dialog with animation
+    DarkOverlay.BackgroundTransparency = 1
+    DarkOverlay.Visible = true
+    DialogFrame.Visible = true
+
+    CreateTween(DarkOverlay, {BackgroundTransparency = 0.6}, AnimationConfig.Global)
+
+    return DialogMethods
+end
+
+-- Notification Module
+function Library:Notify(config)
+    local NotificationData = {
+        Title = config.Title or "Notification",
+        Content = config.Content or "This is a notification",
+        Icon = config.Icon or "rbxassetid://92049322344253",
+        Duration = config.Duration or 5
+    }
+    
+    local NotificationMethods = {}
+
+    -- Find notification parent (prioritize window if visible, otherwise global)
+    local notificationParent = nil
+    for _, window in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
+        if window:IsA("ScreenGui") and window:FindFirstChild("Window") then
+            local windowFrame = window.Window
+            if windowFrame.Visible and windowFrame.Tabs.Visible then
+                notificationParent = windowFrame.NotificationFrame.NotificationList
+                break
+            end
+        end
+    end
+    
+    -- If no window found or not visible, create global notification list
+    if not notificationParent then
+        local globalNotificationGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("GlobalNotifications")
+        if not globalNotificationGui then
+            globalNotificationGui = Instance.new("ScreenGui")
+            globalNotificationGui.Name = "GlobalNotifications"
+            globalNotificationGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            globalNotificationGui.ResetOnSpawn = false
+            
+            -- Parent to appropriate location
+            if gethui then
+                globalNotificationGui.Parent = gethui()
+            elseif pcall(function() game.CoreGui:GetChildren() end) then
+                globalNotificationGui.Parent = game.CoreGui
+            else
+                globalNotificationGui.Parent = game.Players.LocalPlayer.PlayerGui
+            end
+            
+            local globalList = Instance.new("Frame")
+            globalList.ZIndex = 10
+            globalList.BorderSizePixel = 0
+            globalList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            globalList.AnchorPoint = Vector2.new(0.5, 0)
+            globalList.Size = UDim2.new(0, 630, 1, 0)
+            globalList.Position = UDim2.new(1, 0, 0, 0)
+            globalList.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            globalList.Name = "NotificationList"
+            globalList.BackgroundTransparency = 1
+            globalList.Parent = globalNotificationGui
+            
+            local globalLayout = Instance.new("UIListLayout")
+            globalLayout.Padding = UDim.new(0, 12)
+            globalLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            globalLayout.Parent = globalList
+            
+            local globalPadding = Instance.new("UIPadding")
+            globalPadding.PaddingTop = UDim.new(0, 10)
+            globalPadding.PaddingRight = UDim.new(0, 40)
+            globalPadding.PaddingLeft = UDim.new(0, 40)
+            globalPadding.Parent = globalList
+        end
+        notificationParent = globalNotificationGui.NotificationList
+    end
+
+    -- Create Notification Frame
+    local Notification = Instance.new("Frame")
+    Notification.Visible = false
+    Notification.BorderSizePixel = 0
+    Notification.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    Notification.AnchorPoint = Vector2.new(0.5, 0.5)
+    Notification.AutomaticSize = Enum.AutomaticSize.Y
+    Notification.Size = UDim2.new(1, 0, 0, 65)
+    Notification.Position = UDim2.new(0.8244, 0, 0.88221, 0)
+    Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Notification.Name = "Notification"
+    Notification.BackgroundTransparency = 1
+    Notification.Parent = notificationParent
+
+    -- Create Items Container (CanvasGroup for group transparency)
+    local NotificationItems = Instance.new("CanvasGroup")
+    NotificationItems.ZIndex = 2
+    NotificationItems.BorderSizePixel = 0
+    NotificationItems.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationItems.Size = UDim2.new(0, 265, 0, 70)
+    NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationItems.Name = "Items"
+    NotificationItems.Parent = Notification
+
+    -- Create Content Frame
+    local NotificationContent = Instance.new("Frame")
+    NotificationContent.BorderSizePixel = 0
+    NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationContent.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationContent.Size = UDim2.new(0, 265, 0, 70)
+    NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationContent.BackgroundTransparency = 1
+    NotificationContent.Parent = NotificationItems
+
+    local NotificationLayout = Instance.new("UIListLayout")
+    NotificationLayout.Padding = UDim.new(0, 5)
+    NotificationLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    NotificationLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    NotificationLayout.Parent = NotificationContent
+
+    local NotificationPadding = Instance.new("UIPadding")
+    NotificationPadding.PaddingTop = UDim.new(0, 15)
+    NotificationPadding.PaddingLeft = UDim.new(0, 15)
+    NotificationPadding.PaddingBottom = UDim.new(0, 15)
+    NotificationPadding.Parent = NotificationContent
+
+    -- Create SubContent (Optional - for additional info)
+    local NotificationSubContent = Instance.new("TextLabel")
+    NotificationSubContent.TextWrapped = true
+    NotificationSubContent.BorderSizePixel = 0
+    NotificationSubContent.TextSize = 12
+    NotificationSubContent.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationSubContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationSubContent.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    NotificationSubContent.TextColor3 = Color3.fromRGB(181, 181, 181)
+    NotificationSubContent.BackgroundTransparency = 1
+    NotificationSubContent.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationSubContent.Size = UDim2.new(0, 218, 0, 10)
+    NotificationSubContent.Visible = false
+    NotificationSubContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationSubContent.Text = "This is a notification"
+    NotificationSubContent.LayoutOrder = 1
+    NotificationSubContent.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationSubContent.Name = "SubContent"
+    NotificationSubContent.Position = UDim2.new(0, 0, 0, 19)
+    NotificationSubContent.Parent = NotificationContent
+
+    -- Create SubContent Gradient (matching OGLIB)
+    local SubContentGradient = Instance.new("UIGradient")
+    SubContentGradient.Enabled = false
+    SubContentGradient.Rotation = -90
+    SubContentGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+    }
+    SubContentGradient.Parent = NotificationSubContent
+
+    -- Create Title
+    local NotificationTitle = Instance.new("TextLabel")
+    NotificationTitle.TextWrapped = true
+    NotificationTitle.BorderSizePixel = 0
+    NotificationTitle.TextSize = 16
+    NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationTitle.TextScaled = true
+    NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationTitle.BackgroundTransparency = 1
+    NotificationTitle.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationTitle.Size = UDim2.new(0, 235, 0, 18)
+    NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationTitle.Text = NotificationData.Title
+    NotificationTitle.Name = "Title"
+    NotificationTitle.Position = UDim2.new(0, 0, 0, 9)
+    NotificationTitle.Parent = NotificationContent
+
+    -- Create Close Button
+    local CloseButton = Instance.new("ImageButton")
+    CloseButton.BorderSizePixel = 0
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
+    CloseButton.Image = "rbxassetid://132453323679056"
+    CloseButton.Size = UDim2.new(0.09706, 0, 1.33333, 0)
+    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CloseButton.Name = "Close"
+    CloseButton.Position = UDim2.new(0.92, 0, 0.5, 0)
+    CloseButton.Parent = NotificationTitle
+
+    local CloseAspect = Instance.new("UIAspectRatioConstraint")
+    CloseAspect.Parent = CloseButton
+
+    -- Create Title Padding
+    local TitlePadding = Instance.new("UIPadding")
+    TitlePadding.PaddingLeft = UDim.new(0, 30)
+    TitlePadding.Parent = NotificationTitle
+
+    -- Create Icon
+    local NotificationIcon = Instance.new("ImageButton")
+    NotificationIcon.BorderSizePixel = 0
+    NotificationIcon.BackgroundTransparency = 1
+    NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationIcon.Image = NotificationData.Icon
+    NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
+    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationIcon.Name = "Icon"
+    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
+    NotificationIcon.Parent = NotificationTitle
+
+    local IconAspect = Instance.new("UIAspectRatioConstraint")
+    IconAspect.Parent = NotificationIcon
+
+    -- Create Content Text
+    local NotificationContentText = Instance.new("TextLabel")
+    NotificationContentText.TextWrapped = true
+    NotificationContentText.BorderSizePixel = 0
+    NotificationContentText.TextSize = 16
+    NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    NotificationContentText.TextColor3 = Color3.fromRGB(197, 204, 219)
+    NotificationContentText.BackgroundTransparency = 1
+    NotificationContentText.AnchorPoint = Vector2.new(0, 0.5)
+    NotificationContentText.Size = UDim2.new(0, 218, 0, 10)
+    NotificationContentText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationContentText.Text = NotificationData.Content
+    NotificationContentText.LayoutOrder = 2
+    NotificationContentText.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationContentText.Name = "Content"
+    NotificationContentText.Position = UDim2.new(0, 0, 0, 19)
+    NotificationContentText.Parent = NotificationContent
+
+    -- Create Content Gradient (matching OGLIB)
+    local ContentGradient = Instance.new("UIGradient")
+    ContentGradient.Enabled = false
+    ContentGradient.Rotation = -90
+    ContentGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+    }
+    ContentGradient.Parent = NotificationContentText
+
+    -- Create Timer Bar Container
+    local TimerBarFill = Instance.new("Frame")
+    TimerBarFill.BorderSizePixel = 0
+    TimerBarFill.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBarFill.AnchorPoint = Vector2.new(0, 1)
+    TimerBarFill.Size = UDim2.new(1, 0, 0, 5)
+    TimerBarFill.Position = UDim2.new(0, 0, 1, 0)
+    TimerBarFill.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TimerBarFill.Name = "TimerBarFill"
+    TimerBarFill.BackgroundTransparency = 0.7
+    TimerBarFill.Parent = NotificationItems
+
+    local TimerCorner = Instance.new("UICorner")
+    TimerCorner.Parent = TimerBarFill
+
+    -- Create Timer Bar
+    local TimerBar = Instance.new("Frame")
+    TimerBar.BorderSizePixel = 0
+    TimerBar.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBar.Size = UDim2.new(1, 0, 1, 0)
+    TimerBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TimerBar.Name = "Bar"
+    TimerBar.Parent = TimerBarFill
+
+    local TimerBarCorner = Instance.new("UICorner")
+    TimerBarCorner.Parent = TimerBar
+
+    -- Create Stroke for Items
+    local ItemsStroke = Instance.new("UIStroke")
+    ItemsStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ItemsStroke.Thickness = 1.5
+    ItemsStroke.Color = Color3.fromRGB(61, 61, 75)
+    ItemsStroke.Parent = NotificationItems
+
+    local ItemsCorner = Instance.new("UICorner")
+    ItemsCorner.Parent = NotificationItems
+
+    -- Close Function
+    local function CloseNotification()
+        if Notification then
+            CreateTween(NotificationItems, {
+                Position = UDim2.new(0.75, 0, 0, 0)
+            }, AnimationConfig.Notification)
+            task.wait(AnimationConfig.Notification.Duration - (AnimationConfig.Notification.Duration / 2))
+            if Notification then
+                Notification:Destroy()
+            end
+            Notification = nil
+        end
+    end
+
+    -- Close Button Event
+    CloseButton.MouseButton1Click:Connect(CloseNotification)
+
+    -- Show Notification Animation
+    NotificationItems.Position = UDim2.new(0.75, 0, 0, 0)
+    Notification.Visible = true
+    
+    local showTween = CreateTween(NotificationItems, {
+        Position = UDim2.new(0, 0, 0, 0)
+    }, AnimationConfig.Notification)
+    
+    showTween.Completed:Connect(function()
+        -- Start timer bar animation
+        CreateTween(TimerBar, {
+            Size = UDim2.new(0, 0, 1, 0)
+        }, {
+            Duration = NotificationData.Duration
+        })
+        
+        -- Auto close after duration
+        task.delay(NotificationData.Duration, CloseNotification)
+    end)
+
+    -- Notification Methods
+    function NotificationMethods:Close()
+        CloseNotification()
+    end
+
+    return NotificationMethods
+end
+
+-- Paragraph Module
+local function CreateParagraph(parent, config)
+    local ParagraphData = {
+        Title = config.Title or "Title",
+        Desc = config.Desc,
+        RichText = config.RichText or false
+    }
+    
+    local ParagraphMethods = {}
+
+    -- Create Main Paragraph Frame
+    local ParagraphFrame = Instance.new("Frame")
+    ParagraphFrame.Visible = false
+    ParagraphFrame.BorderSizePixel = 0
+    ParagraphFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ParagraphFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ParagraphFrame.Size = UDim2.new(1, 0, 0, 35)
+    ParagraphFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
+    ParagraphFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphFrame.Name = "Paragraph"
+    ParagraphFrame.Parent = parent
+
+    local ParagraphCorner = Instance.new("UICorner")
+    ParagraphCorner.CornerRadius = UDim.new(0, 6)
+    ParagraphCorner.Parent = ParagraphFrame
+
+    local ParagraphStroke = Instance.new("UIStroke")
+    ParagraphStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ParagraphStroke.Thickness = 1.5
+    ParagraphStroke.Color = Color3.fromRGB(61, 61, 75)
+    ParagraphStroke.Parent = ParagraphFrame
+
+    local ParagraphPadding = Instance.new("UIPadding")
+    ParagraphPadding.PaddingTop = UDim.new(0, 10)
+    ParagraphPadding.PaddingRight = UDim.new(0, 10)
+    ParagraphPadding.PaddingLeft = UDim.new(0, 10)
+    ParagraphPadding.PaddingBottom = UDim.new(0, 10)
+    ParagraphPadding.Parent = ParagraphFrame
+
+    local ParagraphLayout = Instance.new("UIListLayout")
+    ParagraphLayout.Padding = UDim.new(0, 5)
+    ParagraphLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ParagraphLayout.Parent = ParagraphFrame
+
+    -- Create Title
+    local ParagraphTitle = Instance.new("TextLabel")
+    ParagraphTitle.TextWrapped = true
+    ParagraphTitle.Interactable = false
+    ParagraphTitle.BorderSizePixel = 0
+    ParagraphTitle.TextSize = 16
+    ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
+    ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ParagraphTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    ParagraphTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ParagraphTitle.BackgroundTransparency = 1
+    ParagraphTitle.Size = UDim2.new(1, 0, 0, 15)
+    ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ParagraphTitle.Text = ParagraphData.Title
+    ParagraphTitle.AutomaticSize = Enum.AutomaticSize.Y
+    ParagraphTitle.Name = "Title"
+    ParagraphTitle.RichText = ParagraphData.RichText
+    ParagraphTitle.Parent = ParagraphFrame
+
+    -- Create Description (if provided)
+    local ParagraphDescription = nil
+    if ParagraphData.Desc and ParagraphData.Desc ~= "" then
+        ParagraphDescription = Instance.new("TextLabel")
+        ParagraphDescription.TextWrapped = true
+        ParagraphDescription.Interactable = false
+        ParagraphDescription.BorderSizePixel = 0
+        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+        ParagraphDescription.BackgroundTransparency = 1
+        ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
+        ParagraphDescription.Visible = true
+        ParagraphDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ParagraphDescription.Text = ParagraphData.Desc
+        ParagraphDescription.LayoutOrder = 1
+        ParagraphDescription.AutomaticSize = Enum.AutomaticSize.Y
+        ParagraphDescription.Name = "Description"
+        ParagraphDescription.RichText = ParagraphData.RichText
+        ParagraphDescription.Parent = ParagraphFrame
+    else
+        -- If no description, hide the description placeholder
+        ParagraphDescription = Instance.new("TextLabel")
+        ParagraphDescription.TextWrapped = true
+        ParagraphDescription.Interactable = false
+        ParagraphDescription.BorderSizePixel = 0
+        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
+        ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+        ParagraphDescription.BackgroundTransparency = 1
+        ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
+        ParagraphDescription.Visible = false
+        ParagraphDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ParagraphDescription.Text = ""
+        ParagraphDescription.LayoutOrder = 1
+        ParagraphDescription.AutomaticSize = Enum.AutomaticSize.Y
+        ParagraphDescription.Name = "Description"
+        ParagraphDescription.RichText = ParagraphData.RichText
+        ParagraphDescription.Parent = ParagraphFrame
+    end
+
+    -- Make visible
+    ParagraphFrame.Visible = true
+
+    -- Paragraph Methods
+    function ParagraphMethods:SetTitle(title)
+        ParagraphData.Title = title
+        ParagraphTitle.Text = title
+    end
+
+    function ParagraphMethods:SetDesc(desc)
+        ParagraphData.Desc = desc
+        ParagraphDescription.Text = desc
+        if desc and desc ~= "" then
+            ParagraphDescription.Visible = true
+        else
+            ParagraphDescription.Visible = false
+        end
+    end
+
+    function ParagraphMethods:SetRichText(enabled)
+        ParagraphData.RichText = enabled
+        ParagraphTitle.RichText = enabled
+        ParagraphDescription.RichText = enabled
+    end
+
+    function ParagraphMethods:Destroy()
+        ParagraphFrame:Destroy()
+    end
+
+    return ParagraphMethods
+end
+
 -- Slider Module
 local function CreateSlider(parent, config)
     local SliderData = {
@@ -443,7 +1207,7 @@ local function CreateSlider(parent, config)
         }, AnimationConfig.Global)
         
         ValueText.Text = tostring(currentValue)
-        SliderData.Value = currentValue
+        -- HAPUS BARIS INI: SliderData.Value = currentValue
         task.spawn(SliderData.Callback, currentValue)
     end
     
@@ -465,7 +1229,7 @@ local function CreateSlider(parent, config)
             }, AnimationConfig.Global)
             
             ValueText.Text = tostring(currentValue)
-            SliderData.Value = currentValue
+            -- HAPUS BARIS INI: SliderData.Value = currentValue
             task.spawn(SliderData.Callback, currentValue)
         until isDragging == false or SliderData.Locked == true
         
@@ -2314,12 +3078,16 @@ local function CreateDropdown(parent, config)
                     else
                         table.insert(CurrentValue, value)
                     end
+                    
+                    -- Update all items in both lists
+                    RefreshDropdownItems()
                 else
                     CurrentValue = value
                     CloseDropdown()
                 end
                 
                 UpdateValueDisplay()
+                UpdateItemVisual()
                 DropdownData.Callback(CurrentValue)
             end
         end)
@@ -2896,6 +3664,9 @@ end
     return CreateSlider(SectionContent, config)
 end
     
+    function SectionMethods:Paragraph(config)
+    return CreateParagraph(SectionContent, config)
+end
 
     return SectionMethods
 end
@@ -3464,9 +4235,23 @@ function Library:CreateWindow(config)
     end)
 
     CloseButton.MouseButton1Click:Connect(function()
-        -- Create close dialog (will be implemented when dialog module is ready)
-        Container.Parent = nil
-    end)
+        WindowMethods:Dialog({
+        Title   = "Close Window",
+        Content = "Do you want to close this window? You will not able to open it again.",
+        Buttons = {
+            {
+                Title = "Cancel" -- cukup tutup dialog
+            },
+            {
+                Title = "Close",
+                Callback = function()
+                    if ScreenGui and ScreenGui.Destroy then ScreenGui:Destroy() end
+                    if Container and Container.Destroy then Container:Destroy() end
+                end
+            },
+        }
+    })
+end)
 
     MaximizeButton.MouseButton1Click:Connect(function()
         if not IsMaximized then
@@ -3697,6 +4482,10 @@ function Library:CreateWindow(config)
     CreateTween(Window, {Size = WindowData.Size}, AnimationConfig.Global)
     Window.Visible = true
     IsVisible = true
+    
+    function WindowMethods:Dialog(config)
+    return CreateDialog(Window, config)
+end
 
     return WindowMethods
 end
