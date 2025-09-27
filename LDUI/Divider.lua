@@ -2565,6 +2565,7 @@ local function CreateDropdown(parent, config)
     local PopupListSearch = nil
     local SearchBox = nil
     local DarkOverlay = nil
+    local CloseDropdown = nil
 
     -- Helper Functions
     local function FormatValueText(value)
