@@ -2689,6 +2689,11 @@ DarkOverlay.Parent = window
     CloseDropdown()
 end)
 
+-- Tambah event stopper untuk popup
+DropdownPopup.MouseButton1Click:Connect(function()
+    -- Stop event propagation, jangan close dropdown
+end)
+
         -- Popup Header
         local PopupHeader = Instance.new("Frame")
         PopupHeader.BorderSizePixel = 0
