@@ -2685,15 +2685,6 @@ DarkOverlay.Parent = window
         OverlayCorner.CornerRadius = UDim.new(0, 10)
         OverlayCorner.Parent = DarkOverlay
         
-        DarkOverlay.MouseButton1Click:Connect(function()
-    CloseDropdown()
-end)
-
--- Tambah event stopper untuk popup
-DropdownPopup.MouseButton1Click:Connect(function()
-    -- Stop event propagation, jangan close dropdown
-end)
-
         -- Popup Header
         local PopupHeader = Instance.new("Frame")
         PopupHeader.BorderSizePixel = 0
@@ -2929,6 +2920,16 @@ end)
                 PopupListSearch.Visible = false
             end
         end)
+
+        -- Update DarkOverlay click handler
+    DarkOverlay.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
+    
+    -- Tambah event stopper untuk popup (taruh di sini)
+    DropdownPopup.MouseButton1Click:Connect(function()
+        -- Stop event propagation, jangan close dropdown
+    end)
 
         GlobalDropdownSystem = {
             Popup = DropdownPopup,
