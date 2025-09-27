@@ -2683,6 +2683,10 @@ DarkOverlay.Parent = window
         local OverlayCorner = Instance.new("UICorner")
         OverlayCorner.CornerRadius = UDim.new(0, 10)
         OverlayCorner.Parent = DarkOverlay
+        
+        DarkOverlay.MouseButton1Click:Connect(function()
+    CloseDropdown()
+end)
 
         -- Popup Header
         local PopupHeader = Instance.new("Frame")
@@ -2896,18 +2900,6 @@ DarkOverlay.Parent = window
         CloseButton.MouseButton1Click:Connect(function()
             CloseDropdown()
         end)
-        
-        DarkOverlay.MouseButton1Click:Connect(function(input)
-    -- Check if click is outside popup bounds
-    local mousePos = input.Position
-    local popupPos = DropdownPopup.AbsolutePosition
-    local popupSize = DropdownPopup.AbsoluteSize
-    
-    if mousePos.X < popupPos.X or mousePos.X > popupPos.X + popupSize.X or
-       mousePos.Y < popupPos.Y or mousePos.Y > popupPos.Y + popupSize.Y then
-        CloseDropdown()
-    end
-end)
 
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -3087,8 +3079,8 @@ end)
                 CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
             end
         end
-         
-         local function UpdateAllItemsVisual()
+        
+        local function UpdateAllItemsVisual()
     -- Update both PopupList and PopupListSearch items
     for _, list in ipairs({PopupList, PopupListSearch}) do
         for _, child in ipairs(list:GetChildren()) do
@@ -3122,30 +3114,30 @@ end)
         end
     end
 end
+
         -- Item click handler
-        -- Item click handler
-ItemButton.MouseButton1Click:Connect(function()
-    if not DropdownData.Locked then
-        if DropdownData.Multi then
-            local index = table.find(CurrentValue, value)
-            if index then
-                if not DropdownData.AllowNone and #CurrentValue == 1 then
-                    return
+        ItemButton.MouseButton1Click:Connect(function()
+            if not DropdownData.Locked then
+                if DropdownData.Multi then
+                    local index = table.find(CurrentValue, value)
+                    if index then
+                        if not DropdownData.AllowNone and #CurrentValue == 1 then
+                            return -- Can't remove last item if AllowNone is false
+                        end
+                        table.remove(CurrentValue, index)
+                    else
+                        table.insert(CurrentValue, value)
+                    end
+                else
+                    CurrentValue = value
+                    CloseDropdown()
                 end
-                table.remove(CurrentValue, index)
-            else
-                table.insert(CurrentValue, value)
+                
+                UpdateValueDisplay()
+                UpdateAllItemsVisual()
+                DropdownData.Callback(CurrentValue)
             end
-        else
-            CurrentValue = value
-            CloseDropdown()
-        end
-        
-        UpdateValueDisplay()
-        UpdateAllItemsVisual() -- Ganti UpdateItemVisual() jadi ini
-        DropdownData.Callback(CurrentValue)
-    end
-end)
+        end)
 
         UpdateItemVisual()
         return ItemButton
