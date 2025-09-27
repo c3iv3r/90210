@@ -2659,7 +2659,7 @@ local function CreateDropdown(parent, config)
         PopupStroke.Parent = DropdownPopup
 
         -- Create dark overlay
-        DarkOverlay = Instance.new("Frame")
+        DarkOverlay = Instance.new("TextButton")
         DarkOverlay.Visible = false
         DarkOverlay.BorderSizePixel = 0
         DarkOverlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
