@@ -3916,7 +3916,7 @@ function Library:CreateWindow(config)
     TopSubtitle.BackgroundTransparency = 1
     TopSubtitle.AnchorPoint = Vector2.new(0.5, 0)
     TopSubtitle.Size = UDim2.new(1, 0, 0, 12)
-    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, 8) 
+    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, -3) 
     TopSubtitle.Text = WindowData.Subtitle
     TopSubtitle.TextTransparency = 0.3
     TopSubtitle.Parent = TopFrame
