@@ -2668,6 +2668,7 @@ local function CreateDropdown(parent, config)
         DarkOverlay.Name = "DarkOverlay"
         DarkOverlay.BackgroundTransparency = 0.6
         DarkOverlay.Text = ""
+        DarkOverlay.Active = true
         DarkOverlay.AutoButtonColor = false
         DarkOverlay.ZIndex = 50
         DarkOverlay.Parent = window
@@ -2776,7 +2777,7 @@ local function CreateDropdown(parent, config)
         CloseButton.BackgroundTransparency = 1
         CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
-        CloseButton.ZIndex = 0
+        CloseButton.ZIndex = 52
         CloseButton.AnchorPoint = Vector2.new(1, 0.5)
         CloseButton.Image = "rbxassetid://132453323679056"
         CloseButton.Size = UDim2.new(0, 25, 0, 25)
@@ -2892,6 +2893,13 @@ local function CreateDropdown(parent, config)
         end
     end
     SetPopupZIndex()
+
+        DarkOverlay.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
+    CloseButton.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
         
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
@@ -2923,14 +2931,6 @@ local function CreateDropdown(parent, config)
             SearchBox = SearchBox,
             CurrentDropdown = nil
         }
-        
-        DarkOverlay.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
-    CloseButton.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
-        
     end
 
     local function CreateDropdownItem(value, targetList)
