@@ -3689,8 +3689,10 @@ function Library:CreateWindow(config)
     local WindowData = {
         Title = config.Title or "Window",
         Subtitle = config.Subtitle or "Subtitle",
+        LeftTitle = config.LeftTitle or "",
+        LeftSubtitle = config.LeftSubtitle or "",
         Icon = config.Icon or "rbxassetid://113216930555884",
-        Version = config.Author or config.Version or "v1.0.0",
+        Version = config.Author or config.Version or "",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
         ToggleKey = config.ToggleKey or Enum.KeyCode.RightShift,
         LiveSearchDropdown = config.LiveSearchDropdown or false
@@ -3916,10 +3918,48 @@ function Library:CreateWindow(config)
     TopSubtitle.BackgroundTransparency = 1
     TopSubtitle.AnchorPoint = Vector2.new(0.5, 0)
     TopSubtitle.Size = UDim2.new(1, 0, 0, 12)
-    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, -3) 
+    TopSubtitle.Position = UDim2.new(0.5, 0, 0.5, -1) 
     TopSubtitle.Text = WindowData.Subtitle
     TopSubtitle.TextTransparency = 0.3
     TopSubtitle.Parent = TopFrame
+
+    -- LeftTitle (di kanan icon)
+    local LeftTitle = Instance.new("TextLabel")
+    LeftTitle.TextWrapped = true
+    LeftTitle.Interactable = false
+    LeftTitle.BorderSizePixel = 0
+    LeftTitle.TextSize = 10
+    LeftTitle.TextXAlignment = Enum.TextXAlignment.Left
+    LeftTitle.TextYAlignment = Enum.TextYAlignment.Top
+    LeftTitle.BackgroundTransparency = 1
+    LeftTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    LeftTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    LeftTitle.TextTransparency = 0.1
+    LeftTitle.AnchorPoint = Vector2.new(0, 0.5)
+    LeftTitle.Size = UDim2.new(0, 150, 0, 12)
+    LeftTitle.Position = UDim2.new(0, 40, 0.5, -6)
+    LeftTitle.Text = WindowData.LeftTitle
+    LeftTitle.Name = "LeftTitle"
+    LeftTitle.Parent = TopFrame
+
+    -- LeftSubtitle (di bawah LeftTitle)
+    local LeftSubtitle = Instance.new("TextLabel")
+    LeftSubtitle.TextWrapped = true
+    LeftSubtitle.Interactable = false
+    LeftSubtitle.BorderSizePixel = 0
+    LeftSubtitle.TextSize = 7
+    LeftSubtitle.TextXAlignment = Enum.TextXAlignment.Left
+    LeftSubtitle.TextYAlignment = Enum.TextYAlignment.Top
+    LeftSubtitle.BackgroundTransparency = 1
+    LeftSubtitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Italic)
+    LeftSubtitle.TextColor3 = Color3.fromRGB(150, 155, 165)
+    LeftSubtitle.TextTransparency = 0.3
+    LeftSubtitle.AnchorPoint = Vector2.new(0, 0.5)
+    LeftSubtitle.Size = UDim2.new(0, 150, 0, 10)
+    LeftSubtitle.Position = UDim2.new(0, 40, 0.5, -1)
+    LeftSubtitle.Text = WindowData.LeftSubtitle
+    LeftSubtitle.Name = "LeftSubtitle"
+    LeftSubtitle.Parent = TopFrame
 
     -- TopFrame Buttons
     local CloseButton = Instance.new("ImageButton")
