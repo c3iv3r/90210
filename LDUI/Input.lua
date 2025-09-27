@@ -3080,41 +3080,7 @@ end)
             end
         end
         
-        local function UpdateAllItemsVisual()
-    -- Update both PopupList and PopupListSearch items
-    for _, list in ipairs({PopupList, PopupListSearch}) do
-        for _, child in ipairs(list:GetChildren()) do
-            if child:IsA("GuiButton") then
-                local value = child.Name
-                local isSelected = false
-                
-                if DropdownData.Multi then
-                    isSelected = table.find(CurrentValue, value) ~= nil
-                else
-                    isSelected = CurrentValue == value
-                end
-                
-                local itemFrame = child:FindFirstChild("Frame")
-                local itemTitle = itemFrame and itemFrame:FindFirstChild("Title")
-                local itemDescription = itemFrame and itemFrame:FindFirstChild("Description")
-                local itemStroke = child:FindFirstChild("UIStroke")
-                
-                if isSelected then
-                    CreateTween(itemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                    CreateTween(itemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                    CreateTween(itemStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
-                    CreateTween(itemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
-                else
-                    CreateTween(itemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                    CreateTween(itemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                    CreateTween(itemStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-                    CreateTween(itemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
-                end
-            end
-        end
-    end
-end
-
+        
         -- Item click handler
         ItemButton.MouseButton1Click:Connect(function()
             if not DropdownData.Locked then
@@ -3134,7 +3100,7 @@ end
                 end
                 
                 UpdateValueDisplay()
-                UpdateAllItemsVisual()
+                UpdateItemVisual
                 DropdownData.Callback(CurrentValue)
             end
         end)
