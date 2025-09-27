@@ -2637,7 +2637,7 @@ local function CreateDropdown(parent, config)
         -- Create DropdownSelection system (matches OGLIB structure)
         DropdownPopup = Instance.new("Frame")
         DropdownPopup.Visible = false
-        DropdownPopup.ZIndex = 4
+        DropdownPopup.ZIndex = 51
         DropdownPopup.BorderSizePixel = 0
         DropdownPopup.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
         DropdownPopup.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2667,6 +2667,7 @@ local function CreateDropdown(parent, config)
         DarkOverlay.BorderColor3 = Color3.fromRGB(0, 0, 0)
         DarkOverlay.Name = "DarkOverlay"
         DarkOverlay.BackgroundTransparency = 0.6
+        DarkOverlay.ZIndex = 50
         DarkOverlay.Parent = window
 
         local OverlayCorner = Instance.new("UICorner")
@@ -2881,11 +2882,15 @@ local function CreateDropdown(parent, config)
         SearchListPadding.PaddingBottom = UDim.new(0, 10)
         SearchListPadding.Parent = PopupListSearch
 
-        -- Global events
-        CloseButton.MouseButton1Click:Connect(function()
-            CloseDropdown()
-        end)
-
+        local function SetPopupZIndex()
+        for _, child in pairs(DropdownPopup:GetDescendants()) do
+            if child:IsA("GuiObject") then
+                child.ZIndex = 51
+            end
+        end
+    end
+    SetPopupZIndex()
+        
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
             local searchText = SearchBox.Text
@@ -3160,6 +3165,13 @@ local function CreateDropdown(parent, config)
         IsDropdownOpen = false
         GlobalDropdownSystem.CurrentDropdown = nil
     end
+
+    DarkOverlay.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
+    CloseButton.MouseButton1Click:Connect(function()
+        CloseDropdown()
+    end)
 
     -- Handle hover effects (matching OGLIB)
     DropdownFrame.MouseEnter:Connect(function()
