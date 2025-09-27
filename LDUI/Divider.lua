@@ -2889,7 +2889,7 @@ local function CreateDropdown(parent, config)
             end
         end
     end
-    SetPopupZIndex()
+    
         
         -- Search functionality (matching OGLIB live search behavior)
         SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
