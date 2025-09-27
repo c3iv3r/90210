@@ -3173,7 +3173,6 @@ end)
             CreateDropdownItem(value, PopupList)
             CreateDropdownItem(value, PopupListSearch)
         end
-        UpdateAllItemsVisual()
     end
 
     local function OpenDropdown()
