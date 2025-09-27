@@ -3691,6 +3691,7 @@ function Library:CreateWindow(config)
         Subtitle = config.Subtitle or "Subtitle",
         LeftTitle = config.LeftTitle or "",
         LeftSubtitle = config.LeftSubtitle or "",
+        Footer = config.Footer or "",
         Icon = config.Icon or "rbxassetid://113216930555884",
         Version = config.Author or config.Version or "",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
@@ -4156,6 +4157,44 @@ function Library:CreateWindow(config)
     NotificationPadding.PaddingRight = UDim.new(0, 40)
     NotificationPadding.PaddingLeft = UDim.new(0, 40)
     NotificationPadding.Parent = NotificationList
+
+    -- BottomFrame 
+local BottomFrame = Instance.new("Frame")
+BottomFrame.Name = "BottomFrame"
+BottomFrame.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+BottomFrame.BorderSizePixel = 0
+BottomFrame.Size = UDim2.new(1, 0, 0, 35)
+BottomFrame.AnchorPoint = Vector2.new(0, 1)
+BottomFrame.Position = UDim2.new(0, 0, 1, 0)
+BottomFrame.Parent = Window
+
+local BottomCorner = Instance.new("UICorner")
+    BottomCorner.CornerRadius = UDim.new(0, 6)
+    BottomCorner.Parent = BottomFrame
+
+local BottomBorder = Instance.new("Frame")
+BottomBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+BottomBorder.BorderSizePixel = 0
+BottomBorder.Size = UDim2.new(1, 0, 0, 2)
+BottomBorder.Position = UDim2.new(0, 0, 0, 0)
+BottomBorder.Parent = BottomFrame
+
+-- Footer
+local FooterLabel = Instance.new("TextLabel")
+FooterLabel.Name = "Footer"
+FooterLabel.BackgroundTransparency = 1
+FooterLabel.BorderSizePixel = 0
+FooterLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+FooterLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+FooterLabel.Size = UDim2.new(1, -20, 1, 0)
+FooterLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+FooterLabel.TextSize = 12
+FooterLabel.TextColor3 = Color3.fromRGB(150, 155, 165)
+FooterLabel.TextTransparency = 0.25 
+FooterLabel.TextWrapped = true
+FooterLabel.TextScaled = true
+FooterLabel.Text = WindowData.Footer
+FooterLabel.Parent = BottomFrame
 
     -- Create Dark Overlay
     local DarkOverlay = Instance.new("Frame")
