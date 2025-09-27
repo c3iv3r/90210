@@ -2647,15 +2647,7 @@ local function CreateDropdown(parent, config)
         DropdownPopup.Position = UDim2.new(0.5, 0, 0.5, 0)
         DropdownPopup.BorderColor3 = Color3.fromRGB(61, 61, 75)
         DropdownPopup.Name = "DropdownSelection"
-        DropdownPopup.Parent = window
-        
-        local function SetPopupZIndex()
-    for _, child in pairs(DropdownPopup:GetDescendants()) do
-        if child:IsA("GuiObject") then
-            child.ZIndex = 51
-        end
-    end
-end
+        DropdownPopup.Parent = window     
 
         local PopupCorner = Instance.new("UICorner")
         PopupCorner.CornerRadius = UDim.new(0, 6)
@@ -2678,7 +2670,7 @@ DarkOverlay.Name = "DarkOverlay"
 DarkOverlay.BackgroundTransparency = 0.6
 DarkOverlay.Text = ""
 DarkOverlay.AutoButtonColor = false
-DarkOverlay.ZIndex = 50 -- Set ZIndex tinggi
+DarkOverlay.ZIndex = 50 -Set ZIndex tinggi
 DarkOverlay.Parent = window
 
         local OverlayCorner = Instance.new("UICorner")
@@ -2925,11 +2917,18 @@ DarkOverlay.Parent = window
     DarkOverlay.MouseButton1Click:Connect(function()
         CloseDropdown()
     end)
-    
-    -- Tambah event stopper untuk popup (taruh di sini)
-    DropdownPopup.MouseButton1Click:Connect(function()
-        -- Stop event propagation, jangan close dropdown
-    end)
+
+        -- Set ZIndex untuk semua child popup elements
+local function SetPopupZIndex()
+    for _, child in pairs(DropdownPopup:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            child.ZIndex = 51
+        end
+    end
+end
+
+-- Panggil setelah create popup structure
+SetPopupZIndex()
 
         GlobalDropdownSystem = {
             Popup = DropdownPopup,
