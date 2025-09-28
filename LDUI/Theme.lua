@@ -1,173 +1,102 @@
--- Theme.lua
--- Satu modul untuk: palet warna, gradient, dan animasi (pengganti ParityTheme + EngineState)
--- src/utils/theme.lua
-local TweenService = game:GetService("TweenService")
+-- Theme Module
+local ThemeManager = {}
 
-local Theme = {}
-
--- ===== Palet & Preset =====
-Theme.colors = {
-    bg        = Color3.fromRGB(14, 16, 20),
-    card      = Color3.fromRGB(22, 25, 31),
-    stroke    = Color3.fromRGB(40, 44, 52),
-    input     = Color3.fromRGB(28, 31, 38),
-    item      = Color3.fromRGB(28, 31, 38),
-    text      = {
-        title  = Color3.fromRGB(235, 239, 255),
-        normal = Color3.fromRGB(210, 214, 230),
-        dim    = Color3.fromRGB(150, 156, 175),
-        muted  = Color3.fromRGB(120, 128, 148),
-        onAcc  = Color3.fromRGB(255, 255, 255),
+-- Default Theme (Dark)
+local DefaultTheme = {
+    -- Window Colors
+    Window = {
+        Background = Color3.fromRGB(37, 40, 47),
+        Border = Color3.fromRGB(61, 61, 75),
+        TopFrame = Color3.fromRGB(37, 40, 47),
+        TabContent = Color3.fromRGB(32, 35, 41),
+        Sidebar = Color3.fromRGB(37, 40, 47),
     },
-    overlay   = Color3.fromRGB(0,0,0),
-}
-
--- Gradient biru “OG” untuk state selected / button pressed
-Theme.gradients = {
-    BlueOG = {
-        -- urutan ColorSequenceKeypoint (pos, color)
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(41, 127, 255)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(26, 197, 255)),
-        }),
-        Transparency = NumberSequence.new(0),
-        Rotation = 0,
+    
+    -- Text Colors
+    Text = {
+        Primary = Color3.fromRGB(197, 204, 219),
+        Secondary = Color3.fromRGB(150, 155, 165),
+        Disabled = Color3.fromRGB(75, 77, 83),
+        Placeholder = Color3.fromRGB(140, 140, 140),
     },
-    Subtle = {
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(36, 41, 54)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(28, 31, 38)),
-        }),
-        Transparency = NumberSequence.new(0),
-        Rotation = 0,
+    
+    -- Text Transparency
+    Transparency = {
+        Primary = 0,
+        Secondary = 0.3,  -- Added transparency for secondary text
+        Disabled = 0.4,
+        Placeholder = 0.5, -- Added transparency for placeholder
+    },
+    
+    -- Element Colors
+    Element = {
+        Background = Color3.fromRGB(43, 46, 53),
+        BackgroundDisabled = Color3.fromRGB(32, 35, 40),
+        Border = Color3.fromRGB(61, 61, 75),
+        BorderDisabled = Color3.fromRGB(47, 47, 58),
+        -- Blue accent tetap sama untuk consistency
+        Accent = Color3.fromRGB(10, 135, 213),
+    },
+    
+    -- Toggle Colors
+    Toggle = {
+        Off = Color3.fromRGB(53, 56, 62),
+        On = Color3.fromRGB(192, 209, 199),
+        Ball = Color3.fromRGB(255, 255, 255),
+    },
+    
+    -- Notification Colors
+    Notification = {
+        Background = Color3.fromRGB(37, 40, 47),
+        Border = Color3.fromRGB(61, 61, 75),
     }
 }
 
--- Stroke (garis tepi) ketika selected
-Theme.accentStroke = Color3.fromRGB(64, 162, 255)
-
--- Radius standar
-Theme.radius = {
-    card = 8,
-    input = 6,
-    item = 6,
-    popup = 10,
+-- Light Theme Example
+local LightTheme = {
+    Window = {
+        Background = Color3.fromRGB(248, 249, 250),
+        Border = Color3.fromRGB(200, 205, 210),
+        TopFrame = Color3.fromRGB(248, 249, 250),
+        TabContent = Color3.fromRGB(255, 255, 255),
+        Sidebar = Color3.fromRGB(245, 246, 247),
+    },
+    
+    Text = {
+        Primary = Color3.fromRGB(33, 37, 41),
+        Secondary = Color3.fromRGB(108, 117, 125),
+        Disabled = Color3.fromRGB(173, 181, 189),
+        Placeholder = Color3.fromRGB(173, 181, 189),
+    },
+    
+    Transparency = {
+        Primary = 0,
+        Secondary = 0.25,
+        Disabled = 0.4,
+        Placeholder = 0.5,
+    },
+    
+    Element = {
+        Background = Color3.fromRGB(255, 255, 255),
+        BackgroundDisabled = Color3.fromRGB(233, 236, 239),
+        Border = Color3.fromRGB(206, 212, 218),
+        BorderDisabled = Color3.fromRGB(233, 236, 239),
+        -- Accent sama biar consistency dengan original
+        Accent = Color3.fromRGB(10, 135, 213),
+    },
+    
+    Toggle = {
+        Off = Color3.fromRGB(206, 212, 218),
+        On = Color3.fromRGB(40, 167, 69),
+        Ball = Color3.fromRGB(255, 255, 255),
+    },
+    
+    Notification = {
+        Background = Color3.fromRGB(255, 255, 255),
+        Border = Color3.fromRGB(206, 212, 218),
+    }
 }
 
--- ===== Durasi & Easing =====
-Theme.tweening = {
-    base = 0.18,
-    fast = 0.12,
-    easingStyle = Enum.EasingStyle.Quint,
-    easingDir   = Enum.EasingDirection.Out,
-}
 
--- ===== Helpers Tween =====
-function Theme.tween(obj, props, dur, style, dir)
-    if not obj then return end
-    local info = TweenInfo.new(
-        dur or Theme.tweening.base,
-        style or Theme.tweening.easingStyle,
-        dir or Theme.tweening.easingDir
-    )
-    local t = TweenService:Create(obj, info, props)
-    t:Play()
-    return t
-end
-
--- Tambah UIGradient ke object (Frame/TextButton)
-local function ensureGradient(guiObject, preset)
-    local g = guiObject:FindFirstChildOfClass("UIGradient")
-    if not g then
-        g = Instance.new("UIGradient")
-        g.Name = "ThemeGradient"
-        g.Parent = guiObject
-    end
-    g.Color = preset.Color
-    g.Transparency = preset.Transparency
-    g.Rotation = preset.Rotation or 0
-    return g
-end
-
--- Hapus gradient kalau ada
-local function clearGradient(guiObject)
-    local g = guiObject:FindFirstChild("ThemeGradient")
-    if g then g:Destroy() end
-end
-
--- ===== State Painters (Button/Item) =====
--- Normal state (tanpa gradient)
-function Theme.paintNormal(guiObject, strokeObj)
-    clearGradient(guiObject)
-    Theme.tween(guiObject, { BackgroundColor3 = Theme.colors.item }, Theme.tweening.fast)
-    if strokeObj then
-        Theme.tween(strokeObj, { Color = Theme.colors.stroke, Thickness = 1 }, Theme.tweening.fast)
-    end
-end
-
--- Hover (subtle)
-function Theme.paintHover(guiObject, strokeObj)
-    ensureGradient(guiObject, Theme.gradients.Subtle)
-    if strokeObj then Theme.tween(strokeObj, { Color = Theme.colors.stroke, Thickness = 1.25 }, Theme.tweening.fast) end
-end
-
--- Pressed / Selected (gradient biru OG)
-function Theme.paintSelected(guiObject, strokeObj)
-    ensureGradient(guiObject, Theme.gradients.BlueOG)
-    if strokeObj then Theme.tween(strokeObj, { Color = Theme.accentStroke, Thickness = 1.5 }, Theme.tweening.fast) end
-end
-
--- ===== Text helpers =====
-function Theme.setText(label, color3)
-    if label then Theme.tween(label, { TextColor3 = color3 }, Theme.tweening.fast) end
-end
-
--- Catatan: Roblox belum dukung gradient langsung ke isi teks; biasanya pakai trik.
--- Di sini kita sediakan API stub untuk konsistensi; default-nya fallback ke warna putih.
-function Theme.applyTextGradient(label, _presetName)
-    Theme.setText(label, Theme.colors.text.onAcc)
-end
-
--- ===== Popup animation =====
-function Theme.popupIn(panel)
-    local size0 = panel.Size
-    panel.Size = UDim2.fromOffset(size0.X.Offset, size0.Y.Offset - 36)
-    Theme.tween(panel, { Size = size0 }, Theme.tweening.base)
-end
-
-function Theme.popupOut(panel, onDone)
-    local size0 = panel.Size
-    local t = Theme.tween(panel, { Size = UDim2.fromOffset(size0.X.Offset, size0.Y.Offset - 36) }, Theme.tweening.fast)
-    if t then
-        t.Completed:Connect(function()
-            if typeof(onDone) == "function" then onDone() end
-        end)
-    else
-        if typeof(onDone) == "function" then onDone() end
-    end
-end
-
--- ===== Convenience apply untuk komponen input =====
-function Theme.applyInputBox(box, stroke)
-    Theme.tween(box, { BackgroundColor3 = Theme.colors.input }, Theme.tweening.fast)
-    if stroke then Theme.tween(stroke, { Color = Theme.colors.stroke }, Theme.tweening.fast) end
-end
-
-function Theme.applyCard(frame, stroke)
-    Theme.tween(frame, { BackgroundColor3 = Theme.colors.card }, Theme.tweening.fast)
-    if stroke then Theme.tween(stroke, { Color = Theme.colors.stroke }, Theme.tweening.fast) end
-end
-
--- Untuk item dropdown: selected / normal
-function Theme.applyDropdownItem(btn, label, isSelected)
-    local stroke = btn:FindFirstChildOfClass("UIStroke")
-    if isSelected then
-        Theme.paintSelected(btn, stroke)
-        Theme.setText(label, Theme.colors.text.onAcc)
-    else
-        Theme.paintNormal(btn, stroke)
-        Theme.setText(label, Theme.colors.text.normal)
-    end
-end
-
-return Theme
+local CurrentTheme = DefaultTheme
+local ThemeCallbacks = {}
