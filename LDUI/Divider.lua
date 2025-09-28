@@ -886,7 +886,7 @@ local function CreateSlider(parent, config)
     SliderFrame.BorderSizePixel = 0
     SliderFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     SliderFrame.AutomaticSize = Enum.AutomaticSize.Y
-    SliderFrame.Size = UDim2.new(1, 0, 0, 35)
+    SliderFrame.Size = UDim2.new(1, 0, 0, 28)
     SliderFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
     SliderFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SliderFrame.Name = "Slider"
@@ -903,10 +903,10 @@ local function CreateSlider(parent, config)
     SliderStroke.Parent = SliderFrame
     
     local SliderPadding = Instance.new("UIPadding")
-    SliderPadding.PaddingTop = UDim.new(0, 10)
-    SliderPadding.PaddingRight = UDim.new(0, 10)
-    SliderPadding.PaddingLeft = UDim.new(0, 10)
-    SliderPadding.PaddingBottom = UDim.new(0, 10)
+    SliderPadding.PaddingTop = UDim.new(0, 6)     
+    SliderPadding.PaddingRight = UDim.new(0, 8)   
+    SliderPadding.PaddingLeft = UDim.new(0, 8)    
+    SliderPadding.PaddingBottom = UDim.new(0, 6)  
     SliderPadding.Parent = SliderFrame
     
     local SliderLayout = Instance.new("UIListLayout")
@@ -919,7 +919,7 @@ local function CreateSlider(parent, config)
     SliderTitle.TextWrapped = true
     SliderTitle.Interactable = false
     SliderTitle.BorderSizePixel = 0
-    SliderTitle.TextSize = 16
+    SliderTitle.TextSize = 14
     SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
     SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     SliderTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -959,7 +959,7 @@ local function CreateSlider(parent, config)
     local SliderContainer = Instance.new("Frame")
     SliderContainer.ZIndex = 0
     SliderContainer.BorderSizePixel = 0
-    SliderContainer.Size = UDim2.new(1, 0, 0, 25)
+    SliderContainer.Size = UDim2.new(1, 0, 0, 20)
     SliderContainer.Name = "SliderFrame"
     SliderContainer.LayoutOrder = 2
     SliderContainer.BackgroundTransparency = 1
@@ -970,7 +970,7 @@ local function CreateSlider(parent, config)
     SliderTrackContainer.ZIndex = 0
     SliderTrackContainer.BorderSizePixel = 0
     SliderTrackContainer.AnchorPoint = Vector2.new(0, 0.5)
-    SliderTrackContainer.Size = UDim2.new(1, 0, 0, 20)
+    SliderTrackContainer.Size = UDim2.new(1, 0, 0, 16)
     SliderTrackContainer.Position = UDim2.new(0, 0, 0.5, 0)
     SliderTrackContainer.BackgroundTransparency = 1
     SliderTrackContainer.Parent = SliderContainer
@@ -1125,7 +1125,7 @@ local function CreateSlider(parent, config)
     ValueText.Interactable = false
     ValueText.ZIndex = 2
     ValueText.BorderSizePixel = 0
-    ValueText.TextSize = 14
+    ValueText.TextSize = 12
     ValueText.TextXAlignment = Enum.TextXAlignment.Left
     ValueText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ValueText.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1412,7 +1412,7 @@ local function CreateTextBox(parent, config)
     TextBoxFrame.BorderSizePixel = 0
     TextBoxFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     TextBoxFrame.AutomaticSize = Enum.AutomaticSize.Y
-    TextBoxFrame.Size = UDim2.new(1, 0, 0, 35)
+    TextBoxFrame.Size = UDim2.new(1, 0, 0, 28)
     TextBoxFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
     TextBoxFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TextBoxFrame.Name = "TextBox"
@@ -1433,7 +1433,7 @@ local function CreateTextBox(parent, config)
     TitleLabel.TextWrapped = true
     TitleLabel.Interactable = false
     TitleLabel.BorderSizePixel = 0
-    TitleLabel.TextSize = 16
+    TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -1448,10 +1448,10 @@ local function CreateTextBox(parent, config)
 
     -- Padding for the main frame
     local MainPadding = Instance.new("UIPadding")
-    MainPadding.PaddingTop = UDim.new(0, 10)
-    MainPadding.PaddingRight = UDim.new(0, 10)
-    MainPadding.PaddingLeft = UDim.new(0, 10)
-    MainPadding.PaddingBottom = UDim.new(0, 10)
+    MainPadding.PaddingTop = UDim.new(0, 6)     -- DARI 10 -> 6
+    MainPadding.PaddingRight = UDim.new(0, 8)   -- DARI 10 -> 8
+    MainPadding.PaddingLeft = UDim.new(0, 8)    -- DARI 10 -> 8
+    MainPadding.PaddingBottom = UDim.new(0, 6)  -- DARI 10 -> 
     MainPadding.Parent = TextBoxFrame
 
     -- Layout for main frame
@@ -1488,7 +1488,7 @@ local function CreateTextBox(parent, config)
     BoxFrame.ZIndex = 0
     BoxFrame.BorderSizePixel = 0
     BoxFrame.AutomaticSize = Enum.AutomaticSize.Y
-    BoxFrame.Size = UDim2.new(1, 0, 0, 25)
+    BoxFrame.Size = UDim2.new(1, 0, 0, 20)
     BoxFrame.Name = "BoxFrame"
     BoxFrame.LayoutOrder = 2
     BoxFrame.BackgroundTransparency = 1
@@ -1515,7 +1515,7 @@ local function CreateTextBox(parent, config)
     InputBox.BorderSizePixel = 0
     InputBox.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     InputBox.AutomaticSize = Enum.AutomaticSize.Y
-    InputBox.Size = UDim2.new(1, 0, 0, 25)
+    InputBox.Size = UDim2.new(1, 0, 0, 20)
     InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     InputBox.Parent = BoxFrame
 
@@ -1544,14 +1544,14 @@ local function CreateTextBox(parent, config)
     ActualTextBox.BorderSizePixel = 0
     ActualTextBox.TextWrapped = true
     ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
-    ActualTextBox.TextSize = 14
+    ActualTextBox.TextSize = 12
     ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
     ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
     ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
     ActualTextBox.ClipsDescendants = true
     ActualTextBox.PlaceholderText = TextBoxData.Placeholder
-    ActualTextBox.Size = UDim2.new(1, 0, 0, 25)
+    ActualTextBox.Size = UDim2.new(1, 0, 0, 20)
     ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ActualTextBox.Text = TextBoxData.Default
     ActualTextBox.BackgroundTransparency = 1
@@ -1561,10 +1561,10 @@ local function CreateTextBox(parent, config)
 
     -- TextBox Padding
     local TextBoxPadding = Instance.new("UIPadding")
-    TextBoxPadding.PaddingTop = UDim.new(0, 5)
-    TextBoxPadding.PaddingRight = UDim.new(0, 10)
-    TextBoxPadding.PaddingLeft = UDim.new(0, 10)
-    TextBoxPadding.PaddingBottom = UDim.new(0, 5)
+    TextBoxPadding.PaddingTop = UDim.new(0, 3)      -- DARI 5 -> 3
+    TextBoxPadding.PaddingRight = UDim.new(0, 8)    -- DARI 10 -> 8
+    TextBoxPadding.PaddingLeft = UDim.new(0, 8)     -- DARI 10 -> 8
+     TextBoxPadding.PaddingBottom = UDim.new(0, 3)   -- DARI 5 -> 3
     TextBoxPadding.Parent = ActualTextBox
 
     -- Apply MultiLine settings
@@ -2035,7 +2035,7 @@ local function CreateButton(parent, config)
     ButtonFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     ButtonFrame.Selectable = false
     ButtonFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ButtonFrame.Size = UDim2.new(1, 0, 0, 35)
+    ButtonFrame.Size = UDim2.new(1, 0, 0, 28)
     ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ButtonFrame.Name = "Button"
     ButtonFrame.Position = UDim2.new(0, 0, 0.384, 0)
@@ -2067,10 +2067,10 @@ local function CreateButton(parent, config)
     ButtonLayout.Parent = ButtonContent
 
     local ButtonPadding = Instance.new("UIPadding")
-    ButtonPadding.PaddingTop = UDim.new(0, 10)
-    ButtonPadding.PaddingRight = UDim.new(0, 10)
-    ButtonPadding.PaddingLeft = UDim.new(0, 10)
-    ButtonPadding.PaddingBottom = UDim.new(0, 10)
+    ButtonPadding.PaddingTop = UDim.new(0, 6)     
+    ButtonPadding.PaddingRight = UDim.new(0, 8)   
+    ButtonPadding.PaddingLeft = UDim.new(0, 8)    
+    ButtonPadding.PaddingBottom = UDim.new(0, 6)  
     ButtonPadding.Parent = ButtonContent
 
     -- Button Title
@@ -2078,7 +2078,7 @@ local function CreateButton(parent, config)
     ButtonTitle.TextWrapped = true
     ButtonTitle.Interactable = false
     ButtonTitle.BorderSizePixel = 0
-    ButtonTitle.TextSize = 16
+    ButtonTitle.TextSize = 14
     ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
     ButtonTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ButtonTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
@@ -2099,7 +2099,7 @@ local function CreateButton(parent, config)
     ClickIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
     ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
     ClickIcon.Image = "rbxassetid://91877599529856"
-    ClickIcon.Size = UDim2.new(0, 23, 0, 23)
+    ClickIcon.Size = UDim2.new(0, 18, 0, 18)
     ClickIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ClickIcon.Name = "ClickIcon"
     ClickIcon.Position = UDim2.new(1, 0, 0.5, 0)
