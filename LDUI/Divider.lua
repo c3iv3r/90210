@@ -743,7 +743,7 @@ local function CreateParagraph(parent, config)
     ParagraphFrame.Parent = parent
 
     local ParagraphCorner = Instance.new("UICorner")
-    ParagraphCorner.CornerRadius = UDim.new(0, 0)
+    ParagraphCorner.CornerRadius = UDim.new(0, 6)
     ParagraphCorner.Parent = ParagraphFrame
 
     local ParagraphStroke = Instance.new("UIStroke")
@@ -772,7 +772,7 @@ local function CreateParagraph(parent, config)
     ParagraphTitle.TextSize = 14
     ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
     ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ParagraphTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    ParagraphTitle.Font = Enum.Font.GothamBold
     ParagraphTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     ParagraphTitle.BackgroundTransparency = 1
     ParagraphTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -793,7 +793,7 @@ local function CreateParagraph(parent, config)
         ParagraphDescription.TextSize = 14
         ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.Font = Enum.Font.GothamBold
         ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
         ParagraphDescription.BackgroundTransparency = 1
         ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -814,7 +814,7 @@ local function CreateParagraph(parent, config)
         ParagraphDescription.TextSize = 14
         ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ParagraphDescription.Font = Enum.Font.GothamBold
         ParagraphDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
         ParagraphDescription.BackgroundTransparency = 1
         ParagraphDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -893,7 +893,7 @@ local function CreateSlider(parent, config)
     SliderFrame.Parent = parent
     
     local SliderCorner = Instance.new("UICorner")
-    SliderCorner.CornerRadius = UDim.new(0, 0)
+    SliderCorner.CornerRadius = UDim.new(0, 6)
     SliderCorner.Parent = SliderFrame
     
     local SliderStroke = Instance.new("UIStroke")
@@ -922,7 +922,7 @@ local function CreateSlider(parent, config)
     SliderTitle.TextSize = 14
     SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
     SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    SliderTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    SliderTitle.Font = Enum.Font.GothamBold
     SliderTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     SliderTitle.BackgroundTransparency = 1
     SliderTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -943,7 +943,7 @@ local function CreateSlider(parent, config)
         SliderDescription.TextTransparency = 0.5
         SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
         SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        SliderDescription.Font = Enum.Font.GothamBold
         SliderDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
         SliderDescription.BackgroundTransparency = 1
         SliderDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -1129,7 +1129,7 @@ local function CreateSlider(parent, config)
     ValueText.TextSize = 12
     ValueText.TextXAlignment = Enum.TextXAlignment.Left
     ValueText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ValueText.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    ValueText.Font = Enum.Font.GothamBold
     ValueText.TextColor3 = Color3.fromRGB(197, 204, 219)
     ValueText.BackgroundTransparency = 1
     ValueText.RichText = true
@@ -1420,7 +1420,7 @@ local function CreateTextBox(parent, config)
     TextBoxFrame.Parent = parent
 
     local TextBoxCorner = Instance.new("UICorner")
-    TextBoxCorner.CornerRadius = UDim.new(0, 0)
+    TextBoxCorner.CornerRadius = UDim.new(0, 6)
     TextBoxCorner.Parent = TextBoxFrame
 
     local TextBoxStroke = Instance.new("UIStroke")
@@ -1437,7 +1437,7 @@ local function CreateTextBox(parent, config)
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -1472,7 +1472,7 @@ local function CreateTextBox(parent, config)
         DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.Font = Enum.Font.GothamBold
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         DescriptionLabel.BackgroundTransparency = 1
         DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -1748,7 +1748,7 @@ local function CreateToggle(parent, config)
     ToggleFrame.Parent = parent
 
     local ToggleCorner = Instance.new("UICorner")
-    ToggleCorner.CornerRadius = UDim.new(0, 0)
+    ToggleCorner.CornerRadius = UDim.new(0, 6)
     ToggleCorner.Parent = ToggleFrame
 
     local ToggleStroke = Instance.new("UIStroke")
@@ -1780,7 +1780,7 @@ local function CreateToggle(parent, config)
         DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.Font = Enum.Font.GothamBold
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         DescriptionLabel.BackgroundTransparency = 1
         DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -1800,7 +1800,7 @@ local function CreateToggle(parent, config)
     ToggleTitle.TextSize = 14
     ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
     ToggleTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ToggleTitle.Font = Enum.Font.GothamBold
     ToggleTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     ToggleTitle.BackgroundTransparency = 1
     ToggleTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -1960,7 +1960,7 @@ local function CreateToggle(parent, config)
                 DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.Font = Enum.Font.GothamBold
                 DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
                 DescriptionLabel.BackgroundTransparency = 1
                 DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -2045,7 +2045,7 @@ local function CreateButton(parent, config)
     ButtonFrame.Parent = parent
 
     local ButtonCorner = Instance.new("UICorner")
-    ButtonCorner.CornerRadius = UDim.new(0, 0)
+    ButtonCorner.CornerRadius = UDim.new(0, 6)
     ButtonCorner.Parent = ButtonFrame
 
     local ButtonStroke = Instance.new("UIStroke")
@@ -2084,7 +2084,7 @@ local function CreateButton(parent, config)
     ButtonTitle.TextSize = 14
     ButtonTitle.TextXAlignment = Enum.TextXAlignment.Left
     ButtonTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ButtonTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    ButtonTitle.Font = Enum.Font.GothamBold
     ButtonTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     ButtonTitle.BackgroundTransparency = 1
     ButtonTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -2119,7 +2119,7 @@ local function CreateButton(parent, config)
         DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.Font = Enum.Font.GothamBold
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         DescriptionLabel.BackgroundTransparency = 1
         DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -2283,7 +2283,7 @@ local function CreateButton(parent, config)
                 DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.Font = Enum.Font.GothamBold
                 DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
                 DescriptionLabel.BackgroundTransparency = 1
                 DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -2361,7 +2361,7 @@ local function CreateDropdown(parent, config)
     DropdownFrame.Parent = parent
 
     local DropdownCorner = Instance.new("UICorner")
-    DropdownCorner.CornerRadius = UDim.new(0, 0)
+    DropdownCorner.CornerRadius = UDim.new(0, 6)
     DropdownCorner.Parent = DropdownFrame
 
     local DropdownStroke = Instance.new("UIStroke")
@@ -2389,7 +2389,7 @@ local function CreateDropdown(parent, config)
     DropdownTitle.TextSize = 14
     DropdownTitle.TextXAlignment = Enum.TextXAlignment.Left
     DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    DropdownTitle.Font = Enum.Font.GothamBold
     DropdownTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     DropdownTitle.BackgroundTransparency = 1
     DropdownTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -2512,7 +2512,7 @@ local function CreateDropdown(parent, config)
         DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        DescriptionLabel.Font = Enum.Font.GothamBold
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         DescriptionLabel.BackgroundTransparency = 1
         DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -2748,7 +2748,7 @@ local function CreateDropdown(parent, config)
         SearchBox.TextSize = 14
         SearchBox.TextColor3 = Color3.fromRGB(197, 204, 219)
         SearchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SearchBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        SearchBox.Font = Enum.Font.GothamBold
         SearchBox.ClipsDescendants = true
         SearchBox.PlaceholderText = "Input here..."
         SearchBox.Size = UDim2.new(1, -25, 1, 0)
@@ -2802,7 +2802,7 @@ local function CreateDropdown(parent, config)
         PopupTitle.TextXAlignment = Enum.TextXAlignment.Left
         PopupTitle.TextScaled = true
         PopupTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        PopupTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        PopupTitle.Font = Enum.Font.GothamBold
         PopupTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
         PopupTitle.BackgroundTransparency = 1
         PopupTitle.AnchorPoint = Vector2.new(0, 0.5)
@@ -2984,7 +2984,7 @@ local function CreateDropdown(parent, config)
         ItemTitle.BorderSizePixel = 0
         ItemTitle.TextSize = 16
         ItemTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        ItemTitle.Font = Enum.Font.GothamBold
         ItemTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
         ItemTitle.BackgroundTransparency = 1
         ItemTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -3001,7 +3001,7 @@ local function CreateDropdown(parent, config)
         ItemDescription.TextSize = 16
         ItemDescription.TextXAlignment = Enum.TextXAlignment.Left
         ItemDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        ItemDescription.Font = Enum.Font.GothamBold
         ItemDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
         ItemDescription.BackgroundTransparency = 1
         ItemDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -3271,7 +3271,7 @@ local function CreateDropdown(parent, config)
             DescriptionLabel.TextSize = 12
             DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
             DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+            DescriptionLabel.Font = Enum.Font.GothamBold
             DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
             DescriptionLabel.BackgroundTransparency = 1
             DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -3463,7 +3463,7 @@ local function CreateSection(parent, config)
     SectionTitle.TextSize = 14
     SectionTitle.TextXAlignment = Enum.TextXAlignment[SectionData.TextXAlignment]
     SectionTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    SectionTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    SectionTitle.Font = Enum.Font.GothamBold
     SectionTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     SectionTitle.BackgroundTransparency = 1
     SectionTitle.Size = UDim2.new(1, 0, 0, 15)
@@ -3497,7 +3497,7 @@ local function CreateSection(parent, config)
         SectionDescription.TextSize = 16
         SectionDescription.TextXAlignment = Enum.TextXAlignment.Left
         SectionDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        SectionDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        SectionDescription.Font = Enum.Font.GothamBold
         SectionDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
         SectionDescription.BackgroundTransparency = 1
         SectionDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -3795,7 +3795,7 @@ function Library:CreateWindow(config)
     FloatLabel.BorderSizePixel = 0
     FloatLabel.TextSize = 16
     FloatLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    FloatLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    FloatLabel.Font = Enum.Font.GothamBold
     FloatLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
     FloatLabel.BackgroundTransparency = 1
     FloatLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -3841,7 +3841,7 @@ function Library:CreateWindow(config)
     Window.Parent = ScreenGui
 
     local WindowCorner = Instance.new("UICorner")
-    WindowCorner.CornerRadius = UDim.new(0, 10)
+    WindowCorner.CornerRadius = UDim.new(0, 0)
     WindowCorner.Parent = Window
 
     local WindowStroke = Instance.new("UIStroke")
@@ -3861,7 +3861,7 @@ function Library:CreateWindow(config)
     TopFrame.Parent = Window
 
     local TopCorner = Instance.new("UICorner")
-    TopCorner.CornerRadius = UDim.new(0, 6)
+    TopCorner.CornerRadius = UDim.new(0, 0)
     TopCorner.Parent = TopFrame
 
     local TopBorder = Instance.new("Frame")
@@ -3901,7 +3901,7 @@ function Library:CreateWindow(config)
     TopTitle.TextSize = 14
     TopTitle.TextScaled = true
     TopTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TopTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    TopTitle.Font = Enum.Font.GothamBold
     TopTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     TopTitle.BackgroundTransparency = 1
     TopTitle.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -4116,7 +4116,7 @@ function Library:CreateWindow(config)
     NoObjectFoundText.TextSize = 14
     NoObjectFoundText.TextScaled = true
     NoObjectFoundText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NoObjectFoundText.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    NoObjectFoundText.Font = Enum.Font.GothamBold
     NoObjectFoundText.TextColor3 = Color3.fromRGB(135, 140, 150)
     NoObjectFoundText.BackgroundTransparency = 1
     NoObjectFoundText.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -4174,7 +4174,7 @@ BottomFrame.Position = UDim2.new(0, 0, 1, 0)
 BottomFrame.Parent = Window
 
 local BottomCorner = Instance.new("UICorner")
-    BottomCorner.CornerRadius = UDim.new(0, 6)
+    BottomCorner.CornerRadius = UDim.new(0, 0)
     BottomCorner.Parent = BottomFrame
 
 local BottomBorder = Instance.new("Frame")
@@ -4192,7 +4192,7 @@ FooterLabel.BorderSizePixel = 0
 FooterLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 FooterLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 FooterLabel.Size = UDim2.new(1, 0, 0, 16)
-FooterLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+FooterLabel.Font Enum.Font.GothamBold
 FooterLabel.TextSize = 12
 FooterLabel.TextColor3 = Color3.fromRGB(150, 155, 165)
 FooterLabel.TextTransparency = 0.25 
@@ -4456,7 +4456,7 @@ end)
         TabButtonLabel.TextTransparency = 0.5
         TabButtonLabel.TextScaled = true
         TabButtonLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TabButtonLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+        TabButtonLabel.Font = Enum.Font.GothamBold
         TabButtonLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonLabel.BackgroundTransparency = 1
         TabButtonLabel.AnchorPoint = Vector2.new(0, 0.5)
