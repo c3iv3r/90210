@@ -3532,8 +3532,8 @@ local function CreateSection(parent, config)
 
     local SectionContentPadding = Instance.new("UIPadding")
     SectionContentPadding.PaddingTop = UDim.new(0, 10)
-    SectionContentPadding.PaddingRight = UDim.new(0, 8)
-    SectionContentPadding.PaddingLeft = UDim.new(0, 8)
+    SectionContentPadding.PaddingRight = UDim.new(0, 3)
+    SectionContentPadding.PaddingLeft = UDim.new(0, 3)
     SectionContentPadding.Parent = SectionContent
 
     -- Create Divider
