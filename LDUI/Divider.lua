@@ -4192,7 +4192,7 @@ FooterLabel.BorderSizePixel = 0
 FooterLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 FooterLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 FooterLabel.Size = UDim2.new(1, 0, 0, 16)
-FooterLabel.Font Enum.Font.GothamBold
+FooterLabel.Font = Enum.Font.GothamBold
 FooterLabel.TextSize = 12
 FooterLabel.TextColor3 = Color3.fromRGB(150, 155, 165)
 FooterLabel.TextTransparency = 0.25 
