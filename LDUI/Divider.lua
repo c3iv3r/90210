@@ -1774,7 +1774,8 @@ local function CreateToggle(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextSize = 10
+        DescriptionLabel.TextTransparency = 0.7
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1954,7 +1955,7 @@ local function CreateToggle(parent, config)
                 DescriptionLabel.TextWrapped = true
                 DescriptionLabel.Interactable = false
                 DescriptionLabel.BorderSizePixel = 0
-                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextSize = 10
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -2504,8 +2505,9 @@ local function CreateDropdown(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 16
-        DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
+        DescriptionLabel.TextSize = 10
+        DescriptionLabel.TextTransparency = 0.7
+        DescriptionLabel.TextXAlignment = EnumTextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
@@ -3263,7 +3265,7 @@ local function CreateDropdown(parent, config)
             DescriptionLabel.TextWrapped = true
             DescriptionLabel.Interactable = false
             DescriptionLabel.BorderSizePixel = 0
-            DescriptionLabel.TextSize = 16
+            DescriptionLabel.TextSize = 10
             DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
             DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
