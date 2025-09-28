@@ -736,7 +736,7 @@ local function CreateParagraph(parent, config)
     ParagraphFrame.BorderSizePixel = 0
     ParagraphFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     ParagraphFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ParagraphFrame.Size = UDim2.new(1, 0, 0, 35)
+    ParagraphFrame.Size = UDim2.new(1, 0, 0, 28)
     ParagraphFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
     ParagraphFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ParagraphFrame.Name = "Paragraph"
@@ -753,10 +753,10 @@ local function CreateParagraph(parent, config)
     ParagraphStroke.Parent = ParagraphFrame
 
     local ParagraphPadding = Instance.new("UIPadding")
-    ParagraphPadding.PaddingTop = UDim.new(0, 10)
-    ParagraphPadding.PaddingRight = UDim.new(0, 10)
-    ParagraphPadding.PaddingLeft = UDim.new(0, 10)
-    ParagraphPadding.PaddingBottom = UDim.new(0, 10)
+    ParagraphPadding.PaddingTop = UDim.new(0, 6)
+    ParagraphPadding.PaddingRight = UDim.new(0, 8)
+    ParagraphPadding.PaddingLeft = UDim.new(0, 8)
+    ParagraphPadding.PaddingBottom = UDim.new(0, 6)
     ParagraphPadding.Parent = ParagraphFrame
 
     local ParagraphLayout = Instance.new("UIListLayout")
@@ -769,7 +769,7 @@ local function CreateParagraph(parent, config)
     ParagraphTitle.TextWrapped = true
     ParagraphTitle.Interactable = false
     ParagraphTitle.BorderSizePixel = 0
-    ParagraphTitle.TextSize = 16
+    ParagraphTitle.TextSize = 14
     ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
     ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ParagraphTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
@@ -790,7 +790,7 @@ local function CreateParagraph(parent, config)
         ParagraphDescription.TextWrapped = true
         ParagraphDescription.Interactable = false
         ParagraphDescription.BorderSizePixel = 0
-        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextSize = 14
         ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1739,7 +1739,7 @@ local function CreateToggle(parent, config)
     ToggleFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     ToggleFrame.Selectable = false
     ToggleFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ToggleFrame.Size = UDim2.new(1, 0, 0, 35)
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 28)
     ToggleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleFrame.Name = "Toggle"
     ToggleFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
@@ -1756,10 +1756,10 @@ local function CreateToggle(parent, config)
     ToggleStroke.Parent = ToggleFrame
 
     local TogglePadding = Instance.new("UIPadding")
-    TogglePadding.PaddingTop = UDim.new(0, 10)
-    TogglePadding.PaddingRight = UDim.new(0, 10)
-    TogglePadding.PaddingLeft = UDim.new(0, 10)
-    TogglePadding.PaddingBottom = UDim.new(0, 10)
+    TogglePadding.PaddingTop = UDim.new(0, 6)
+    TogglePadding.PaddingRight = UDim.new(0, 8)
+    TogglePadding.PaddingLeft = UDim.new(0, 8)
+    TogglePadding.PaddingBottom = UDim.new(0, 6)
     TogglePadding.Parent = ToggleFrame
 
     local ToggleLayout = Instance.new("UIListLayout")
@@ -1794,7 +1794,7 @@ local function CreateToggle(parent, config)
     local ToggleTitle = Instance.new("TextLabel")
     ToggleTitle.TextWrapped = true
     ToggleTitle.BorderSizePixel = 0
-    ToggleTitle.TextSize = 16
+    ToggleTitle.TextSize = 14
     ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
     ToggleTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ToggleTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
@@ -1813,7 +1813,7 @@ local function CreateToggle(parent, config)
     ToggleSwitch.BackgroundColor3 = Color3.fromRGB(54, 57, 63)
     ToggleSwitch.ImageColor3 = Color3.fromRGB(197, 204, 219)
     ToggleSwitch.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleSwitch.Size = UDim2.new(0, 45, 0, 25)
+    ToggleSwitch.Size = UDim2.new(0, 40, 0, 20)
     ToggleSwitch.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleSwitch.Name = "Fill"
     ToggleSwitch.Position = UDim2.new(1, 0, 0.5, 0)
@@ -1839,7 +1839,7 @@ local function CreateToggle(parent, config)
     ToggleBall.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ToggleBall.ImageColor3 = Color3.fromRGB(197, 204, 219)
     ToggleBall.AnchorPoint = Vector2.new(0, 0.5)
-    ToggleBall.Size = UDim2.new(0, 20, 0, 20)
+    ToggleBall.Size = UDim2.new(0, 16, 0, 16)
     ToggleBall.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggleBall.Name = "Ball"
     ToggleBall.Position = UDim2.new(0, 0, 0.5, 0)
@@ -2350,7 +2350,7 @@ local function CreateDropdown(parent, config)
     DropdownFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     DropdownFrame.Selectable = false
     DropdownFrame.AutomaticSize = Enum.AutomaticSize.Y
-    DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
+    DropdownFrame.Size = UDim2.new(1, 0, 0, 28)
     DropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownFrame.Name = "Dropdown"
     DropdownFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
@@ -2367,10 +2367,10 @@ local function CreateDropdown(parent, config)
     DropdownStroke.Parent = DropdownFrame
 
     local DropdownPadding = Instance.new("UIPadding")
-    DropdownPadding.PaddingTop = UDim.new(0, 10)
-    DropdownPadding.PaddingRight = UDim.new(0, 10)
-    DropdownPadding.PaddingLeft = UDim.new(0, 10)
-    DropdownPadding.PaddingBottom = UDim.new(0, 10)
+    DropdownPadding.PaddingTop = UDim.new(0, 6)
+    DropdownPadding.PaddingRight = UDim.new(0, 8)
+    DropdownPadding.PaddingLeft = UDim.new(0, 8)
+    DropdownPadding.PaddingBottom = UDim.new(0, 6)
     DropdownPadding.Parent = DropdownFrame
 
     local DropdownLayout = Instance.new("UIListLayout")
@@ -2382,7 +2382,7 @@ local function CreateDropdown(parent, config)
     local DropdownTitle = Instance.new("TextLabel")
     DropdownTitle.TextWrapped = true
     DropdownTitle.BorderSizePixel = 0
-    DropdownTitle.TextSize = 16
+    DropdownTitle.TextSize = 14
     DropdownTitle.TextXAlignment = Enum.TextXAlignment.Left
     DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
@@ -2404,7 +2404,7 @@ local function CreateDropdown(parent, config)
     DropdownArrow.ImageColor3 = Color3.fromRGB(197, 204, 219)
     DropdownArrow.AnchorPoint = Vector2.new(1, 0.5)
     DropdownArrow.Image = "rbxassetid://77563793724007"
-    DropdownArrow.Size = UDim2.new(0, 23, 0, 23)
+    DropdownArrow.Size = UDim2.new(0, 18, 0, 18)
     DropdownArrow.BorderColor3 = Color3.fromRGB(0, 0, 0)
     DropdownArrow.Name = "ClickIcon"
     DropdownArrow.Position = UDim2.new(1, 0, 0.5, 0)
@@ -2451,7 +2451,7 @@ local function CreateDropdown(parent, config)
     ValueButton.Selectable = false
     ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
     ValueButton.AutomaticSize = Enum.AutomaticSize.X
-    ValueButton.Size = UDim2.new(0, 20, 0, 20)
+    ValueButton.Size = UDim2.new(0, 16, 0, 16)
     ValueButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ValueButton.Name = "Trigger"
     ValueButton.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2477,7 +2477,7 @@ local function CreateDropdown(parent, config)
     ValueLabel.TextWrapped = true
     ValueLabel.Interactable = false
     ValueLabel.BorderSizePixel = 0
-    ValueLabel.TextSize = 16
+    ValueLabel.TextSize = 12
     ValueLabel.TextScaled = true
     ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ValueLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
