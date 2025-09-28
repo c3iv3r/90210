@@ -3409,7 +3409,7 @@ local function CreateSection(parent, config)
     Section.BorderSizePixel = 0
     Section.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     Section.AutomaticSize = Enum.AutomaticSize.Y
-    Section.Size = UDim2.new(1, 0, 0, 35)
+    Section.Size = UDim2.new(1, 0, 0, 25)
     Section.Position = UDim2.new(0, 0, 0.43728, 0)
     Section.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Section.Name = "Section"
@@ -3423,7 +3423,7 @@ local function CreateSection(parent, config)
     SectionButton.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
     SectionButton.Selectable = false
     SectionButton.AutomaticSize = Enum.AutomaticSize.Y
-    SectionButton.Size = UDim2.new(1, 0, 0, 35)
+    SectionButton.Size = UDim2.new(1, 0, 0, 25)
     SectionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SectionButton.Name = "Button"
     SectionButton.Parent = Section
@@ -3439,10 +3439,10 @@ local function CreateSection(parent, config)
     SectionButtonStroke.Parent = SectionButton
 
     local SectionButtonPadding = Instance.new("UIPadding")
-    SectionButtonPadding.PaddingTop = UDim.new(0, 10)
-    SectionButtonPadding.PaddingRight = UDim.new(0, 10)
-    SectionButtonPadding.PaddingLeft = UDim.new(0, 10)
-    SectionButtonPadding.PaddingBottom = UDim.new(0, 10)
+    SectionButtonPadding.PaddingTop = UDim.new(0, 6)
+    SectionButtonPadding.PaddingRight = UDim.new(0, 8)
+    SectionButtonPadding.PaddingLeft = UDim.new(0, 8)
+    SectionButtonPadding.PaddingBottom = UDim.new(0, 6)
     SectionButtonPadding.Parent = SectionButton
 
     local SectionButtonLayout = Instance.new("UIListLayout")
@@ -3455,7 +3455,7 @@ local function CreateSection(parent, config)
     SectionTitle.TextWrapped = true
     SectionTitle.Interactable = false
     SectionTitle.BorderSizePixel = 0
-    SectionTitle.TextSize = 16
+    SectionTitle.TextSize = 14
     SectionTitle.TextXAlignment = Enum.TextXAlignment[SectionData.TextXAlignment]
     SectionTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     SectionTitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
@@ -3521,7 +3521,7 @@ local function CreateSection(parent, config)
 
     local SectionContentLayout = Instance.new("UIListLayout")
     SectionContentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    SectionContentLayout.Padding = UDim.new(0, 10)
+    SectionContentLayout.Padding = UDim.new(0, 6)
     SectionContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
     SectionContentLayout.Parent = SectionContent
 
@@ -4498,7 +4498,7 @@ end)
         TabContent.Parent = Tabs
 
         local TabContentLayout = Instance.new("UIListLayout")
-        TabContentLayout.Padding = UDim.new(0, 15)
+        TabContentLayout.Padding = UDim.new(0, 8)
         TabContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
         TabContentLayout.Parent = TabContent
 
