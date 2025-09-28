@@ -743,7 +743,7 @@ local function CreateParagraph(parent, config)
     ParagraphFrame.Parent = parent
 
     local ParagraphCorner = Instance.new("UICorner")
-    ParagraphCorner.CornerRadius = UDim.new(0, 6)
+    ParagraphCorner.CornerRadius = UDim.new(0, 0)
     ParagraphCorner.Parent = ParagraphFrame
 
     local ParagraphStroke = Instance.new("UIStroke")
@@ -760,7 +760,7 @@ local function CreateParagraph(parent, config)
     ParagraphPadding.Parent = ParagraphFrame
 
     local ParagraphLayout = Instance.new("UIListLayout")
-    ParagraphLayout.Padding = UDim.new(0, 5)
+    ParagraphLayout.Padding = UDim.new(0, 3)
     ParagraphLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ParagraphLayout.Parent = ParagraphFrame
 
@@ -811,7 +811,7 @@ local function CreateParagraph(parent, config)
         ParagraphDescription.TextWrapped = true
         ParagraphDescription.Interactable = false
         ParagraphDescription.BorderSizePixel = 0
-        ParagraphDescription.TextSize = 16
+        ParagraphDescription.TextSize = 14
         ParagraphDescription.TextXAlignment = Enum.TextXAlignment.Left
         ParagraphDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         ParagraphDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -893,7 +893,7 @@ local function CreateSlider(parent, config)
     SliderFrame.Parent = parent
     
     local SliderCorner = Instance.new("UICorner")
-    SliderCorner.CornerRadius = UDim.new(0, 6)
+    SliderCorner.CornerRadius = UDim.new(0, 0)
     SliderCorner.Parent = SliderFrame
     
     local SliderStroke = Instance.new("UIStroke")
@@ -939,7 +939,8 @@ local function CreateSlider(parent, config)
         SliderDescription.TextWrapped = true
         SliderDescription.Interactable = false
         SliderDescription.BorderSizePixel = 0
-        SliderDescription.TextSize = 16
+        SliderDescription.TextSize = 12
+        SliderDescription.TextTransparency = 0.5
         SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
         SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1290,7 +1291,7 @@ local function CreateSlider(parent, config)
                 SliderDescription.TextWrapped = true
                 SliderDescription.Interactable = false
                 SliderDescription.BorderSizePixel = 0
-                SliderDescription.TextSize = 16
+                SliderDescription.TextSize = 12
                 SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
                 SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1419,7 +1420,7 @@ local function CreateTextBox(parent, config)
     TextBoxFrame.Parent = parent
 
     local TextBoxCorner = Instance.new("UICorner")
-    TextBoxCorner.CornerRadius = UDim.new(0, 6)
+    TextBoxCorner.CornerRadius = UDim.new(0, 0)
     TextBoxCorner.Parent = TextBoxFrame
 
     local TextBoxStroke = Instance.new("UIStroke")
@@ -1456,7 +1457,7 @@ local function CreateTextBox(parent, config)
 
     -- Layout for main frame
     local MainLayout = Instance.new("UIListLayout")
-    MainLayout.Padding = UDim.new(0, 10)
+    MainLayout.Padding = UDim.new(0, 3)
     MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
     MainLayout.Parent = TextBoxFrame
 
@@ -1747,7 +1748,7 @@ local function CreateToggle(parent, config)
     ToggleFrame.Parent = parent
 
     local ToggleCorner = Instance.new("UICorner")
-    ToggleCorner.CornerRadius = UDim.new(0, 6)
+    ToggleCorner.CornerRadius = UDim.new(0, 0)
     ToggleCorner.Parent = ToggleFrame
 
     local ToggleStroke = Instance.new("UIStroke")
@@ -1764,7 +1765,7 @@ local function CreateToggle(parent, config)
     TogglePadding.Parent = ToggleFrame
 
     local ToggleLayout = Instance.new("UIListLayout")
-    ToggleLayout.Padding = UDim.new(0, 5)
+    ToggleLayout.Padding = UDim.new(0, 3)
     ToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ToggleLayout.Parent = ToggleFrame
 
@@ -2044,7 +2045,7 @@ local function CreateButton(parent, config)
     ButtonFrame.Parent = parent
 
     local ButtonCorner = Instance.new("UICorner")
-    ButtonCorner.CornerRadius = UDim.new(0, 6)
+    ButtonCorner.CornerRadius = UDim.new(0, 0)
     ButtonCorner.Parent = ButtonFrame
 
     local ButtonStroke = Instance.new("UIStroke")
@@ -2360,7 +2361,7 @@ local function CreateDropdown(parent, config)
     DropdownFrame.Parent = parent
 
     local DropdownCorner = Instance.new("UICorner")
-    DropdownCorner.CornerRadius = UDim.new(0, 6)
+    DropdownCorner.CornerRadius = UDim.new(0, 0)
     DropdownCorner.Parent = DropdownFrame
 
     local DropdownStroke = Instance.new("UIStroke")
