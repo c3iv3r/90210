@@ -2507,7 +2507,7 @@ local function CreateDropdown(parent, config)
         DescriptionLabel.BorderSizePixel = 0
         DescriptionLabel.TextSize = 10
         DescriptionLabel.TextTransparency = 0.7
-        DescriptionLabel.TextXAlignment = EnumTextXAlignment.Left
+        DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
         DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
