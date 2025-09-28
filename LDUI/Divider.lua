@@ -910,7 +910,7 @@ local function CreateSlider(parent, config)
     SliderPadding.Parent = SliderFrame
     
     local SliderLayout = Instance.new("UIListLayout")
-    SliderLayout.Padding = UDim.new(0, 5)
+    SliderLayout.Padding = UDim.new(0, 3)
     SliderLayout.SortOrder = Enum.SortOrder.LayoutOrder
     SliderLayout.Parent = SliderFrame
     
@@ -1467,7 +1467,8 @@ local function CreateTextBox(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextSize = 12
+        DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1643,7 +1644,7 @@ local function CreateTextBox(parent, config)
                 DescriptionLabel.TextWrapped = true
                 DescriptionLabel.Interactable = false
                 DescriptionLabel.BorderSizePixel = 0
-                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1774,8 +1775,8 @@ local function CreateToggle(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 10
-        DescriptionLabel.TextTransparency = 0.7
+        DescriptionLabel.TextSize = 12
+        DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -1955,7 +1956,7 @@ local function CreateToggle(parent, config)
                 DescriptionLabel.TextWrapped = true
                 DescriptionLabel.Interactable = false
                 DescriptionLabel.BorderSizePixel = 0
-                DescriptionLabel.TextSize = 10
+                DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -2063,7 +2064,7 @@ local function CreateButton(parent, config)
     ButtonContent.Parent = ButtonFrame
 
     local ButtonLayout = Instance.new("UIListLayout")
-    ButtonLayout.Padding = UDim.new(0, 5)
+    ButtonLayout.Padding = UDim.new(0, 3)
     ButtonLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ButtonLayout.Parent = ButtonContent
 
@@ -2113,7 +2114,8 @@ local function CreateButton(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 16
+        DescriptionLabel.TextSize = 12
+        DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -2277,7 +2279,7 @@ local function CreateButton(parent, config)
                 DescriptionLabel.TextWrapped = true
                 DescriptionLabel.Interactable = false
                 DescriptionLabel.BorderSizePixel = 0
-                DescriptionLabel.TextSize = 16
+                DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -2375,7 +2377,7 @@ local function CreateDropdown(parent, config)
     DropdownPadding.Parent = DropdownFrame
 
     local DropdownLayout = Instance.new("UIListLayout")
-    DropdownLayout.Padding = UDim.new(0, 5)
+    DropdownLayout.Padding = UDim.new(0, 3)
     DropdownLayout.SortOrder = Enum.SortOrder.LayoutOrder
     DropdownLayout.Parent = DropdownFrame
 
@@ -2505,8 +2507,8 @@ local function CreateDropdown(parent, config)
         DescriptionLabel.TextWrapped = true
         DescriptionLabel.Interactable = false
         DescriptionLabel.BorderSizePixel = 0
-        DescriptionLabel.TextSize = 10
-        DescriptionLabel.TextTransparency = 0.7
+        DescriptionLabel.TextSize = 12
+        DescriptionLabel.TextTransparency = 0.5
         DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
         DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -3265,7 +3267,7 @@ local function CreateDropdown(parent, config)
             DescriptionLabel.TextWrapped = true
             DescriptionLabel.Interactable = false
             DescriptionLabel.BorderSizePixel = 0
-            DescriptionLabel.TextSize = 10
+            DescriptionLabel.TextSize = 12
             DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
             DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
