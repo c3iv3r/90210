@@ -4007,7 +4007,7 @@ function Library:CreateWindow(config)
     TabButtons.BorderSizePixel = 0
     TabButtons.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
     TabButtons.ClipsDescendants = true
-    TabButtons.Size = UDim2.new(0, 165, 1, -35)
+    TabButtons.Size = UDim2.new(0, 120, 1, -35)
     TabButtons.Position = UDim2.new(0, 0, 0, 35)
     TabButtons.BorderColor3 = Color3.fromRGB(61, 61, 75)
     TabButtons.Name = "TabButtons"
@@ -4070,15 +4070,15 @@ function Library:CreateWindow(config)
     TabButtonsLayout.Parent = TabButtonsList
 
     local TabButtonsPadding = Instance.new("UIPadding")
-    TabButtonsPadding.PaddingTop = UDim.new(0, 8)
+    TabButtonsPadding.PaddingTop = UDim.new(0, 6)
     TabButtonsPadding.Parent = TabButtonsList
 
     -- Create Tabs (Content Area)
     local Tabs = Instance.new("Frame")
     Tabs.BorderSizePixel = 0
     Tabs.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
-    Tabs.Size = UDim2.new(1, -165, 1, -35)
-    Tabs.Position = UDim2.new(0, 165, 0, 35)
+    Tabs.Size = UDim2.new(1, -120, 1, -35)
+    Tabs.Position = UDim2.new(0, 120, 0, 35)
     Tabs.BorderColor3 = Color3.fromRGB(61, 61, 75)
     Tabs.Name = "Tabs"
     Tabs.Parent = Window
@@ -4422,7 +4422,7 @@ end)
         TabButton.BackgroundTransparency = 1
         TabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TabButton.Selectable = false
-        TabButton.Size = UDim2.new(1, 0, 0, 36)
+        TabButton.Size = UDim2.new(1, 0, 0, 28)
         TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButton.Name = "TabButton"
         TabButton.Parent = TabButtonsList
@@ -4435,9 +4435,9 @@ end)
         TabButtonIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
         TabButtonIcon.Image = TabConfig.Icon
-        TabButtonIcon.Size = UDim2.new(0, 31, 0, 30)
+        TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
         TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TabButtonIcon.Position = UDim2.new(0, 6, 0, 18)
+        TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
         TabButtonIcon.Parent = TabButton
 
         local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
@@ -4446,7 +4446,7 @@ end)
         local TabButtonLabel = Instance.new("TextLabel")
         TabButtonLabel.TextWrapped = true
         TabButtonLabel.BorderSizePixel = 0
-        TabButtonLabel.TextSize = 14
+        TabButtonLabel.TextSize = 12
         TabButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
         TabButtonLabel.TextTransparency = 0.5
         TabButtonLabel.TextScaled = true
@@ -4455,18 +4455,18 @@ end)
         TabButtonLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonLabel.BackgroundTransparency = 1
         TabButtonLabel.AnchorPoint = Vector2.new(0, 0.5)
-        TabButtonLabel.Size = UDim2.new(0, 103, 0, 16)
+        TabButtonLabel.Size = UDim2.new(0, 85, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
-        TabButtonLabel.Position = UDim2.new(0, 42, 0.5, 0)
+        TabButtonLabel.Position = UDim2.new(0, 32, 0.5, 0)
         TabButtonLabel.Parent = TabButton
 
         local TabButtonBar = Instance.new("Frame")
         TabButtonBar.BorderSizePixel = 0
         TabButtonBar.BackgroundColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonBar.AnchorPoint = Vector2.new(0, 0.5)
-        TabButtonBar.Size = UDim2.new(0, 5, 0, 0)
-        TabButtonBar.Position = UDim2.new(0, 8, 0, 18)
+        TabButtonBar.Size = UDim2.new(0, 3, 0, 0)
+        TabButtonBar.Position = UDim2.new(0, 4, 0, 14)
         TabButtonBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonBar.Name = "Bar"
         TabButtonBar.BackgroundTransparency = 1
