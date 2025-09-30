@@ -1266,7 +1266,7 @@ local function CreateSlider(parent, config)
         
         if not isHovering then
             CreateTween(SliderStroke, {
-                Color = Color3.fromRGB(60, 60, 74)
+                Color = CurrentTheme.ElementStroke
             }, AnimationConfig.Global)
         end
     end
@@ -1289,7 +1289,7 @@ local function CreateSlider(parent, config)
         isHovering = false
         if not SliderData.Locked and not isDragging then
             CreateTween(SliderStroke, {
-                Color = Color3.fromRGB(60, 60, 74)
+                Color = CurrentTheme.ElementStroke
             }, AnimationConfig.Global)
         end
     end)
@@ -1384,7 +1384,7 @@ local function CreateSlider(parent, config)
             BackgroundColor3 = CurrentTheme.ElementBackground
         }, AnimationConfig.Global)
         CreateTween(SliderStroke, {
-            Color = Color3.fromRGB(60, 60, 74)
+            Color = CurrentTheme.ElementStroke
         }, AnimationConfig.Global)
         CreateTween(SliderTitle, {
             TextColor3 = Color3.fromRGB(196, 203, 218)
@@ -1395,7 +1395,7 @@ local function CreateSlider(parent, config)
             }, AnimationConfig.Global)
         end
         CreateTween(SliderTrackStroke, {
-            Color = Color3.fromRGB(60, 60, 74)
+            Color = CurrentTheme.ElementStroke
         }, AnimationConfig.Global)
         CreateTween(SliderTrack, {
             BackgroundTransparency = 0
@@ -1632,20 +1632,20 @@ local function CreateTextBox(parent, config)
 
     ActualTextBox.MouseLeave:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(InputBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
         end
@@ -1723,14 +1723,14 @@ local function CreateTextBox(parent, config)
 
     function TextBoxMethods:Unlock()
         TextBoxData.Locked = false
-        CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(TextBoxFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(TitleLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
         CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(196, 203, 218),
             PlaceholderColor3 = Color3.fromRGB(139, 139, 139)
@@ -1954,7 +1954,7 @@ local function CreateToggle(parent, config)
 
     ToggleSwitch.MouseLeave:Connect(function()
         if not ToggleData.Locked then
-            CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(ToggleStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             ToggleFrame.BackgroundColor3 = CurrentTheme.ElementBackground
             CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
@@ -2030,7 +2030,7 @@ local function CreateToggle(parent, config)
     function ToggleMethods:Unlock()
         ToggleData.Locked = false
         CreateTween(ToggleFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ToggleStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2243,7 +2243,7 @@ local function CreateButton(parent, config)
 
     ButtonFrame.MouseLeave:Connect(function()
         if not ButtonData.Locked then
-            CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(ButtonStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             ButtonFrame.BackgroundColor3 = CurrentTheme.ElementBackground
             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
@@ -2344,7 +2344,7 @@ local function CreateButton(parent, config)
     function ButtonMethods:Unlock()
         ButtonData.Locked = false
         CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ButtonStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
@@ -3111,7 +3111,7 @@ local function CreateDropdown(parent, config)
             else
                 CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
                 CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+                CreateTween(ItemStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
                 CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
             end
         end
@@ -3221,7 +3221,7 @@ local function CreateDropdown(parent, config)
 
     DropdownFrame.MouseLeave:Connect(function()
         if not DropdownData.Locked then
-            CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+            CreateTween(DropdownStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
@@ -3401,7 +3401,7 @@ local function CreateDropdown(parent, config)
 
     function DropdownMethods:Unlock()
         DropdownData.Locked = false
-        CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(DropdownStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
@@ -3409,7 +3409,7 @@ local function CreateDropdown(parent, config)
         end
         CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(ValueStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
+        CreateTween(ValueStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         DropdownFrame.Active = true
         DropdownFrame.Interactable = true
