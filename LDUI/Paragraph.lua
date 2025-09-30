@@ -765,7 +765,7 @@ local function CreateParagraph(parent, config)
     local ParagraphFrame = Instance.new("Frame")
     ParagraphFrame.Visible = false
     ParagraphFrame.BorderSizePixel = 0
-    ParagraphFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ParagraphFrame.BackgroundColor3 = CurrentTheme.ElementBackground
     ParagraphFrame.AutomaticSize = Enum.AutomaticSize.Y
     ParagraphFrame.Size = UDim2.new(1, 0, 0, 28)
     ParagraphFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
@@ -2344,7 +2344,7 @@ local function CreateButton(parent, config)
 
     function ButtonMethods:Unlock()
         ButtonData.Locked = false
-        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2382,7 +2382,7 @@ local function CreateDropdown(parent, config)
     DropdownFrame.BorderSizePixel = 0
     DropdownFrame.AutoButtonColor = false
     DropdownFrame.Visible = false
-    DropdownFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    DropdownFrame.BackgroundColor3 = CurrentTheme.ElementBackground
     DropdownFrame.Selectable = false
     DropdownFrame.AutomaticSize = Enum.AutomaticSize.Y
     DropdownFrame.Size = UDim2.new(1, 0, 0, 28)
@@ -2482,7 +2482,7 @@ local function CreateDropdown(parent, config)
     local ValueButton = Instance.new("ImageButton")
     ValueButton.BorderSizePixel = 0
     ValueButton.AutoButtonColor = false
-    ValueButton.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ValueButton.BackgroundColor3 = CurrentTheme.ElementBackground
     ValueButton.Selectable = false
     ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
     ValueButton.AutomaticSize = Enum.AutomaticSize.X
@@ -2675,7 +2675,7 @@ local function CreateDropdown(parent, config)
         DropdownPopup = Instance.new("Frame")
         DropdownPopup.Visible = false
         DropdownPopup.BorderSizePixel = 0
-        DropdownPopup.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+        DropdownPopup.BackgroundColor3 = CurrentTheme.ElementBackground
         DropdownPopup.AnchorPoint = Vector2.new(0.5, 0.5)
         DropdownPopup.ClipsDescendants = true
         DropdownPopup.Size = UDim2.new(0.7281, 0, 0.68367, 0)
@@ -2754,7 +2754,7 @@ local function CreateDropdown(parent, config)
         -- Search Box Container
         local SearchContainer = Instance.new("Frame")
         SearchContainer.BorderSizePixel = 0
-        SearchContainer.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+        SearchContainer.BackgroundColor3 = CurrentTheme.ElementBackground
         SearchContainer.AutomaticSize = Enum.AutomaticSize.Y
         SearchContainer.Size = UDim2.new(1, 0, 1, 0)
         SearchContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2975,7 +2975,7 @@ local function CreateDropdown(parent, config)
         ItemButton.BorderSizePixel = 0
         ItemButton.AutoButtonColor = false
         ItemButton.Visible = false
-        ItemButton.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+        ItemButton.BackgroundColor3 = CurrentTheme
         ItemButton.Selectable = false
         ItemButton.AutomaticSize = Enum.AutomaticSize.Y
         ItemButton.Size = UDim2.new(1, 0, 0, 35)
@@ -3229,13 +3229,13 @@ local function CreateDropdown(parent, config)
     -- Apply locked state
     if DropdownData.Locked then
         DropdownStroke.Color = Color3.fromRGB(47, 47, 58)
-        DropdownFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        DropdownFrame.BackgroundColor3 = CurrentTheme.ElementBackground
         DropdownTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
         DropdownArrow.ImageColor3 = Color3.fromRGB(75, 77, 83)
-        ValueButton.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ValueButton.BackgroundColor3 = CurrentTheme.ElementBackground
         ValueStroke.Color = Color3.fromRGB(47, 47, 58)
         ValueLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         DropdownFrame.Active = false
@@ -3387,7 +3387,7 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Lock()
         DropdownData.Locked = true
         CreateTween(DropdownStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
@@ -3403,7 +3403,7 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Unlock()
         DropdownData.Locked = false
         CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -4197,7 +4197,7 @@ function Library:CreateWindow(config)
     -- BottomFrame 
 local BottomFrame = Instance.new("Frame")
 BottomFrame.Name = "BottomFrame"
-BottomFrame.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+BottomFrame.BackgroundColor3 = CurrentTheme.TopFrameBackground
 BottomFrame.BorderSizePixel = 0
 BottomFrame.Size = UDim2.new(1, 0, 0, 35)
 BottomFrame.AnchorPoint = Vector2.new(0, 1)
@@ -4209,7 +4209,7 @@ local BottomCorner = Instance.new("UICorner")
     BottomCorner.Parent = BottomFrame
 
 local BottomBorder = Instance.new("Frame")
-BottomBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+BottomBorder.BackgroundColor3 = CurrentTheme.TopFrameBorder
 BottomBorder.BorderSizePixel = 0
 BottomBorder.Size = UDim2.new(1, 0, 0, 1)
 BottomBorder.Position = UDim2.new(0, 0, 0, 0)
