@@ -3871,7 +3871,7 @@ function Library:CreateWindow(config)
     Window.Visible = false
     Window.Parent = ScreenGui
 
-    local indowCorner = Instance.new("UICorner")
+    local WindowCorner = Instance.new("UICorner")
     WindowCorner.CornerRadius = UDim.new(0, 0)
     WindowCorner.Parent = Window
 
