@@ -1421,7 +1421,7 @@ local function CreateSlider(parent, config)
     return SliderMethods
 end
 
--- TextBox Module
+-- TextBox Module (FULL REPLACEMENT)
 local function CreateTextBox(parent, config)
     local TextBoxData = {
         Title = config.Title or "Input Textbox",
@@ -1431,7 +1431,6 @@ local function CreateTextBox(parent, config)
         Text = config.Default or config.Value or "",
         ClearTextOnFocus = config.ClearTextOnFocus or false,
         Locked = config.Locked or false,
-        MultiLine = config.MultiLine or false,
         Callback = config.Callback or function() end
     }
 
@@ -1491,6 +1490,26 @@ local function CreateTextBox(parent, config)
     MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
     MainLayout.Parent = TextBoxFrame
 
+    -- ActualTextBox (inline dengan Title)
+    local ActualTextBox = Instance.new("TextBox")
+    ActualTextBox.BackgroundTransparency = 1
+    ActualTextBox.BorderSizePixel = 0
+    ActualTextBox.AnchorPoint = Vector2.new(1, 0.5)
+    ActualTextBox.Position = UDim2.new(1, -5, 0.5, 0)
+    ActualTextBox.Size = UDim2.new(0, 100, 0, 20)
+    ActualTextBox.Font = Enum.Font.GothamBold
+    ActualTextBox.TextSize = 12
+    ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ActualTextBox.TextTransparency = 0.3
+    ActualTextBox.TextXAlignment = Enum.TextXAlignment.Right
+    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
+    ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+    ActualTextBox.PlaceholderText = TextBoxData.Placeholder
+    ActualTextBox.Text = TextBoxData.Default
+    ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
+    ActualTextBox.MultiLine = false
+    ActualTextBox.Parent = TitleLabel
+
     -- Description Label (if provided)
     local DescriptionLabel = nil
     if TextBoxData.Desc and TextBoxData.Desc ~= "" then
@@ -1515,80 +1534,6 @@ local function CreateTextBox(parent, config)
         DescriptionLabel.Parent = TextBoxFrame
     end
 
-    -- Box Frame Container (DIPINDAH KE KANAN DI DALAM TITLE)
-    local BoxFrame = Instance.new("Frame")
-    BoxFrame.ZIndex = 0
-    BoxFrame.BorderSizePixel = 0
-    BoxFrame.BackgroundTransparency = 1
-    BoxFrame.AnchorPoint = Vector2.new(1, 0.5)
-    BoxFrame.Size = UDim2.new(0, 100, 0, 20)
-    BoxFrame.Name = "BoxFrame"
-    BoxFrame.Position = UDim2.new(1, 0, 0.5, 0)
-    BoxFrame.Parent = TitleLabel
-
-    -- Drop Shadow for Box
-    local DropShadow = Instance.new("ImageLabel")
-    DropShadow.ZIndex = 0
-    DropShadow.BorderSizePixel = 0
-    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    DropShadow.ScaleType = Enum.ScaleType.Slice
-    DropShadow.ImageTransparency = 0.75
-    DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    DropShadow.Image = "rbxassetid://6014261993"
-    DropShadow.Size = UDim2.new(1, 30, 1, 30)
-    DropShadow.BackgroundTransparency = 1
-    DropShadow.Visible = false
-    DropShadow.Name = "DropShadow"
-    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    DropShadow.Parent = BoxFrame
-
-    -- Input Box Container
-    local InputBox = Instance.new("Frame")
-    InputBox.BorderSizePixel = 0
-    InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
-    InputBox.Size = UDim2.new(1, 0, 1, 0)
-    InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputBox.Parent = BoxFrame
-
-    local InputBoxCorner = Instance.new("UICorner")
-    InputBoxCorner.CornerRadius = UDim.new(0, 5)
-    InputBoxCorner.Parent = InputBox
-
-    local InputBoxStroke = Instance.new("UIStroke")
-    InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    InputBoxStroke.Thickness = 1
-    InputBoxStroke.Color = CurrentTheme.WindowBorder
-    InputBoxStroke.Parent = InputBox
-
-    -- Actual TextBox
-    local ActualTextBox = Instance.new("TextBox")
-    ActualTextBox.TextXAlignment = Enum.TextXAlignment.Left
-    ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-    ActualTextBox.BorderSizePixel = 0
-    ActualTextBox.TextWrapped = true
-    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
-    ActualTextBox.TextSize = 12
-    ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
-    ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    ActualTextBox.ClipsDescendants = true
-    ActualTextBox.PlaceholderText = TextBoxData.Placeholder
-    ActualTextBox.Size = UDim2.new(1, 0, 1, 0)
-    ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ActualTextBox.Text = TextBoxData.Default
-    ActualTextBox.BackgroundTransparency = 1
-    ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
-    ActualTextBox.Parent = InputBox
-
-    -- TextBox Padding
-    local TextBoxPadding = Instance.new("UIPadding")
-    TextBoxPadding.PaddingTop = UDim.new(0, 3)
-    TextBoxPadding.PaddingRight = UDim.new(0, 8)
-    TextBoxPadding.PaddingLeft = UDim.new(0, 8)
-    TextBoxPadding.PaddingBottom = UDim.new(0, 3)
-    TextBoxPadding.Parent = ActualTextBox
-
     -- Apply locked state if needed
     if TextBoxData.Locked then
         TextBoxStroke.Color = Color3.fromRGB(47, 47, 58)
@@ -1597,12 +1542,9 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
-        InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
-        InputBoxStroke.Color = Color3.fromRGB(47, 47, 58)
         ActualTextBox.TextColor3 = Color3.fromRGB(75, 77, 83)
         ActualTextBox.PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
-        ActualTextBox.Active = false
-        ActualTextBox.Interactable = false
+        ActualTextBox.TextTransparency = 0.6
         ActualTextBox.TextEditable = false
     end
 
@@ -1610,25 +1552,28 @@ local function CreateTextBox(parent, config)
     ActualTextBox.MouseEnter:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ActualTextBox, {TextTransparency = 0}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.MouseLeave:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(ActualTextBox, {TextTransparency = 0.3}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ActualTextBox, {TextTransparency = 0}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(ActualTextBox, {TextTransparency = 0.3}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
         end
@@ -1692,14 +1637,11 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(75, 77, 83),
-            PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
+            PlaceholderColor3 = Color3.fromRGB(75, 77, 83),
+            TextTransparency = 0.6
         }, AnimationConfig.Global)
-        ActualTextBox.Active = false
-        ActualTextBox.Interactable = false
         ActualTextBox.TextEditable = false
     end
 
@@ -1711,14 +1653,11 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(196, 203, 218),
-            PlaceholderColor3 = Color3.fromRGB(139, 139, 139)
+            PlaceholderColor3 = Color3.fromRGB(139, 139, 139),
+            TextTransparency = 0.3
         }, AnimationConfig.Global)
-        ActualTextBox.Active = true
-        ActualTextBox.Interactable = true
         ActualTextBox.TextEditable = true
     end
 
