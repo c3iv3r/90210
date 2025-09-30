@@ -1910,12 +1910,12 @@ local function CreateToggle(parent, config)
         if state == true then
             -- ON state
             CreateTween(ToggleBall, {Position = UDim2.new(0.5, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(192, 209, 199)}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 0}, AnimationConfig.Global)
         elseif state == false then
             -- OFF state
             CreateTween(ToggleBall, {Position = UDim2.new(0, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(53, 56, 62)}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 1}, AnimationConfig.Global)
         end
     end
