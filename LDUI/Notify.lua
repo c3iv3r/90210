@@ -7,18 +7,18 @@ Themes.Dark = {
     WindowStroke = Color3.fromRGB(60, 60, 60),
     
     TopFrameBackground = Color3.fromRGB(0, 0, 0),
-    TopFrameBorder = Color3.fromRGB(125, 85, 255),
+    TopFrameBorder = Color3.fromRGB(255, 255, 255),
     
     TabButtonsBackground = Color3.fromRGB(0, 0, 0),
-    TabButtonsBorder = Color3.fromRGB(40, 40, 40),
+    TabButtonsBorder = Color3.fromRGB(255, 255, 255),
     
     TabContentBackground = Color3.fromRGB(0, 0, 0),
     
     SectionBackground = Color3.fromRGB(0, 0, 0),
-    SectionStroke = Color3.fromRGB(28, 28, 28),
+    SectionStroke = Color3.fromRGB(255, 255, 255),
     
     ElementBackground = Color3.fromRGB(0, 0, 0),
-    ElementStroke = Color3.fromRGB(125, 85, 255),
+    ElementStroke = Color3.fromRGB(255, 255, 255),
     ElementStrokeHover = Color3.fromRGB(125, 85, 255),
     ElementStrokeLocked = Color3.fromRGB(40, 40, 40),
     
