@@ -2439,7 +2439,7 @@ ValueDisplay.ZIndex = 0
 ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
 ValueDisplay.Size = UDim2.new(0, 120, 0, 20)  -- Fixed width
 ValueDisplay.Name = "BoxFrame"
-ValueDisplay.Position = UDim2.new(1, -25, 0.5, 0)
+ValueDisplay.Position = UDim2.new(1, -8, 0.5, 0)
 ValueDisplay.Parent = DropdownTitle
 
 -- Value Display Shadow
