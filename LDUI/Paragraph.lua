@@ -35,7 +35,6 @@ function Library:GetAvailableThemes()
     return names
 end
 
-
 -- Animation Configs
 local AnimationConfig = {
     Global = {
@@ -160,7 +159,7 @@ local function CreateDialog(parent, config)
     DialogFrame.Visible = false
     DialogFrame.ZIndex = 4
     DialogFrame.BorderSizePixel = 0
-    DialogFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+    DialogFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
     DialogFrame.AnchorPoint = Vector2.new(0.5, 0.5)
     DialogFrame.ClipsDescendants = true
     DialogFrame.AutomaticSize = Enum.AutomaticSize.Y
@@ -352,7 +351,7 @@ local function CreateDialog(parent, config)
         local DialogButton = Instance.new("TextButton")
         DialogButton.BorderSizePixel = 0
         DialogButton.AutoButtonColor = false
-        DialogButton.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+        DialogButton.BackgroundColor3 = CurrentTheme.ElementBackground
         DialogButton.Selectable = false
         DialogButton.AnchorPoint = Vector2.new(0.5, 0.5)
         DialogButton.Size = UDim2.new(1, 0, 1, 0)
@@ -507,7 +506,7 @@ function Library:Notify(config)
     local Notification = Instance.new("Frame")
     Notification.Visible = false
     Notification.BorderSizePixel = 0
-    Notification.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    Notification.BackgroundColor3 = CurrentTheme.WindowBackground
     Notification.AnchorPoint = Vector2.new(0.5, 0.5)
     Notification.AutomaticSize = Enum.AutomaticSize.Y
     Notification.Size = UDim2.new(1, 0, 0, 65)
@@ -521,7 +520,7 @@ function Library:Notify(config)
     local NotificationItems = Instance.new("CanvasGroup")
     NotificationItems.ZIndex = 2
     NotificationItems.BorderSizePixel = 0
-    NotificationItems.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
     NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
     NotificationItems.Size = UDim2.new(0, 265, 0, 70)
     NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -915,7 +914,7 @@ local function CreateSlider(parent, config)
     local SliderFrame = Instance.new("Frame")
     SliderFrame.Visible = false
     SliderFrame.BorderSizePixel = 0
-    SliderFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    SliderFrame.BackgroundColor3 = CurrentTheme.ElementBackground
     SliderFrame.AutomaticSize = Enum.AutomaticSize.Y
     SliderFrame.Size = UDim2.new(1, 0, 0, 28)
     SliderFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
@@ -1026,7 +1025,7 @@ local function CreateSlider(parent, config)
     -- Create Slider Track
     local SliderTrack = Instance.new("CanvasGroup")
     SliderTrack.BorderSizePixel = 0
-    SliderTrack.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    SliderTrack.BackgroundColor3 = CurrentTheme.ElementBackground
     SliderTrack.Size = UDim2.new(1, 0, 1, 0)
     SliderTrack.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SliderTrack.Name = "Slider"
@@ -1210,7 +1209,7 @@ local function CreateSlider(parent, config)
     -- Apply locked state if needed
     if SliderData.Locked then
         SliderStroke.Color = Color3.fromRGB(47, 47, 58)
-        SliderFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        SliderFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
         SliderTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         if SliderDescription then
             SliderDescription.TextColor3 = Color3.fromRGB(75, 77, 83)
@@ -1281,7 +1280,7 @@ local function CreateSlider(parent, config)
         isHovering = true
         if not SliderData.Locked then
             CreateTween(SliderStroke, {
-                Color = Color3.fromRGB(10, 135, 213)
+                Color = CurrentTheme.AccentPrimary
             }, AnimationConfig.Global)
         end
     end)
@@ -1349,7 +1348,7 @@ local function CreateSlider(parent, config)
     function SliderMethods:Lock()
         SliderData.Locked = true
         CreateTween(SliderFrame, {
-            BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+            BackgroundColor3 = CurrentTheme.TabContentBackground
         }, AnimationConfig.Global)
         CreateTween(SliderStroke, {
             Color = Color3.fromRGB(47, 47, 58)
@@ -1442,7 +1441,7 @@ local function CreateTextBox(parent, config)
     local TextBoxFrame = Instance.new("Frame")
     TextBoxFrame.Visible = false
     TextBoxFrame.BorderSizePixel = 0
-    TextBoxFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    TextBoxFrame.BackgroundColor3 = CurrentTheme.ElementBackground
     TextBoxFrame.AutomaticSize = Enum.AutomaticSize.Y
     TextBoxFrame.Size = UDim2.new(1, 0, 0, 28)
     TextBoxFrame.Position = UDim2.new(-0.0375, 0, 0.38434, 0)
@@ -1546,7 +1545,7 @@ local function CreateTextBox(parent, config)
     -- Input Box Container
     local InputBox = Instance.new("Frame")
     InputBox.BorderSizePixel = 0
-    InputBox.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    InputBox.BackgroundColor3 = CurrentTheme.ElementBackground
     InputBox.AutomaticSize = Enum.AutomaticSize.Y
     InputBox.Size = UDim2.new(1, 0, 0, 20)
     InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1610,12 +1609,12 @@ local function CreateTextBox(parent, config)
     -- Apply locked state if needed
     if TextBoxData.Locked then
         TextBoxStroke.Color = Color3.fromRGB(47, 47, 58)
-        TextBoxFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        TextBoxFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
         TitleLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
-        InputBox.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
         InputBoxStroke.Color = Color3.fromRGB(47, 47, 58)
         ActualTextBox.TextColor3 = Color3.fromRGB(75, 77, 83)
         ActualTextBox.PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
@@ -1627,7 +1626,7 @@ local function CreateTextBox(parent, config)
     -- TextBox Interaction Events
     ActualTextBox.MouseEnter:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
@@ -1640,7 +1639,7 @@ local function CreateTextBox(parent, config)
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-            CreateTween(InputBoxStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
@@ -1706,12 +1705,12 @@ local function CreateTextBox(parent, config)
     function TextBoxMethods:Lock()
         TextBoxData.Locked = true
         CreateTween(TextBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(TextBoxFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(TextBoxFrame, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(TitleLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(InputBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(75, 77, 83),
@@ -1911,12 +1910,12 @@ local function CreateToggle(parent, config)
         if state == true then
             -- ON state
             CreateTween(ToggleBall, {Position = UDim2.new(0.5, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(192, 209, 199)}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 0}, AnimationConfig.Global)
         elseif state == false then
             -- OFF state
             CreateTween(ToggleBall, {Position = UDim2.new(0, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = Color3.fromRGB(53, 56, 62)}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 1}, AnimationConfig.Global)
         end
     end
@@ -1937,7 +1936,7 @@ local function CreateToggle(parent, config)
     -- Apply locked state if needed
     if ToggleData.Locked then
         ToggleStroke.Color = Color3.fromRGB(47, 47, 58)
-        ToggleFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ToggleFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
         ToggleTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
@@ -1949,14 +1948,14 @@ local function CreateToggle(parent, config)
     -- Toggle Interaction Events
     ToggleSwitch.MouseEnter:Connect(function()
         if not ToggleData.Locked then
-            CreateTween(ToggleStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            CreateTween(ToggleStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
     ToggleSwitch.MouseLeave:Connect(function()
         if not ToggleData.Locked then
             CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-            ToggleFrame.BackgroundColor3 = CurrentTheme.ElementBackground
+            ToggleFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
             CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2018,7 +2017,7 @@ local function CreateToggle(parent, config)
 
     function ToggleMethods:Lock()
         ToggleData.Locked = true
-        CreateTween(ToggleFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(ToggleFrame, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(ToggleStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         if DescriptionLabel then
@@ -2088,7 +2087,7 @@ local function CreateButton(parent, config)
     -- Button Content Frame
     local ButtonContent = Instance.new("Frame")
     ButtonContent.BorderSizePixel = 0
-    ButtonContent.BackgroundColor3 = CurrentTheme.ElementBackground
+    ButtonContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ButtonContent.AutomaticSize = Enum.AutomaticSize.Y
     ButtonContent.Size = UDim2.new(1, 0, 0, 35)
     ButtonContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2227,7 +2226,7 @@ local function CreateButton(parent, config)
     -- Apply locked state if needed
     if ButtonData.Locked then
         ButtonStroke.Color = Color3.fromRGB(47, 47, 58)
-        ButtonFrame.BackgroundColor3 = Color3.fromRGB(32, 35, 40)
+        ButtonFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
         ButtonTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         ClickIcon.ImageColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
@@ -2238,7 +2237,7 @@ local function CreateButton(parent, config)
     -- Button Interaction Events
     ButtonFrame.MouseEnter:Connect(function()
         if not ButtonData.Locked then
-            CreateTween(ButtonStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            CreateTween(ButtonStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
@@ -2333,7 +2332,7 @@ local function CreateButton(parent, config)
 
     function ButtonMethods:Lock()
         ButtonData.Locked = true
-        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
@@ -2344,7 +2343,7 @@ local function CreateButton(parent, config)
 
     function ButtonMethods:Unlock()
         ButtonData.Locked = false
-        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
+        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2675,7 +2674,7 @@ local function CreateDropdown(parent, config)
         DropdownPopup = Instance.new("Frame")
         DropdownPopup.Visible = false
         DropdownPopup.BorderSizePixel = 0
-        DropdownPopup.BackgroundColor3 = CurrentTheme.ElementBackground
+        DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
         DropdownPopup.AnchorPoint = Vector2.new(0.5, 0.5)
         DropdownPopup.ClipsDescendants = true
         DropdownPopup.Size = UDim2.new(0.7281, 0, 0.68367, 0)
@@ -3107,7 +3106,7 @@ local function CreateDropdown(parent, config)
             if isSelected then
                 CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
                 CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+                CreateTween(ItemStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
                 CreateTween(ItemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
             else
                 CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -3216,7 +3215,7 @@ local function CreateDropdown(parent, config)
     -- Handle hover effects (matching OGLIB)
     DropdownFrame.MouseEnter:Connect(function()
         if not DropdownData.Locked then
-            CreateTween(DropdownStroke, {Color = Color3.fromRGB(10, 135, 213)}, AnimationConfig.Global)
+            CreateTween(DropdownStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
@@ -3229,13 +3228,13 @@ local function CreateDropdown(parent, config)
     -- Apply locked state
     if DropdownData.Locked then
         DropdownStroke.Color = Color3.fromRGB(47, 47, 58)
-        DropdownFrame.BackgroundColor3 = CurrentTheme.ElementBackground
+        DropdownFrame.BackgroundColor3 = CurrentTheme.TabContentBackground
         DropdownTitle.TextColor3 = Color3.fromRGB(75, 77, 83)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
         DropdownArrow.ImageColor3 = Color3.fromRGB(75, 77, 83)
-        ValueButton.BackgroundColor3 = CurrentTheme.ElementBackground
+        ValueButton.BackgroundColor3 = CurrentTheme.TabContentBackground
         ValueStroke.Color = Color3.fromRGB(47, 47, 58)
         ValueLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         DropdownFrame.Active = false
@@ -3387,13 +3386,13 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Lock()
         DropdownData.Locked = true
         CreateTween(DropdownStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
+        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
         CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
-        CreateTween(ValueButton, {BackgroundColor3 = Color3.fromRGB(32, 35, 40)}, AnimationConfig.Global)
+        CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(ValueStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         DropdownFrame.Active = false
@@ -3403,7 +3402,7 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Unlock()
         DropdownData.Locked = false
         CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
+        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -3443,7 +3442,7 @@ local function CreateSection(parent, config)
     local Section = Instance.new("Frame")
     Section.Visible = false
     Section.BorderSizePixel = 0
-    Section.BackgroundColor3 = CurrentTheme.SectionBackground
+    Section.BackgroundColor3 = CurrentTheme.ElementBackground
     Section.AutomaticSize = Enum.AutomaticSize.Y
     Section.Size = UDim2.new(1, 0, 0, 25)
     Section.Position = UDim2.new(0, 0, 0.43728, 0)
@@ -3456,7 +3455,7 @@ local function CreateSection(parent, config)
     local SectionButton = Instance.new("ImageButton")
     SectionButton.BorderSizePixel = 0
     SectionButton.AutoButtonColor = false
-    SectionButton.BackgroundColor3 = CurrentTheme.SectionBackground
+    SectionButton.BackgroundColor3 = CurrentTheme.ElementBackground
     SectionButton.Selectable = false
     SectionButton.AutomaticSize = Enum.AutomaticSize.Y
     SectionButton.Size = UDim2.new(1, 0, 0, 25)
@@ -3471,7 +3470,7 @@ local function CreateSection(parent, config)
     local SectionButtonStroke = Instance.new("UIStroke")
     SectionButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SectionButtonStroke.Thickness = 1.5
-    SectionButtonStroke.Color = CurrentTheme.SectionStroke
+    SectionButtonStroke.Color = Color3.fromRGB(61, 61, 75)
     SectionButtonStroke.Parent = SectionButton
 
     local SectionButtonPadding = Instance.new("UIPadding")
@@ -3546,7 +3545,7 @@ local function CreateSection(parent, config)
     SectionContent.Visible = false
     SectionContent.ZIndex = 2
     SectionContent.BorderSizePixel = 0
-    SectionContent.BackgroundColor3 = CurrentTheme.SectionBackground
+    SectionContent.BackgroundColor3 = Color3.fromRGB(207, 222, 255)
     SectionContent.AutomaticSize = Enum.AutomaticSize.Y
     SectionContent.Size = UDim2.new(1, 0, 0, 30)
     SectionContent.Position = UDim2.new(0, 0, 0, 35)
@@ -3769,7 +3768,7 @@ function Library:CreateWindow(config)
     FloatIcon.Visible = false
     FloatIcon.ZIndex = 0
     FloatIcon.BorderSizePixel = 2
-    FloatIcon.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    FloatIcon.BackgroundColor3 = CurrentTheme.WindowBackground
     FloatIcon.AnchorPoint = Vector2.new(0.5, 0.5)
     FloatIcon.ClipsDescendants = true
     FloatIcon.AutomaticSize = Enum.AutomaticSize.X
@@ -3867,7 +3866,7 @@ function Library:CreateWindow(config)
     Window.AnchorPoint = Vector2.new(0.5, 0.5)
     Window.Size = WindowData.Size
     Window.Position = UDim2.new(0.5278, 0, 0.5, 0)
-    Window.BorderColor3 = CurrentTheme.WindowBorder
+    Window.BorderColor3 = Color3.fromRGB(61, 61, 75)
     Window.Visible = false
     Window.Parent = ScreenGui
 
@@ -3878,16 +3877,16 @@ function Library:CreateWindow(config)
     local WindowStroke = Instance.new("UIStroke")
     WindowStroke.Transparency = 0.5
     WindowStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    WindowStroke.Color = CurrentTheme.WindowStroke
+    WindowStroke.Color = Color3.fromRGB(95, 95, 117)
     WindowStroke.Parent = Window
 
     -- Create TopFrame
     local TopFrame = Instance.new("Frame")
     TopFrame.BorderSizePixel = 0
-    TopFrame.BackgroundColor3 = CurrentTheme.TopFrameBackground
+    TopFrame.BackgroundColor3 = CurrentTheme.WindowBackground
     TopFrame.ClipsDescendants = true
     TopFrame.Size = UDim2.new(1, 0, 0, 35)
-    TopFrame.BorderColor3 = CurrentTheme.TopFrameBorder
+    TopFrame.BorderColor3 = Color3.fromRGB(61, 61, 75)
     TopFrame.Name = "TopFrame"
     TopFrame.Parent = Window
 
@@ -4041,7 +4040,7 @@ function Library:CreateWindow(config)
     -- Create TabButtons (Sidebar)
     local TabButtons = Instance.new("Frame")
     TabButtons.BorderSizePixel = 0
-    TabButtons.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    TabButtons.BackgroundColor3 = CurrentTheme.WindowBackground
     TabButtons.ClipsDescendants = true
     TabButtons.Size = UDim2.new(0, 120, 1, -35)
     TabButtons.Position = UDim2.new(0, 0, 0, 35)
@@ -4056,7 +4055,7 @@ function Library:CreateWindow(config)
 
     local TabButtonsAntiTop = Instance.new("Frame")
     TabButtonsAntiTop.BorderSizePixel = 0
-    TabButtonsAntiTop.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    TabButtonsAntiTop.BackgroundColor3 = CurrentTheme.WindowBackground
     TabButtonsAntiTop.Size = UDim2.new(1, 0, 0, 5)
     TabButtonsAntiTop.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabButtonsAntiTop.Name = "AntiCornerTop"
@@ -4064,7 +4063,7 @@ function Library:CreateWindow(config)
 
     local TabButtonsAntiRight = Instance.new("Frame")
     TabButtonsAntiRight.BorderSizePixel = 0
-    TabButtonsAntiRight.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    TabButtonsAntiRight.BackgroundColor3 = CurrentTheme.WindowBackground
     TabButtonsAntiRight.AnchorPoint = Vector2.new(0.5, 0)
     TabButtonsAntiRight.Size = UDim2.new(0, 2, 1, 0)
     TabButtonsAntiRight.Position = UDim2.new(1, 1, 0, 0)
@@ -4090,7 +4089,7 @@ function Library:CreateWindow(config)
     TabButtonsList.CanvasSize = UDim2.new(0, 0, 0, 0)
     TabButtonsList.ElasticBehavior = Enum.ElasticBehavior.Never
     TabButtonsList.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-    TabButtonsList.BackgroundColor3 = Color3.fromRGB(37, 40, 47)
+    TabButtonsList.BackgroundColor3 = CurrentTheme.WindowBackground
     TabButtonsList.Name = "Lists"
     TabButtonsList.Selectable = false
     TabButtonsList.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
@@ -4126,7 +4125,7 @@ function Library:CreateWindow(config)
     local TabsAntiLeft = Instance.new("Frame")
     TabsAntiLeft.Visible = false
     TabsAntiLeft.BorderSizePixel = 0
-    TabsAntiLeft.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+    TabsAntiLeft.BackgroundColor3 = CurrentTheme.TabContentBackground
     TabsAntiLeft.Size = UDim2.new(0, 5, 1, 0)
     TabsAntiLeft.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabsAntiLeft.Name = "AntiCornerLeft"
@@ -4134,7 +4133,7 @@ function Library:CreateWindow(config)
 
     local TabsAntiTop = Instance.new("Frame")
     TabsAntiTop.BorderSizePixel = 0
-    TabsAntiTop.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+    TabsAntiTop.BackgroundColor3 = CurrentTheme.TabContentBackground
     TabsAntiTop.Size = UDim2.new(1, 0, 0, 5)
     TabsAntiTop.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabsAntiTop.Name = "AntiCornerTop"
@@ -4197,7 +4196,7 @@ function Library:CreateWindow(config)
     -- BottomFrame 
 local BottomFrame = Instance.new("Frame")
 BottomFrame.Name = "BottomFrame"
-BottomFrame.BackgroundColor3 = CurrentTheme.TopFrameBackground
+BottomFrame.BackgroundColor3 = CurrentTheme.WindowBackground
 BottomFrame.BorderSizePixel = 0
 BottomFrame.Size = UDim2.new(1, 0, 0, 35)
 BottomFrame.AnchorPoint = Vector2.new(0, 1)
@@ -4209,7 +4208,7 @@ local BottomCorner = Instance.new("UICorner")
     BottomCorner.Parent = BottomFrame
 
 local BottomBorder = Instance.new("Frame")
-BottomBorder.BackgroundColor3 = CurrentTheme.TopFrameBorder
+BottomBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
 BottomBorder.BorderSizePixel = 0
 BottomBorder.Size = UDim2.new(1, 0, 0, 1)
 BottomBorder.Position = UDim2.new(0, 0, 0, 0)
@@ -4521,7 +4520,7 @@ end)
         TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
         TabContent.ElasticBehavior = Enum.ElasticBehavior.Never
         TabContent.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-        TabContent.BackgroundColor3 = CurrentTheme.TabContentBackground
+        TabContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         TabContent.Name = "Tab"
         TabContent.Selectable = false
         TabContent.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
