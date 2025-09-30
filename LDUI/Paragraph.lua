@@ -1956,7 +1956,7 @@ local function CreateToggle(parent, config)
     ToggleSwitch.MouseLeave:Connect(function()
         if not ToggleData.Locked then
             CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-            ToggleFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            ToggleFrame.BackgroundColor3 = CurrentTheme.ElementBackground
             CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
