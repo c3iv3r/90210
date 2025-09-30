@@ -1491,95 +1491,6 @@ local function CreateTextBox(parent, config)
     MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
     MainLayout.Parent = TextBoxFrame
 
-    -- Input Box Display (mirip dropdown - di sebelah kanan title)
-    local InputBoxDisplay = Instance.new("ImageButton")
-    InputBoxDisplay.Active = false
-    InputBoxDisplay.BorderSizePixel = 0
-    InputBoxDisplay.BackgroundTransparency = 1
-    InputBoxDisplay.Selectable = false
-    InputBoxDisplay.ZIndex = 0
-    InputBoxDisplay.AnchorPoint = Vector2.new(1, 0.5)
-    InputBoxDisplay.Size = UDim2.new(0, 100, 0, 20)
-    InputBoxDisplay.Name = "BoxFrame"
-    InputBoxDisplay.Position = UDim2.new(1, -8, 0.5, 0)
-    InputBoxDisplay.Parent = TitleLabel
-
-    -- Input Box Shadow (sama seperti dropdown)
-    local InputBoxShadow = Instance.new("ImageLabel")
-    InputBoxShadow.Interactable = false
-    InputBoxShadow.ZIndex = 0
-    InputBoxShadow.BorderSizePixel = 0
-    InputBoxShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    InputBoxShadow.ScaleType = Enum.ScaleType.Slice
-    InputBoxShadow.ImageTransparency = 0.75
-    InputBoxShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    InputBoxShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    InputBoxShadow.Image = "rbxassetid://6014261993"
-    InputBoxShadow.Size = UDim2.new(1, 30, 1, 30)
-    InputBoxShadow.Visible = false
-    InputBoxShadow.BackgroundTransparency = 1
-    InputBoxShadow.Name = "DropShadow"
-    InputBoxShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    InputBoxShadow.Parent = InputBoxDisplay
-
-    -- Input Box Container
-    local InputBox = Instance.new("ImageButton")
-    InputBox.BorderSizePixel = 0
-    InputBox.AutoButtonColor = false
-    InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
-    InputBox.Selectable = false
-    InputBox.AnchorPoint = Vector2.new(0.5, 0.5)
-    InputBox.Size = UDim2.new(1, 0, 1, 0)
-    InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputBox.Name = "Trigger"
-    InputBox.Position = UDim2.new(0.5, 0, 0.5, 0)
-    InputBox.Parent = InputBoxDisplay
-
-    local InputBoxCorner = Instance.new("UICorner")
-    InputBoxCorner.CornerRadius = UDim.new(0, 5)
-    InputBoxCorner.Parent = InputBox
-
-    local InputBoxStroke = Instance.new("UIStroke")
-    InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    InputBoxStroke.Thickness = 1
-    InputBoxStroke.Color = CurrentTheme.WindowBorder
-    InputBoxStroke.Parent = InputBox
-
-    local InputBoxLayout = Instance.new("UIListLayout")
-    InputBoxLayout.Padding = UDim.new(0, 5)
-    InputBoxLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    InputBoxLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    InputBoxLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    InputBoxLayout.Parent = InputBox
-
-    -- Actual TextBox (dengan fixed size dan text truncate)
-    local ActualTextBox = Instance.new("TextBox")
-    ActualTextBox.TextWrapped = true
-    ActualTextBox.Interactable = true
-    ActualTextBox.BorderSizePixel = 0
-    ActualTextBox.TextSize = 12
-    ActualTextBox.TextScaled = true
-    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
-    ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
-    ActualTextBox.BackgroundTransparency = 1
-    ActualTextBox.AnchorPoint = Vector2.new(0.5, 0.5)
-    ActualTextBox.Size = UDim2.new(1, -10, 0, 14)
-    ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ActualTextBox.Text = TextBoxData.Default
-    ActualTextBox.Name = "Input"
-    ActualTextBox.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ActualTextBox.PlaceholderText = TextBoxData.Placeholder
-    ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
-    ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
-    ActualTextBox.Parent = InputBox
-
-    local InputBoxPadding = Instance.new("UIPadding")
-    InputBoxPadding.PaddingRight = UDim.new(0, 5)
-    InputBoxPadding.PaddingLeft = UDim.new(0, 5)
-    InputBoxPadding.Parent = InputBox
-
     -- Description Label (if provided)
     local DescriptionLabel = nil
     if TextBoxData.Desc and TextBoxData.Desc ~= "" then
@@ -1604,6 +1515,80 @@ local function CreateTextBox(parent, config)
         DescriptionLabel.Parent = TextBoxFrame
     end
 
+    -- Box Frame Container (DIPINDAH KE KANAN DI DALAM TITLE)
+    local BoxFrame = Instance.new("Frame")
+    BoxFrame.ZIndex = 0
+    BoxFrame.BorderSizePixel = 0
+    BoxFrame.BackgroundTransparency = 1
+    BoxFrame.AnchorPoint = Vector2.new(1, 0.5)
+    BoxFrame.Size = UDim2.new(0, 100, 0, 20)
+    BoxFrame.Name = "BoxFrame"
+    BoxFrame.Position = UDim2.new(1, 0, 0.5, 0)
+    BoxFrame.Parent = TitleLabel
+
+    -- Drop Shadow for Box
+    local DropShadow = Instance.new("ImageLabel")
+    DropShadow.ZIndex = 0
+    DropShadow.BorderSizePixel = 0
+    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    DropShadow.ScaleType = Enum.ScaleType.Slice
+    DropShadow.ImageTransparency = 0.75
+    DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    DropShadow.Image = "rbxassetid://6014261993"
+    DropShadow.Size = UDim2.new(1, 30, 1, 30)
+    DropShadow.BackgroundTransparency = 1
+    DropShadow.Visible = false
+    DropShadow.Name = "DropShadow"
+    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    DropShadow.Parent = BoxFrame
+
+    -- Input Box Container
+    local InputBox = Instance.new("Frame")
+    InputBox.BorderSizePixel = 0
+    InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
+    InputBox.Size = UDim2.new(1, 0, 1, 0)
+    InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    InputBox.Parent = BoxFrame
+
+    local InputBoxCorner = Instance.new("UICorner")
+    InputBoxCorner.CornerRadius = UDim.new(0, 5)
+    InputBoxCorner.Parent = InputBox
+
+    local InputBoxStroke = Instance.new("UIStroke")
+    InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    InputBoxStroke.Thickness = 1
+    InputBoxStroke.Color = CurrentTheme.WindowBorder
+    InputBoxStroke.Parent = InputBox
+
+    -- Actual TextBox
+    local ActualTextBox = Instance.new("TextBox")
+    ActualTextBox.TextXAlignment = Enum.TextXAlignment.Left
+    ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+    ActualTextBox.BorderSizePixel = 0
+    ActualTextBox.TextWrapped = true
+    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
+    ActualTextBox.TextSize = 12
+    ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    ActualTextBox.ClipsDescendants = true
+    ActualTextBox.PlaceholderText = TextBoxData.Placeholder
+    ActualTextBox.Size = UDim2.new(1, 0, 1, 0)
+    ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ActualTextBox.Text = TextBoxData.Default
+    ActualTextBox.BackgroundTransparency = 1
+    ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
+    ActualTextBox.Parent = InputBox
+
+    -- TextBox Padding
+    local TextBoxPadding = Instance.new("UIPadding")
+    TextBoxPadding.PaddingTop = UDim.new(0, 3)
+    TextBoxPadding.PaddingRight = UDim.new(0, 8)
+    TextBoxPadding.PaddingLeft = UDim.new(0, 8)
+    TextBoxPadding.PaddingBottom = UDim.new(0, 3)
+    TextBoxPadding.Parent = ActualTextBox
+
     -- Apply locked state if needed
     if TextBoxData.Locked then
         TextBoxStroke.Color = Color3.fromRGB(47, 47, 58)
@@ -1621,29 +1606,28 @@ local function CreateTextBox(parent, config)
         ActualTextBox.TextEditable = false
     end
 
-    -- TextBox Interaction Events (hover pada InputBox container)
-    InputBox.MouseEnter:Connect(function()
+    -- TextBox Interaction Events
+    ActualTextBox.MouseEnter:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
-    InputBox.MouseLeave:Connect(function()
-        if not TextBoxData.Locked and not ActualTextBox:IsFocused() then
+    ActualTextBox.MouseLeave:Connect(function()
+        if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
