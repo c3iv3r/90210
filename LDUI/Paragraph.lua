@@ -1769,7 +1769,7 @@ local function CreateToggle(parent, config)
     ToggleFrame.BorderSizePixel = 0
     ToggleFrame.AutoButtonColor = false
     ToggleFrame.Visible = false
-    ToggleFrame.BackgroundColor3 = Color3.fromRGB(43, 46, 53)
+    ToggleFrame.BackgroundColor3 = CurrentTheme.ElementBackground
     ToggleFrame.Selectable = false
     ToggleFrame.AutomaticSize = Enum.AutomaticSize.Y
     ToggleFrame.Size = UDim2.new(1, 0, 0, 28)
@@ -3546,7 +3546,7 @@ local function CreateSection(parent, config)
     SectionContent.Visible = false
     SectionContent.ZIndex = 2
     SectionContent.BorderSizePixel = 0
-    SectionContent.BackgroundColor3 = Color3.fromRGB(207, 222, 255)
+    SectionContent.BackgroundColor3 = CurrentTheme.SectionBackground
     SectionContent.AutomaticSize = Enum.AutomaticSize.Y
     SectionContent.Size = UDim2.new(1, 0, 0, 30)
     SectionContent.Position = UDim2.new(0, 0, 0, 35)
@@ -3871,7 +3871,7 @@ function Library:CreateWindow(config)
     Window.Visible = false
     Window.Parent = ScreenGui
 
-    local WindowCorner = Instance.new("UICorner")
+    local indowCorner = Instance.new("UICorner")
     WindowCorner.CornerRadius = UDim.new(0, 0)
     WindowCorner.Parent = Window
 
@@ -4112,7 +4112,7 @@ function Library:CreateWindow(config)
     -- Create Tabs (Content Area)
     local Tabs = Instance.new("Frame")
     Tabs.BorderSizePixel = 0
-    Tabs.BackgroundColor3 = Color3.fromRGB(32, 35, 41)
+    Tabs.BackgroundColor3 = CurrentTheme.TabContentBackground
     Tabs.Size = UDim2.new(1, -120, 1, -35)
     Tabs.Position = UDim2.new(0, 120, 0, 35)
     Tabs.BorderColor3 = Color3.fromRGB(61, 61, 75)
