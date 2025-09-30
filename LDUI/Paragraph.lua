@@ -165,7 +165,7 @@ local function CreateDialog(parent, config)
     DialogFrame.AutomaticSize = Enum.AutomaticSize.Y
     DialogFrame.Size = UDim2.new(0, 250, 0, 0)
     DialogFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    DialogFrame.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    DialogFrame.BorderColor3 = CurrentTheme.ElementStroke
     DialogFrame.Name = "Dialog"
     DialogFrame.Parent = parent
 
@@ -176,7 +176,7 @@ local function CreateDialog(parent, config)
     local DialogStroke = Instance.new("UIStroke")
     DialogStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     DialogStroke.Thickness = 1.5
-    DialogStroke.Color = Color3.fromRGB(61, 61, 75)
+    DialogStroke.Color = CurrentTheme.ElementStroke
     DialogStroke.Parent = DialogFrame
 
     local DialogLayout = Instance.new("UIListLayout")
@@ -368,7 +368,7 @@ local function CreateDialog(parent, config)
         local ButtonStroke = Instance.new("UIStroke")
         ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         ButtonStroke.Thickness = 1.5
-        ButtonStroke.Color = Color3.fromRGB(61, 61, 75)
+        ButtonStroke.Color = CurrentTheme.ElementStroke
         ButtonStroke.Parent = DialogButton
 
         local ButtonLayout = Instance.new("UIListLayout")
@@ -671,7 +671,7 @@ function Library:Notify(config)
     -- Create Timer Bar Container
     local TimerBarFill = Instance.new("Frame")
     TimerBarFill.BorderSizePixel = 0
-    TimerBarFill.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBarFill.BackgroundColor3 = CurrentTheme.ElementStroke
     TimerBarFill.AnchorPoint = Vector2.new(0, 1)
     TimerBarFill.Size = UDim2.new(1, 0, 0, 5)
     TimerBarFill.Position = UDim2.new(0, 0, 1, 0)
@@ -686,7 +686,7 @@ function Library:Notify(config)
     -- Create Timer Bar
     local TimerBar = Instance.new("Frame")
     TimerBar.BorderSizePixel = 0
-    TimerBar.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TimerBar.BackgroundColor3 = CurrentTheme.ElementStroke
     TimerBar.Size = UDim2.new(1, 0, 1, 0)
     TimerBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TimerBar.Name = "Bar"
@@ -699,7 +699,7 @@ function Library:Notify(config)
     local ItemsStroke = Instance.new("UIStroke")
     ItemsStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ItemsStroke.Thickness = 1.5
-    ItemsStroke.Color = Color3.fromRGB(61, 61, 75)
+    ItemsStroke.Color = CurrentTheme.ElementStroke
     ItemsStroke.Parent = NotificationItems
 
     local ItemsCorner = Instance.new("UICorner")
@@ -779,7 +779,7 @@ local function CreateParagraph(parent, config)
     local ParagraphStroke = Instance.new("UIStroke")
     ParagraphStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ParagraphStroke.Thickness = 1.5
-    ParagraphStroke.Color = Color3.fromRGB(61, 61, 75)
+    ParagraphStroke.Color = CurrentTheme.ElementStroke
     ParagraphStroke.Parent = ParagraphFrame
 
     local ParagraphPadding = Instance.new("UIPadding")
@@ -929,7 +929,7 @@ local function CreateSlider(parent, config)
     local SliderStroke = Instance.new("UIStroke")
     SliderStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SliderStroke.Thickness = 1.5
-    SliderStroke.Color = Color3.fromRGB(61, 61, 75)
+    SliderStroke.Color = CurrentTheme.ElementStroke
     SliderStroke.Parent = SliderFrame
     
     local SliderPadding = Instance.new("UIPadding")
@@ -1038,7 +1038,7 @@ local function CreateSlider(parent, config)
     local SliderTrackStroke = Instance.new("UIStroke")
     SliderTrackStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SliderTrackStroke.Thickness = 1.5
-    SliderTrackStroke.Color = Color3.fromRGB(61, 61, 75)
+    SliderTrackStroke.Color = CurrentTheme.ElementStroke
     SliderTrackStroke.Parent = SliderTrack
     
     local SliderTrackPadding = Instance.new("UIPadding")
@@ -1381,7 +1381,7 @@ local function CreateSlider(parent, config)
     function SliderMethods:Unlock()
         SliderData.Locked = false
         CreateTween(SliderFrame, {
-            BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            BackgroundColor3 = CurrentTheme.ElementBackground
         }, AnimationConfig.Global)
         CreateTween(SliderStroke, {
             Color = Color3.fromRGB(60, 60, 74)
@@ -1456,7 +1456,7 @@ local function CreateTextBox(parent, config)
     local TextBoxStroke = Instance.new("UIStroke")
     TextBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     TextBoxStroke.Thickness = 1.5
-    TextBoxStroke.Color = Color3.fromRGB(61, 61, 75)
+    TextBoxStroke.Color = CurrentTheme.ElementStroke
     TextBoxStroke.Parent = TextBoxFrame
 
     -- Title Label
@@ -1558,7 +1558,7 @@ local function CreateTextBox(parent, config)
     local InputBoxStroke = Instance.new("UIStroke")
     InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     InputBoxStroke.Thickness = 1.5
-    InputBoxStroke.Color = Color3.fromRGB(61, 61, 75)
+    InputBoxStroke.Color = CurrentTheme.ElementStroke
     InputBoxStroke.Parent = InputBox
 
     -- Layout for Input Box
@@ -1724,12 +1724,12 @@ local function CreateTextBox(parent, config)
     function TextBoxMethods:Unlock()
         TextBoxData.Locked = false
         CreateTween(TextBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(TextBoxFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(TextBoxFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(TitleLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(InputBoxStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(196, 203, 218),
@@ -1784,7 +1784,7 @@ local function CreateToggle(parent, config)
     local ToggleStroke = Instance.new("UIStroke")
     ToggleStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ToggleStroke.Thickness = 1.5
-    ToggleStroke.Color = Color3.fromRGB(61, 61, 75)
+    ToggleStroke.Color = CurrentTheme.ElementStroke
     ToggleStroke.Parent = ToggleFrame
 
     local TogglePadding = Instance.new("UIPadding")
@@ -1955,7 +1955,7 @@ local function CreateToggle(parent, config)
     ToggleSwitch.MouseLeave:Connect(function()
         if not ToggleData.Locked then
             CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-            ToggleFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            ToggleFrame.BackgroundColor3 = CurrentTheme.ElementBackground
             CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2029,7 +2029,7 @@ local function CreateToggle(parent, config)
 
     function ToggleMethods:Unlock()
         ToggleData.Locked = false
-        CreateTween(ToggleFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ToggleFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ToggleStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ToggleTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
@@ -2081,7 +2081,7 @@ local function CreateButton(parent, config)
     local ButtonStroke = Instance.new("UIStroke")
     ButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ButtonStroke.Thickness = 1.5
-    ButtonStroke.Color = Color3.fromRGB(61, 61, 75)
+    ButtonStroke.Color = CurrentTheme.ElementStroke
     ButtonStroke.Parent = ButtonFrame
 
     -- Button Content Frame
@@ -2244,7 +2244,7 @@ local function CreateButton(parent, config)
     ButtonFrame.MouseLeave:Connect(function()
         if not ButtonData.Locked then
             CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-            ButtonFrame.BackgroundColor3 = Color3.fromRGB(42, 45, 52)
+            ButtonFrame.BackgroundColor3 = CurrentTheme.ElementBackground
             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2343,7 +2343,7 @@ local function CreateButton(parent, config)
 
     function ButtonMethods:Unlock()
         ButtonData.Locked = false
-        CreateTween(ButtonFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2397,7 +2397,7 @@ local function CreateDropdown(parent, config)
     local DropdownStroke = Instance.new("UIStroke")
     DropdownStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     DropdownStroke.Thickness = 1.5
-    DropdownStroke.Color = Color3.fromRGB(61, 61, 75)
+    DropdownStroke.Color = CurrentTheme.ElementStroke
     DropdownStroke.Parent = DropdownFrame
 
     local DropdownPadding = Instance.new("UIPadding")
@@ -2498,7 +2498,7 @@ local function CreateDropdown(parent, config)
     local ValueStroke = Instance.new("UIStroke")
     ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ValueStroke.Thickness = 1.5
-    ValueStroke.Color = Color3.fromRGB(61, 61, 75)
+    ValueStroke.Color = CurrentTheme.ElementStroke
     ValueStroke.Parent = ValueButton
 
     local ValueLayout = Instance.new("UIListLayout")
@@ -2679,7 +2679,7 @@ local function CreateDropdown(parent, config)
         DropdownPopup.ClipsDescendants = true
         DropdownPopup.Size = UDim2.new(0.7281, 0, 0.68367, 0)
         DropdownPopup.Position = UDim2.new(0.5, 0, 0.5, 0)
-        DropdownPopup.BorderColor3 = Color3.fromRGB(61, 61, 75)
+        DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
         DropdownPopup.Name = "DropdownSelection"
         DropdownPopup.ZIndex = 51
         DropdownPopup.Parent = window
@@ -2691,7 +2691,7 @@ local function CreateDropdown(parent, config)
         local PopupStroke = Instance.new("UIStroke")
         PopupStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         PopupStroke.Thickness = 1.5
-        PopupStroke.Color = Color3.fromRGB(61, 61, 75)
+        PopupStroke.Color = CurrentTheme.ElementStroke
         PopupStroke.Parent = DropdownPopup
 
         -- Create dark overlay
@@ -2766,7 +2766,7 @@ local function CreateDropdown(parent, config)
         local SearchStroke = Instance.new("UIStroke")
         SearchStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         SearchStroke.Thickness = 1.5
-        SearchStroke.Color = Color3.fromRGB(61, 61, 75)
+        SearchStroke.Color = CurrentTheme.ElementStroke
         SearchStroke.Parent = SearchContainer
 
         -- Search TextBox
@@ -3046,7 +3046,7 @@ local function CreateDropdown(parent, config)
         local ItemStroke = Instance.new("UIStroke")
         ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         ItemStroke.Thickness = 1.5
-        ItemStroke.Color = Color3.fromRGB(61, 61, 75)
+        ItemStroke.Color = CurrentTheme.ElementStroke
         ItemStroke.Parent = ItemButton
 
         -- Item gradients (matching OGLIB style)
@@ -3402,13 +3402,13 @@ local function CreateDropdown(parent, config)
     function DropdownMethods:Unlock()
         DropdownData.Locked = false
         CreateTween(DropdownStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
-        CreateTween(DropdownFrame, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(DropdownFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(DropdownTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
         CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-        CreateTween(ValueButton, {BackgroundColor3 = Color3.fromRGB(42, 45, 52)}, AnimationConfig.Global)
+        CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ValueStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         DropdownFrame.Active = true
@@ -3470,7 +3470,7 @@ local function CreateSection(parent, config)
     local SectionButtonStroke = Instance.new("UIStroke")
     SectionButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SectionButtonStroke.Thickness = 1.5
-    SectionButtonStroke.Color = Color3.fromRGB(61, 61, 75)
+    SectionButtonStroke.Color = CurrentTheme.ElementStroke
     SectionButtonStroke.Parent = SectionButton
 
     local SectionButtonPadding = Instance.new("UIPadding")
@@ -3569,9 +3569,9 @@ local function CreateSection(parent, config)
     -- Create Divider
     local SectionDivider = Instance.new("Frame")
     SectionDivider.BorderSizePixel = 0
-    SectionDivider.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    SectionDivider.BackgroundColor3 = CurrentTheme.ElementStroke
     SectionDivider.Size = UDim2.new(1, 0, 0, 3)
-    SectionDivider.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    SectionDivider.BorderColor3 = CurrentTheme.ElementStroke
     SectionDivider.Name = "Divider"
     SectionDivider.Parent = SectionContent
 
@@ -3648,7 +3648,7 @@ local function CreateSection(parent, config)
     local SectionStroke2 = Instance.new("UIStroke")
     SectionStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SectionStroke2.Thickness = 1.5
-    SectionStroke2.Color = Color3.fromRGB(61, 61, 75)
+    SectionStroke2.Color = CurrentTheme.ElementStroke
     SectionStroke2.Parent = SectionButton
 
     -- Make section visible
@@ -3774,7 +3774,7 @@ function Library:CreateWindow(config)
     FloatIcon.AutomaticSize = Enum.AutomaticSize.X
     FloatIcon.Size = UDim2.new(0, 85, 0, 45)
     FloatIcon.Position = UDim2.new(0.5, 0, 0, 45)
-    FloatIcon.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    FloatIcon.BorderColor3 = CurrentTheme.ElementStroke
     FloatIcon.Parent = ScreenGui
 
     local FloatCorner = Instance.new("UICorner")
@@ -3866,7 +3866,7 @@ function Library:CreateWindow(config)
     Window.AnchorPoint = Vector2.new(0.5, 0.5)
     Window.Size = WindowData.Size
     Window.Position = UDim2.new(0.5278, 0, 0.5, 0)
-    Window.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    Window.BorderColor3 = CurrentTheme.ElementStroke
     Window.Visible = false
     Window.Parent = ScreenGui
 
@@ -3886,7 +3886,7 @@ function Library:CreateWindow(config)
     TopFrame.BackgroundColor3 = CurrentTheme.WindowBackground
     TopFrame.ClipsDescendants = true
     TopFrame.Size = UDim2.new(1, 0, 0, 35)
-    TopFrame.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    TopFrame.BorderColor3 = CurrentTheme.ElementStroke
     TopFrame.Name = "TopFrame"
     TopFrame.Parent = Window
 
@@ -3897,7 +3897,7 @@ function Library:CreateWindow(config)
     local TopBorder = Instance.new("Frame")
     TopBorder.ZIndex = 2
     TopBorder.BorderSizePixel = 0
-    TopBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TopBorder.BackgroundColor3 = CurrentTheme.ElementStroke
     TopBorder.AnchorPoint = Vector2.new(0, 0.5)
     TopBorder.Size = UDim2.new(1, 0, 0, 2)
     TopBorder.Position = UDim2.new(0, 0, 1, 0)
@@ -4044,7 +4044,7 @@ function Library:CreateWindow(config)
     TabButtons.ClipsDescendants = true
     TabButtons.Size = UDim2.new(0, 120, 1, -35)
     TabButtons.Position = UDim2.new(0, 0, 0, 35)
-    TabButtons.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    TabButtons.BorderColor3 = CurrentTheme.ElementStroke
     TabButtons.Name = "TabButtons"
     TabButtons.SelectionGroup = true
     TabButtons.Parent = Window
@@ -4074,7 +4074,7 @@ function Library:CreateWindow(config)
     local TabButtonsBorder = Instance.new("Frame")
     TabButtonsBorder.ZIndex = 2
     TabButtonsBorder.BorderSizePixel = 0
-    TabButtonsBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+    TabButtonsBorder.BackgroundColor3 = CurrentTheme.ElementStroke
     TabButtonsBorder.AnchorPoint = Vector2.new(1, 0)
     TabButtonsBorder.Size = UDim2.new(0, 2, 1, 0)
     TabButtonsBorder.Position = UDim2.new(1, 0, 0, 0)
@@ -4095,7 +4095,7 @@ function Library:CreateWindow(config)
     TabButtonsList.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
     TabButtonsList.AutomaticCanvasSize = Enum.AutomaticSize.Y
     TabButtonsList.Size = UDim2.new(1, 0, 1, 0)
-    TabButtonsList.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    TabButtonsList.BorderColor3 = CurrentTheme.ElementStroke
     TabButtonsList.ScrollBarThickness = 4
     TabButtonsList.BackgroundTransparency = 1
     TabButtonsList.Parent = TabButtons
@@ -4114,7 +4114,7 @@ function Library:CreateWindow(config)
     Tabs.BackgroundColor3 = CurrentTheme.TabContentBackground
     Tabs.Size = UDim2.new(1, -120, 1, -35)
     Tabs.Position = UDim2.new(0, 120, 0, 35)
-    Tabs.BorderColor3 = Color3.fromRGB(61, 61, 75)
+    Tabs.BorderColor3 = CurrentTheme.ElementStroke
     Tabs.Name = "Tabs"
     Tabs.Parent = Window
 
@@ -4208,7 +4208,7 @@ local BottomCorner = Instance.new("UICorner")
     BottomCorner.Parent = BottomFrame
 
 local BottomBorder = Instance.new("Frame")
-BottomBorder.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+BottomBorder.BackgroundColor3 = CurrentTheme.ElementStroke
 BottomBorder.BorderSizePixel = 0
 BottomBorder.Size = UDim2.new(1, 0, 0, 1)
 BottomBorder.Position = UDim2.new(0, 0, 0, 0)
@@ -4607,9 +4607,9 @@ end)
         local Divider = Instance.new("Frame")
         Divider.Visible = false
         Divider.BorderSizePixel = 0
-        Divider.BackgroundColor3 = Color3.fromRGB(61, 61, 75)
+        Divider.BackgroundColor3 = CurrentTheme.ElementStroke
         Divider.Size = UDim2.new(1, 0, 0, 1)
-        Divider.BorderColor3 = Color3.fromRGB(61, 61, 75)
+        Divider.BorderColor3 = CurrentTheme.ElementStroke
         Divider.Name = "Divider"
         Divider.Parent = TabButtonsList
         Divider.Visible = true
