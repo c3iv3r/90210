@@ -1514,11 +1514,9 @@ local function CreateTextBox(parent, config)
     end
 
     -- Value Display (seperti dropdown)
-    local ValueDisplay = Instance.new("ImageButton")
-    ValueDisplay.Active = false
+    local ValueDisplay = Instance.new("Frame")
     ValueDisplay.BorderSizePixel = 0
     ValueDisplay.BackgroundTransparency = 1
-    ValueDisplay.Selectable = false
     ValueDisplay.ZIndex = 0
     ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
     ValueDisplay.Size = UDim2.new(0, 100, 0, 20)  -- Fixed width seperti dropdown
@@ -1545,12 +1543,10 @@ local function CreateTextBox(parent, config)
     ValueShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
     ValueShadow.Parent = ValueDisplay
 
-    -- Value Display Button
-    local ValueButton = Instance.new("ImageButton")
+    -- Value Display Container
+    local ValueButton = Instance.new("Frame")
     ValueButton.BorderSizePixel = 0
-    ValueButton.AutoButtonColor = false
     ValueButton.BackgroundColor3 = CurrentTheme.TabContentBackground
-    ValueButton.Selectable = false
     ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
     ValueButton.Size = UDim2.new(1, 0, 1, 0)
     ValueButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
