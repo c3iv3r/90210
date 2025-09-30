@@ -2479,8 +2479,8 @@ ValueCorner.Parent = ValueButton
 
 local ValueStroke = Instance.new("UIStroke")
 ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-ValueStroke.Thickness = 1.5
-ValueStroke.Color = CurrentTheme.WindowStroke
+ValueStroke.Thickness = 1
+ValueStroke.Color = CurrentTheme.WindowBorder
 ValueStroke.Parent = ValueButton
 
 local ValueLayout = Instance.new("UIListLayout")
@@ -2508,20 +2508,7 @@ ValueLabel.Text = ""
 ValueLabel.Name = "Title"
 ValueLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 ValueLabel.Parent = ValueButton
-
--- Dropdown Arrow Icon
-local Arrow = Instance.new("TextLabel")
-Arrow.Name = "Arrow"
-Arrow.BackgroundTransparency = 1
-Arrow.AnchorPoint = Vector2.new(1, 0.5) -- nempel kanan tengah
-Arrow.Position = UDim2.new(1, -6, 0.5, 0) -- jarak 6px dari kanan
-Arrow.Size = UDim2.new(0, 12, 0, 12) -- kecil, cukup untuk panah
-Arrow.Font = Enum.Font.GothamBold
-Arrow.Text = "▼"   -- panah bawah unicode
-Arrow.TextColor3 = Color3.fromRGB(197, 204, 219)
-Arrow.TextScaled = true
-Arrow.Parent = ValueButton
-
+    
 local ValuePadding = Instance.new("UIPadding")
 ValuePadding.PaddingRight = UDim.new(0, 5)
 ValuePadding.PaddingLeft = UDim.new(0, 5)
