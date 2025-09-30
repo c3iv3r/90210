@@ -3442,7 +3442,7 @@ local function CreateSection(parent, config)
     local Section = Instance.new("Frame")
     Section.Visible = false
     Section.BorderSizePixel = 0
-    Section.BackgroundColor3 = CurrentTheme.ElementBackground
+    Section.BackgroundColor3 = CurrentTheme.SectionBackground
     Section.AutomaticSize = Enum.AutomaticSize.Y
     Section.Size = UDim2.new(1, 0, 0, 25)
     Section.Position = UDim2.new(0, 0, 0.43728, 0)
@@ -3455,7 +3455,7 @@ local function CreateSection(parent, config)
     local SectionButton = Instance.new("ImageButton")
     SectionButton.BorderSizePixel = 0
     SectionButton.AutoButtonColor = false
-    SectionButton.BackgroundColor3 = CurrentTheme.ElementBackground
+    SectionButton.BackgroundColor3 = CurrentTheme.SectionBackground
     SectionButton.Selectable = false
     SectionButton.AutomaticSize = Enum.AutomaticSize.Y
     SectionButton.Size = UDim2.new(1, 0, 0, 25)
