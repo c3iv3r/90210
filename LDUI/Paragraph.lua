@@ -2344,7 +2344,7 @@ local function CreateButton(parent, config)
 
     function ButtonMethods:Unlock()
         ButtonData.Locked = false
-        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
+        CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground)}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = Color3.fromRGB(60, 60, 74)}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -2975,7 +2975,7 @@ local function CreateDropdown(parent, config)
         ItemButton.BorderSizePixel = 0
         ItemButton.AutoButtonColor = false
         ItemButton.Visible = false
-        ItemButton.BackgroundColor3 = CurrentTheme
+        ItemButton.BackgroundColor3 = CurrentTheme.ElementBackground
         ItemButton.Selectable = false
         ItemButton.AutomaticSize = Enum.AutomaticSize.Y
         ItemButton.Size = UDim2.new(1, 0, 0, 35)
