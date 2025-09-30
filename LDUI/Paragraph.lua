@@ -3217,7 +3217,6 @@ ValuePadding.Parent = ValueButton
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
-        DropdownArrow.ImageColor3 = Color3.fromRGB(75, 77, 83)
         ValueButton.BackgroundColor3 = CurrentTheme.TabContentBackground
         ValueStroke.Color = Color3.fromRGB(47, 47, 58)
         ValueLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
@@ -3228,26 +3227,11 @@ ValuePadding.Parent = ValueButton
     -- Update initial display
     UpdateValueDisplay()
 
-    -- Multi icon support
-    if DropdownData.Multi then
-        DropdownArrow.Image = "rbxassetid://91415671397056"
-    end
-
     -- Process initial values
     DropdownData.Values = ProcessValues(DropdownData.Values, true)
 
     -- Click events
     ValueButton.MouseButton1Click:Connect(function()
-        if not DropdownData.Locked then
-            if IsDropdownOpen then
-                CloseDropdown()
-            else
-                OpenDropdown()
-            end
-        end
-    end)
-
-    DropdownArrow.MouseButton1Click:Connect(function()
         if not DropdownData.Locked then
             if IsDropdownOpen then
                 CloseDropdown()
@@ -3375,7 +3359,6 @@ ValuePadding.Parent = ValueButton
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
-        CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
         CreateTween(ValueStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
@@ -3391,7 +3374,6 @@ ValuePadding.Parent = ValueButton
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
-        CreateTween(DropdownArrow, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ValueStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ValueLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
