@@ -2429,107 +2429,91 @@ local function CreateDropdown(parent, config)
     DropdownTitle.Position = UDim2.new(0.03135, 0, 0, 0)
     DropdownTitle.Parent = DropdownFrame
 
-    -- Click Icon (Arrow)
-    local DropdownArrow = Instance.new("ImageButton")
-    DropdownArrow.BorderSizePixel = 0
-    DropdownArrow.AutoButtonColor = false
-    DropdownArrow.BackgroundTransparency = 1
-    DropdownArrow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownArrow.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    DropdownArrow.AnchorPoint = Vector2.new(1, 0.5)
-    DropdownArrow.Image = "rbxassetid://77563793724007"
-    DropdownArrow.Size = UDim2.new(0, 18, 0, 18)
-    DropdownArrow.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownArrow.Name = "ClickIcon"
-    DropdownArrow.Position = UDim2.new(1, 0, 0.5, 0)
-    DropdownArrow.Parent = DropdownTitle
+-- Value Display
+local ValueDisplay = Instance.new("ImageButton")
+ValueDisplay.Active = false
+ValueDisplay.BorderSizePixel = 0
+ValueDisplay.BackgroundTransparency = 1
+ValueDisplay.Selectable = false
+ValueDisplay.ZIndex = 0
+ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
+ValueDisplay.Size = UDim2.new(0, 120, 0, 20)  -- Fixed width
+ValueDisplay.Name = "BoxFrame"
+ValueDisplay.Position = UDim2.new(1, -25, 0.5, 0)
+ValueDisplay.Parent = DropdownTitle
 
-    -- Selected Value Display
-    local ValueDisplay = Instance.new("ImageButton")
-    ValueDisplay.Active = false
-    ValueDisplay.BorderSizePixel = 0
-    ValueDisplay.BackgroundTransparency = 1
-    ValueDisplay.Selectable = false
-    ValueDisplay.ZIndex = 0
-    ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
-    ValueDisplay.AutomaticSize = Enum.AutomaticSize.X
-    ValueDisplay.Size = UDim2.new(0, 20, 0, 20)
-    ValueDisplay.Name = "BoxFrame"
-    ValueDisplay.Position = UDim2.new(1, -33, 0.5, 0)
-    ValueDisplay.Parent = DropdownTitle
+-- Value Display Shadow
+local ValueShadow = Instance.new("ImageLabel")
+ValueShadow.Interactable = false
+ValueShadow.ZIndex = 0
+ValueShadow.BorderSizePixel = 0
+ValueShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+ValueShadow.ScaleType = Enum.ScaleType.Slice
+ValueShadow.ImageTransparency = 0.75
+ValueShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+ValueShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+ValueShadow.Image = "rbxassetid://6014261993"
+ValueShadow.Size = UDim2.new(1, 30, 1, 30)
+ValueShadow.Visible = true  -- Shadow visible
+ValueShadow.BackgroundTransparency = 1
+ValueShadow.Name = "DropShadow"
+ValueShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+ValueShadow.Parent = ValueDisplay
 
-    -- Value Display Shadow (Optional)
-    local ValueShadow = Instance.new("ImageLabel")
-    ValueShadow.Interactable = false
-    ValueShadow.ZIndex = 0
-    ValueShadow.BorderSizePixel = 0
-    ValueShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    ValueShadow.ScaleType = Enum.ScaleType.Slice
-    ValueShadow.ImageTransparency = 0.75
-    ValueShadow.AutomaticSize = Enum.AutomaticSize.X
-    ValueShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    ValueShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    ValueShadow.Image = "rbxassetid://6014261993"
-    ValueShadow.Size = UDim2.new(1, 28, 1, 28)
-    ValueShadow.Visible = false
-    ValueShadow.BackgroundTransparency = 1
-    ValueShadow.Name = "DropShadow"
-    ValueShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ValueShadow.Parent = ValueDisplay
+-- Value Display Button
+local ValueButton = Instance.new("ImageButton")
+ValueButton.BorderSizePixel = 0
+ValueButton.AutoButtonColor = false
+ValueButton.BackgroundColor3 = CurrentTheme.ElementBackground
+ValueButton.Selectable = false
+ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
+ValueButton.Size = UDim2.new(1, 0, 1, 0)  -- Full size, no AutomaticSize
+ValueButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ValueButton.Name = "Trigger"
+ValueButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+ValueButton.Parent = ValueDisplay
 
-    -- Value Display Button
-    local ValueButton = Instance.new("ImageButton")
-    ValueButton.BorderSizePixel = 0
-    ValueButton.AutoButtonColor = false
-    ValueButton.BackgroundColor3 = CurrentTheme.ElementBackground
-    ValueButton.Selectable = false
-    ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
-    ValueButton.AutomaticSize = Enum.AutomaticSize.X
-    ValueButton.Size = UDim2.new(0, 16, 0, 16)
-    ValueButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ValueButton.Name = "Trigger"
-    ValueButton.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ValueButton.Parent = ValueDisplay
+local ValueCorner = Instance.new("UICorner")
+ValueCorner.CornerRadius = UDim.new(0, 5)
+ValueCorner.Parent = ValueButton
 
-    local ValueCorner = Instance.new("UICorner")
-    ValueCorner.CornerRadius = UDim.new(0, 5)
-    ValueCorner.Parent = ValueButton
+local ValueStroke = Instance.new("UIStroke")
+ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+ValueStroke.Thickness = 1.5
+ValueStroke.Color = CurrentTheme.ElementStroke
+ValueStroke.Parent = ValueButton
 
-    local ValueStroke = Instance.new("UIStroke")
-    ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    ValueStroke.Thickness = 1.5
-    ValueStroke.Color = CurrentTheme.ElementStroke
-    ValueStroke.Parent = ValueButton
+local ValueLayout = Instance.new("UIListLayout")
+ValueLayout.Padding = UDim.new(0, 5)
+ValueLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+ValueLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+ValueLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ValueLayout.Parent = ValueButton
 
-    local ValueLayout = Instance.new("UIListLayout")
-    ValueLayout.Padding = UDim.new(0, 5)
-    ValueLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ValueLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ValueLayout.Parent = ValueButton
+local ValueLabel = Instance.new("TextLabel")
+ValueLabel.TextWrapped = true
+ValueLabel.Interactable = false
+ValueLabel.BorderSizePixel = 0
+ValueLabel.TextSize = 12
+ValueLabel.TextScaled = true
+ValueLabel.TextTruncate = Enum.TextTruncate.AtEnd
+ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ValueLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+ValueLabel.BackgroundTransparency = 1
+ValueLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ValueLabel.Size = UDim2.new(1, -10, 0, 14)
+ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ValueLabel.Text = ""
+ValueLabel.Name = "Title"
+ValueLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ValueLabel.Parent = ValueButton
 
-    local ValueLabel = Instance.new("TextLabel")
-    ValueLabel.TextWrapped = true
-    ValueLabel.Interactable = false
-    ValueLabel.BorderSizePixel = 0
-    ValueLabel.TextSize = 12
-    ValueLabel.TextScaled = true
-    ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ValueLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
-    ValueLabel.BackgroundTransparency = 1
-    ValueLabel.AnchorPoint = Vector2.new(0, 0.5)
-    ValueLabel.Size = UDim2.new(0, 15, 0, 14)
-    ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ValueLabel.Text = ""
-    ValueLabel.AutomaticSize = Enum.AutomaticSize.X
-    ValueLabel.Name = "Title"
-    ValueLabel.Position = UDim2.new(-0.00345, 0, 0.5, 0)
-    ValueLabel.Parent = ValueButton
+local ValuePadding = Instance.new("UIPadding")
+ValuePadding.PaddingRight = UDim.new(0, 5)
+ValuePadding.PaddingLeft = UDim.new(0, 5)
+ValuePadding.Parent = ValueButton
 
-    local ValuePadding = Instance.new("UIPadding")
-    ValuePadding.PaddingRight = UDim.new(0, 5)
-    ValuePadding.PaddingLeft = UDim.new(0, 5)
-    ValuePadding.Parent = ValueButton
 
     -- Description Label (if provided)
     local DescriptionLabel = nil
