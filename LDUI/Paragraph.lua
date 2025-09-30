@@ -1421,7 +1421,7 @@ local function CreateSlider(parent, config)
     return SliderMethods
 end
 
--- TextBox Module
+-- TextBox Module (UPDATED VERSION)
 local function CreateTextBox(parent, config)
     local TextBoxData = {
         Title = config.Title or "Input Textbox",
@@ -1459,6 +1459,18 @@ local function CreateTextBox(parent, config)
     TextBoxStroke.Color = CurrentTheme.ElementStroke
     TextBoxStroke.Parent = TextBoxFrame
 
+    local TextBoxPadding = Instance.new("UIPadding")
+    TextBoxPadding.PaddingTop = UDim.new(0, 6)
+    TextBoxPadding.PaddingRight = UDim.new(0, 8)
+    TextBoxPadding.PaddingLeft = UDim.new(0, 8)
+    TextBoxPadding.PaddingBottom = UDim.new(0, 6)
+    TextBoxPadding.Parent = TextBoxFrame
+
+    local TextBoxLayout = Instance.new("UIListLayout")
+    TextBoxLayout.Padding = UDim.new(0, 3)
+    TextBoxLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TextBoxLayout.Parent = TextBoxFrame
+
     -- Title Label
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.TextWrapped = true
@@ -1476,20 +1488,6 @@ local function CreateTextBox(parent, config)
     TitleLabel.AutomaticSize = Enum.AutomaticSize.Y
     TitleLabel.Name = "Title"
     TitleLabel.Parent = TextBoxFrame
-
-    -- Padding for the main frame
-    local MainPadding = Instance.new("UIPadding")
-    MainPadding.PaddingTop = UDim.new(0, 6)     -- DARI 10 -> 6
-    MainPadding.PaddingRight = UDim.new(0, 8)   -- DARI 10 -> 8
-    MainPadding.PaddingLeft = UDim.new(0, 8)    -- DARI 10 -> 8
-    MainPadding.PaddingBottom = UDim.new(0, 6)  -- DARI 10 -> 
-    MainPadding.Parent = TextBoxFrame
-
-    -- Layout for main frame
-    local MainLayout = Instance.new("UIListLayout")
-    MainLayout.Padding = UDim.new(0, 3)
-    MainLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    MainLayout.Parent = TextBoxFrame
 
     -- Description Label (if provided)
     local DescriptionLabel = nil
@@ -1515,96 +1513,90 @@ local function CreateTextBox(parent, config)
         DescriptionLabel.Parent = TextBoxFrame
     end
 
-    -- Box Frame Container
-    local BoxFrame = Instance.new("Frame")
-    BoxFrame.ZIndex = 0
-    BoxFrame.BorderSizePixel = 0
-    BoxFrame.AutomaticSize = Enum.AutomaticSize.Y
-    BoxFrame.Size = UDim2.new(1, 0, 0, 20)
-    BoxFrame.Name = "BoxFrame"
-    BoxFrame.LayoutOrder = 2
-    BoxFrame.BackgroundTransparency = 1
-    BoxFrame.Parent = TextBoxFrame
+    -- Value Display (seperti dropdown)
+    local ValueDisplay = Instance.new("ImageButton")
+    ValueDisplay.Active = false
+    ValueDisplay.BorderSizePixel = 0
+    ValueDisplay.BackgroundTransparency = 1
+    ValueDisplay.Selectable = false
+    ValueDisplay.ZIndex = 0
+    ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
+    ValueDisplay.Size = UDim2.new(0, 100, 0, 20)  -- Fixed width seperti dropdown
+    ValueDisplay.Name = "BoxFrame"
+    ValueDisplay.Position = UDim2.new(1, -8, 0.5, 0)
+    ValueDisplay.LayoutOrder = 2
+    ValueDisplay.Parent = TitleLabel
 
-    -- Drop Shadow for Box
-    local DropShadow = Instance.new("ImageLabel")
-    DropShadow.ZIndex = 0
-    DropShadow.BorderSizePixel = 0
-    DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-    DropShadow.ScaleType = Enum.ScaleType.Slice
-    DropShadow.ImageTransparency = 0.75
-    DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    DropShadow.Image = "rbxassetid://6014261993"
-    DropShadow.Size = UDim2.new(1, 35, 1, 30)
-    DropShadow.BackgroundTransparency = 1
-    DropShadow.Name = "DropShadow"
-    DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    DropShadow.Parent = BoxFrame
+    -- Value Display Shadow
+    local ValueShadow = Instance.new("ImageLabel")
+    ValueShadow.Interactable = false
+    ValueShadow.ZIndex = 0
+    ValueShadow.BorderSizePixel = 0
+    ValueShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+    ValueShadow.ScaleType = Enum.ScaleType.Slice
+    ValueShadow.ImageTransparency = 0.75
+    ValueShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    ValueShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    ValueShadow.Image = "rbxassetid://6014261993"
+    ValueShadow.Size = UDim2.new(1, 30, 1, 30)
+    ValueShadow.Visible = false
+    ValueShadow.BackgroundTransparency = 1
+    ValueShadow.Name = "DropShadow"
+    ValueShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ValueShadow.Parent = ValueDisplay
 
-    -- Input Box Container
-    local InputBox = Instance.new("Frame")
-    InputBox.BorderSizePixel = 0
-    InputBox.BackgroundColor3 = CurrentTheme.ElementBackground
-    InputBox.AutomaticSize = Enum.AutomaticSize.Y
-    InputBox.Size = UDim2.new(1, 0, 0, 20)
-    InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    InputBox.Parent = BoxFrame
+    -- Value Display Button
+    local ValueButton = Instance.new("ImageButton")
+    ValueButton.BorderSizePixel = 0
+    ValueButton.AutoButtonColor = false
+    ValueButton.BackgroundColor3 = CurrentTheme.TabContentBackground
+    ValueButton.Selectable = false
+    ValueButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    ValueButton.Size = UDim2.new(1, 0, 1, 0)
+    ValueButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ValueButton.Name = "Trigger"
+    ValueButton.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ValueButton.Parent = ValueDisplay
 
-    local InputBoxCorner = Instance.new("UICorner")
-    InputBoxCorner.CornerRadius = UDim.new(0, 5)
-    InputBoxCorner.Parent = InputBox
+    local ValueCorner = Instance.new("UICorner")
+    ValueCorner.CornerRadius = UDim.new(0, 5)
+    ValueCorner.Parent = ValueButton
 
-    local InputBoxStroke = Instance.new("UIStroke")
-    InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    InputBoxStroke.Thickness = 1.5
-    InputBoxStroke.Color = CurrentTheme.ElementStroke
-    InputBoxStroke.Parent = InputBox
+    local ValueStroke = Instance.new("UIStroke")
+    ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ValueStroke.Thickness = 1
+    ValueStroke.Color = CurrentTheme.WindowBorder
+    ValueStroke.Parent = ValueButton
 
-    -- Layout for Input Box
-    local InputBoxLayout = Instance.new("UIListLayout")
-    InputBoxLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    InputBoxLayout.Padding = UDim.new(0, 5)
-    InputBoxLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    InputBoxLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    InputBoxLayout.Parent = InputBox
-
-    -- Actual TextBox
+    -- Actual TextBox dengan text truncation
     local ActualTextBox = Instance.new("TextBox")
     ActualTextBox.TextXAlignment = Enum.TextXAlignment.Left
     ActualTextBox.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
     ActualTextBox.BorderSizePixel = 0
-    ActualTextBox.TextWrapped = true
-    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd
+    ActualTextBox.TextWrapped = false  -- Tidak wrap agar bisa truncate
+    ActualTextBox.TextTruncate = Enum.TextTruncate.AtEnd  -- Truncate di akhir
     ActualTextBox.TextSize = 12
+    ActualTextBox.TextScaled = true
     ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
     ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
-    ActualTextBox.ClipsDescendants = true
+    ActualTextBox.ClipsDescendants = true  -- Penting untuk truncate
     ActualTextBox.PlaceholderText = TextBoxData.Placeholder
-    ActualTextBox.Size = UDim2.new(1, 0, 0, 20)
+    ActualTextBox.Size = UDim2.new(1, -10, 0, 14)
     ActualTextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ActualTextBox.Text = TextBoxData.Default
     ActualTextBox.BackgroundTransparency = 1
-    ActualTextBox.MultiLine = TextBoxData.MultiLine
+    ActualTextBox.MultiLine = false  -- Single line untuk truncate
     ActualTextBox.ClearTextOnFocus = TextBoxData.ClearTextOnFocus
-    ActualTextBox.Parent = InputBox
+    ActualTextBox.AnchorPoint = Vector2.new(0.5, 0.5)
+    ActualTextBox.Position = UDim2.new(0.5, 0, 0.5, 0)
+    ActualTextBox.Name = "Input"
+    ActualTextBox.Parent = ValueButton
 
-    -- TextBox Padding
-    local TextBoxPadding = Instance.new("UIPadding")
-    TextBoxPadding.PaddingTop = UDim.new(0, 3)      -- DARI 5 -> 3
-    TextBoxPadding.PaddingRight = UDim.new(0, 8)    -- DARI 10 -> 8
-    TextBoxPadding.PaddingLeft = UDim.new(0, 8)     -- DARI 10 -> 8
-     TextBoxPadding.PaddingBottom = UDim.new(0, 3)   -- DARI 5 -> 3
-    TextBoxPadding.Parent = ActualTextBox
-
-    -- Apply MultiLine settings
-    if TextBoxData.MultiLine then
-        ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
-    else
-        ActualTextBox.AutomaticSize = Enum.AutomaticSize.None
-    end
+    local ValuePadding = Instance.new("UIPadding")
+    ValuePadding.PaddingRight = UDim.new(0, 5)
+    ValuePadding.PaddingLeft = UDim.new(0, 5)
+    ValuePadding.Parent = ActualTextBox
 
     -- Apply locked state if needed
     if TextBoxData.Locked then
@@ -1614,8 +1606,8 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             DescriptionLabel.TextColor3 = Color3.fromRGB(75, 77, 83)
         end
-        InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
-        InputBoxStroke.Color = Color3.fromRGB(47, 47, 58)
+        ValueButton.BackgroundColor3 = CurrentTheme.TabContentBackground
+        ValueStroke.Color = Color3.fromRGB(47, 47, 58)
         ActualTextBox.TextColor3 = Color3.fromRGB(75, 77, 83)
         ActualTextBox.PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
         ActualTextBox.Active = false
@@ -1639,13 +1631,13 @@ local function CreateTextBox(parent, config)
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ValueStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(ValueStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
         end
@@ -1670,7 +1662,6 @@ local function CreateTextBox(parent, config)
         if desc and desc ~= "" then
             TextBoxData.Desc = desc
             if not DescriptionLabel then
-                -- Create description label if it doesn't exist
                 DescriptionLabel = Instance.new("TextLabel")
                 DescriptionLabel.TextWrapped = true
                 DescriptionLabel.Interactable = false
@@ -1710,8 +1701,8 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(75, 77, 83)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
+        CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
+        CreateTween(ValueStroke, {Color = Color3.fromRGB(47, 47, 58)}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(75, 77, 83),
             PlaceholderColor3 = Color3.fromRGB(75, 77, 83)
@@ -1729,8 +1720,8 @@ local function CreateTextBox(parent, config)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
-        CreateTween(InputBox, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
-        CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+        CreateTween(ValueButton, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
+        CreateTween(ValueStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ActualTextBox, {
             TextColor3 = Color3.fromRGB(196, 203, 218),
             PlaceholderColor3 = Color3.fromRGB(139, 139, 139)
