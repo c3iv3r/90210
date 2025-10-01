@@ -1517,7 +1517,7 @@ local function CreateTextBox(parent, config)
 
 -- Box Frame Container (sama seperti dropdown)
 local BoxFrame = Instance.new("ImageButton")
-BoxFrame.Active = false
+BoxFrame.Active = true
 BoxFrame.BorderSizePixel = 0
 BoxFrame.BackgroundTransparency = 1
 BoxFrame.Selectable = false
@@ -1548,10 +1548,11 @@ ValueShadow.Parent = BoxFrame
 
 -- Input Box Container
 local InputBox = Instance.new("ImageButton")
+InputBox.Active = true
 InputBox.BorderSizePixel = 0
 InputBox.AutoButtonColor = false
 InputBox.BackgroundColor3 = CurrentTheme.TabContentBackground
-InputBox.Selectable = false
+InputBox.Selectable = true
 InputBox.AnchorPoint = Vector2.new(0.5, 0.5)
 InputBox.Size = UDim2.new(1, 0, 1, 0)
 InputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1566,7 +1567,7 @@ InputBoxCorner.Parent = InputBox
 local InputBoxStroke = Instance.new("UIStroke")
 InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 InputBoxStroke.Thickness = 1.5
-InputBoxStroke.Color = CurrentTheme.ElementStroke
+InputBoxStroke.Color = CurrentTheme.WindowBorder
 InputBoxStroke.Parent = InputBox
 
     -- Actual TextBox
