@@ -1523,9 +1523,9 @@ BoxFrame.BackgroundTransparency = 1
 BoxFrame.Selectable = false
 BoxFrame.ZIndex = 0
 BoxFrame.AnchorPoint = Vector2.new(1, 0.5)
-BoxFrame.Size = UDim2.new(0, 100, 0, 20)  -- Fixed width seperti dropdown
+BoxFrame.Size = UDim2.new(0, 100, 0, 10)  -- Fixed width seperti dropdown
 BoxFrame.Name = "BoxFrame"
-BoxFrame.Position = UDim2.new(1, -8, 0.5, 0)
+BoxFrame.Position = UDim2.new(1, -5, 0.5, 0)
 BoxFrame.Parent = TitleLabel  -- Parent ke TitleLabel bukan TextBoxFrame
 
 -- Value Display Shadow
@@ -1566,7 +1566,7 @@ InputBoxCorner.Parent = InputBox
 
 local InputBoxStroke = Instance.new("UIStroke")
 InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-InputBoxStroke.Thickness = 1.5
+InputBoxStroke.Thickness = 1
 InputBoxStroke.Color = CurrentTheme.WindowBorder
 InputBoxStroke.Parent = InputBox
 
@@ -1633,20 +1633,20 @@ InputBoxStroke.Parent = InputBox
 
     ActualTextBox.MouseLeave:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(InputBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
         end
@@ -2438,9 +2438,9 @@ ValueDisplay.BackgroundTransparency = 1
 ValueDisplay.Selectable = false
 ValueDisplay.ZIndex = 0
 ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
-ValueDisplay.Size = UDim2.new(0, 100, 0, 20)  -- Fixed width
+ValueDisplay.Size = UDim2.new(0, 100, 0, 10)  -- Fixed width
 ValueDisplay.Name = "BoxFrame"
-ValueDisplay.Position = UDim2.new(1, -8, 0.5, 0)
+ValueDisplay.Position = UDim2.new(1, -5, 0.5, 0)
 ValueDisplay.Parent = DropdownTitle
 
 -- Value Display Shadow
