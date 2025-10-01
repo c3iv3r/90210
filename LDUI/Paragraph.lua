@@ -2492,12 +2492,13 @@ ValueLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ValueLayout.Parent = ValueButton
 
 local ValueLabel = Instance.new("TextLabel")
-ValueLabel.TextWrapped = true
+ValueLabel.TextWrapped = false
 ValueLabel.Interactable = false
 ValueLabel.BorderSizePixel = 0
 ValueLabel.TextSize = 12
 ValueLabel.TextScaled = true
 ValueLabel.TextTruncate = Enum.TextTruncate.AtEnd
+ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
 ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ValueLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
