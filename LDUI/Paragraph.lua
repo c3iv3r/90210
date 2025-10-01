@@ -2522,8 +2522,9 @@ ArrowIcon.Image = "rbxassetid://120292618616139"  -- Arrow down icon
 ArrowIcon.Size = UDim2.new(0, 12, 0, 12)
 ArrowIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ArrowIcon.Name = "Arrow"
-ArrowIcon.Position = UDim2.new(1, -3, 0.5, 0)
-ArrowIcon.Parent = ValueButton
+ArrowIcon.Position = UDim2.new(1, -5, 0.5, 0)
+ArrowIcon.Rotation = 90
+ArrowIcon.Parent = ValueDisplay
     
 local ValuePadding = Instance.new("UIPadding")
 ValuePadding.PaddingRight = UDim.new(0, 5)
