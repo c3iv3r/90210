@@ -1559,6 +1559,16 @@ InputBox.Name = "Trigger"
 InputBox.Position = UDim2.new(0.5, 0, 0.5, 0)
 InputBox.Parent = BoxFrame
 
+local InputBoxCorner = Instance.new("UICorner")
+InputBoxCorner.CornerRadius = UDim.new(0, 5)
+InputBoxCorner.Parent = InputBox
+
+local InputBoxStroke = Instance.new("UIStroke")
+InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+InputBoxStroke.Thickness = 1.5
+InputBoxStroke.Color = CurrentTheme.ElementStroke
+InputBoxStroke.Parent = InputBox
+
     -- Actual TextBox
     local ActualTextBox = Instance.new("TextBox")
     ActualTextBox.TextXAlignment = Enum.TextXAlignment.Left
