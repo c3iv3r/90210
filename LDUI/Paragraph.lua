@@ -1523,7 +1523,7 @@ BoxFrame.BackgroundTransparency = 1
 BoxFrame.Selectable = false
 BoxFrame.ZIndex = 0
 BoxFrame.AnchorPoint = Vector2.new(1, 0.5)
-BoxFrame.Size = UDim2.new(0, 100, 0, 10)  -- Fixed width seperti dropdown
+BoxFrame.Size = UDim2.new(0, 100, 0, 15)  -- Fixed width seperti dropdown
 BoxFrame.Name = "BoxFrame"
 BoxFrame.Position = UDim2.new(1, -5, 0.5, 0)
 BoxFrame.Parent = TitleLabel  -- Parent ke TitleLabel bukan TextBoxFrame
@@ -1633,13 +1633,13 @@ InputBoxStroke.Parent = InputBox
 
     ActualTextBox.MouseLeave:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         end
     end)
@@ -2438,7 +2438,7 @@ ValueDisplay.BackgroundTransparency = 1
 ValueDisplay.Selectable = false
 ValueDisplay.ZIndex = 0
 ValueDisplay.AnchorPoint = Vector2.new(1, 0.5)
-ValueDisplay.Size = UDim2.new(0, 100, 0, 10)  -- Fixed width
+ValueDisplay.Size = UDim2.new(0, 100, 0, 15)  -- Fixed width
 ValueDisplay.Name = "BoxFrame"
 ValueDisplay.Position = UDim2.new(1, -5, 0.5, 0)
 ValueDisplay.Parent = DropdownTitle
