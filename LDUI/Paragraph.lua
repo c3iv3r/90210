@@ -1462,7 +1462,7 @@ local function CreateTextBox(parent, config)
     -- Title Label
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.TextWrapped = true
-    TitleLabel.Interactable = false
+    TitleLabel.Interactable = true
     TitleLabel.BorderSizePixel = 0
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
