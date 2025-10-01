@@ -2510,6 +2510,20 @@ ValueLabel.Text = ""
 ValueLabel.Name = "Title"
 ValueLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
 ValueLabel.Parent = ValueButton
+
+-- Arrow Icon
+local ArrowIcon = Instance.new("ImageLabel")
+ArrowIcon.BorderSizePixel = 0
+ArrowIcon.BackgroundTransparency = 1
+ArrowIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ArrowIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+ArrowIcon.AnchorPoint = Vector2.new(1, 0.5)
+ArrowIcon.Image = "rbxassetid://120292618616139"  -- Arrow down icon
+ArrowIcon.Size = UDim2.new(0, 12, 0, 12)
+ArrowIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ArrowIcon.Name = "Arrow"
+ArrowIcon.Position = UDim2.new(1, -3, 0.5, 0)
+ArrowIcon.Parent = ValueButton
     
 local ValuePadding = Instance.new("UIPadding")
 ValuePadding.PaddingRight = UDim.new(0, 5)
