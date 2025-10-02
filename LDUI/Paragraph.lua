@@ -446,7 +446,7 @@ function Library:Notify(config)
     
     local NotificationMethods = {}
 
-    -- Find notification parent (prioritize window if visible, otherwise global)
+    -- Find notification parent (sama seperti sebelumnya)
     local notificationParent = nil
     for _, window in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
         if window:IsA("ScreenGui") and window:FindFirstChild("Window") then
@@ -458,7 +458,6 @@ function Library:Notify(config)
         end
     end
     
-    -- If no window found or not visible, create global notification list
     if not notificationParent then
         local globalNotificationGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("GlobalNotifications")
         if not globalNotificationGui then
@@ -467,7 +466,6 @@ function Library:Notify(config)
             globalNotificationGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
             globalNotificationGui.ResetOnSpawn = false
             
-            -- Parent to appropriate location
             if gethui then
                 globalNotificationGui.Parent = gethui()
             elseif pcall(function() game.CoreGui:GetChildren() end) then
@@ -480,49 +478,57 @@ function Library:Notify(config)
             globalList.ZIndex = 10
             globalList.BorderSizePixel = 0
             globalList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            globalList.AnchorPoint = Vector2.new(0.5, 0)
-            globalList.Size = UDim2.new(0, 630, 1, 0)
-            globalList.Position = UDim2.new(1, 0, 0, 0)
+            globalList.AnchorPoint = Vector2.new(1, 0)  -- CHANGED: Anchor kanan atas
+            globalList.Size = UDim2.new(0, 300, 1, 0)   -- CHANGED: Width 300px
+            globalList.Position = UDim2.new(1, -10, 0, 10)  -- CHANGED: 10px dari kanan, 10px dari atas
             globalList.BorderColor3 = Color3.fromRGB(0, 0, 0)
             globalList.Name = "NotificationList"
             globalList.BackgroundTransparency = 1
             globalList.Parent = globalNotificationGui
             
             local globalLayout = Instance.new("UIListLayout")
-            globalLayout.Padding = UDim.new(0, 12)
+            globalLayout.Padding = UDim.new(0, 10)  -- CHANGED: Padding 10px
+            globalLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
             globalLayout.SortOrder = Enum.SortOrder.LayoutOrder
             globalLayout.Parent = globalList
             
             local globalPadding = Instance.new("UIPadding")
-            globalPadding.PaddingTop = UDim.new(0, 10)
-            globalPadding.PaddingRight = UDim.new(0, 40)
-            globalPadding.PaddingLeft = UDim.new(0, 40)
+            globalPadding.PaddingTop = UDim.new(0, 0)
+            globalPadding.PaddingRight = UDim.new(0, 0)
+            globalPadding.PaddingLeft = UDim.new(0, 0)
             globalPadding.Parent = globalList
         end
         notificationParent = globalNotificationGui.NotificationList
     end
 
+    -- WRAPPER untuk animasi yang lebih smooth
+    local NotificationWrapper = Instance.new("Frame")
+    NotificationWrapper.BackgroundTransparency = 1
+    NotificationWrapper.Size = UDim2.new(1, 0, 0, 0)
+    NotificationWrapper.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationWrapper.ClipsDescendants = false  -- Penting untuk slide animation
+    NotificationWrapper.Parent = notificationParent
+
     -- Create Notification Frame
     local Notification = Instance.new("Frame")
-    Notification.Visible = false
+    Notification.Visible = true
     Notification.BorderSizePixel = 0
     Notification.BackgroundColor3 = CurrentTheme.WindowBackground
-    Notification.AnchorPoint = Vector2.new(0.5, 0.5)
     Notification.AutomaticSize = Enum.AutomaticSize.Y
     Notification.Size = UDim2.new(1, 0, 0, 65)
-    Notification.Position = UDim2.new(0.8244, 0, 0.88221, 0)
+    Notification.Position = UDim2.new(1, 20, 0, 0)  -- CHANGED: Start dari luar layar (kanan + 20px)
     Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Notification.Name = "Notification"
-    Notification.BackgroundTransparency = 1
-    Notification.Parent = notificationParent
+    Notification.BackgroundTransparency = 0
+    Notification.Parent = NotificationWrapper
 
-    -- Create Items Container (CanvasGroup for group transparency)
-    local NotificationItems = Instance.new("CanvasGroup")
+    -- Items Container (sama seperti sebelumnya, tapi tanpa CanvasGroup untuk performa)
+    local NotificationItems = Instance.new("Frame")
     NotificationItems.ZIndex = 2
     NotificationItems.BorderSizePixel = 0
     NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
     NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationItems.Size = UDim2.new(0, 265, 0, 70)
+    NotificationItems.Size = UDim2.new(1, 0, 0, 70)
     NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
     NotificationItems.Name = "Items"
     NotificationItems.Parent = Notification
@@ -580,15 +586,13 @@ function Library:Notify(config)
     }
     SubContentGradient.Parent = NotificationSubContent
 
-    -- Create Title
-    local NotificationTitle = Instance.new("TextLabel")
+local NotificationTitle = Instance.new("TextLabel")
     NotificationTitle.TextWrapped = true
     NotificationTitle.BorderSizePixel = 0
     NotificationTitle.TextSize = 16
     NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
-    NotificationTitle.TextScaled = true
     NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    NotificationTitle.Font = Enum.Font.GothamBold
     NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
     NotificationTitle.BackgroundTransparency = 1
     NotificationTitle.AnchorPoint = Vector2.new(0, 0.5)
@@ -599,7 +603,6 @@ function Library:Notify(config)
     NotificationTitle.Position = UDim2.new(0, 0, 0, 9)
     NotificationTitle.Parent = NotificationContent
 
-    -- Create Close Button
     local CloseButton = Instance.new("ImageButton")
     CloseButton.BorderSizePixel = 0
     CloseButton.BackgroundTransparency = 1
@@ -613,15 +616,10 @@ function Library:Notify(config)
     CloseButton.Position = UDim2.new(0.92, 0, 0.5, 0)
     CloseButton.Parent = NotificationTitle
 
-    local CloseAspect = Instance.new("UIAspectRatioConstraint")
-    CloseAspect.Parent = CloseButton
-
-    -- Create Title Padding
     local TitlePadding = Instance.new("UIPadding")
     TitlePadding.PaddingLeft = UDim.new(0, 30)
     TitlePadding.Parent = NotificationTitle
 
-    -- Create Icon
     local NotificationIcon = Instance.new("ImageButton")
     NotificationIcon.BorderSizePixel = 0
     NotificationIcon.BackgroundTransparency = 1
@@ -635,17 +633,13 @@ function Library:Notify(config)
     NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
     NotificationIcon.Parent = NotificationTitle
 
-    local IconAspect = Instance.new("UIAspectRatioConstraint")
-    IconAspect.Parent = NotificationIcon
-
-    -- Create Content Text
     local NotificationContentText = Instance.new("TextLabel")
     NotificationContentText.TextWrapped = true
     NotificationContentText.BorderSizePixel = 0
     NotificationContentText.TextSize = 16
     NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
     NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    NotificationContentText.Font = Enum.Font.GothamMedium
     NotificationContentText.TextColor3 = Color3.fromRGB(197, 204, 219)
     NotificationContentText.BackgroundTransparency = 1
     NotificationContentText.AnchorPoint = Vector2.new(0, 0.5)
@@ -680,22 +674,14 @@ function Library:Notify(config)
     TimerBarFill.BackgroundTransparency = 0.7
     TimerBarFill.Parent = NotificationItems
 
-    local TimerCorner = Instance.new("UICorner")
-    TimerCorner.Parent = TimerBarFill
-
-    -- Create Timer Bar
     local TimerBar = Instance.new("Frame")
     TimerBar.BorderSizePixel = 0
-    TimerBar.BackgroundColor3 = CurrentTheme.ElementStroke
+    TimerBar.BackgroundColor3 = CurrentTheme.AccentPrimary
     TimerBar.Size = UDim2.new(1, 0, 1, 0)
     TimerBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TimerBar.Name = "Bar"
     TimerBar.Parent = TimerBarFill
 
-    local TimerBarCorner = Instance.new("UICorner")
-    TimerBarCorner.Parent = TimerBar
-
-    -- Create Stroke for Items
     local ItemsStroke = Instance.new("UIStroke")
     ItemsStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ItemsStroke.Thickness = 1.5
@@ -703,46 +689,46 @@ function Library:Notify(config)
     ItemsStroke.Parent = NotificationItems
 
     local ItemsCorner = Instance.new("UICorner")
+    ItemsCorner.CornerRadius = UDim.new(0, 6)
     ItemsCorner.Parent = NotificationItems
 
-    -- Close Function
+    -- IMPROVED Close Function dengan slide out animation
     local function CloseNotification()
         if Notification then
-            CreateTween(NotificationItems, {
-                Position = UDim2.new(0.75, 0, 0, 0)
+            -- Slide out ke kanan dengan fade
+            local slideOut = CreateTween(Notification, {
+                Position = UDim2.new(1, 20, 0, 0)  -- Slide ke kanan
             }, AnimationConfig.Notification)
-            task.wait(AnimationConfig.Notification.Duration - (AnimationConfig.Notification.Duration / 2))
-            if Notification then
-                Notification:Destroy()
+            
+            slideOut.Completed:Wait()
+            
+            if NotificationWrapper then
+                NotificationWrapper:Destroy()
             end
             Notification = nil
         end
     end
 
-    -- Close Button Event
     CloseButton.MouseButton1Click:Connect(CloseNotification)
 
-    -- Show Notification Animation
-    NotificationItems.Position = UDim2.new(0.75, 0, 0, 0)
-    Notification.Visible = true
-    
-    local showTween = CreateTween(NotificationItems, {
-        Position = UDim2.new(0, 0, 0, 0)
-    }, AnimationConfig.Notification)
+    -- IMPROVED Show Animation - Slide in dari kanan dengan bounce
+    local showTween = CreateTween(Notification, {
+        Position = UDim2.new(0, 0, 0, 0)  -- Slide masuk ke posisi normal
+    }, AnimationConfig.Notification)  -- Sudah pakai Back easing dari config
     
     showTween.Completed:Connect(function()
-        -- Start timer bar animation
+        -- Timer bar animation
         CreateTween(TimerBar, {
             Size = UDim2.new(0, 0, 1, 0)
         }, {
-            Duration = NotificationData.Duration
+            Duration = NotificationData.Duration,
+            EasingStyle = Enum.EasingStyle.Linear
         })
         
-        -- Auto close after duration
+        -- Auto close
         task.delay(NotificationData.Duration, CloseNotification)
     end)
 
-    -- Notification Methods
     function NotificationMethods:Close()
         CloseNotification()
     end
