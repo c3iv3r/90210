@@ -3779,7 +3779,7 @@ function Library:CreateWindow(config)
         LeftTitle = config.LeftTitle or "",
         LeftSubtitle = config.LeftSubtitle or "",
         Footer = config.Footer or "",
-        Icon = ResolveIcon(config.Icon) "rbxassetid://113216930555884",
+        Icon = ResolveIcon(config.Icon) or "rbxassetid://113216930555884",
         Version = config.Author or config.Version or "",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
         ToggleKey = config.ToggleKey or Enum.KeyCode.RightShift,
