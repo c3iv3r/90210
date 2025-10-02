@@ -484,7 +484,7 @@ function Library:Notify(config)
         globalList.BorderSizePixel = 0
         globalList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         globalList.AnchorPoint = Vector2.new(1, 0)  -- UBAH: Anchor ke kanan atas
-        globalList.Size = UDim2.new(0, 300, 1, 0)   -- UBAH: Width 300px seperti Obsidian
+        globalList.Size = UDim2.new(0, 100, 1, 0)   -- UBAH: Width 300px seperti Obsidian
         globalList.Position = UDim2.new(1, -6, 0, 6)  -- UBAH: Pojok kanan atas dengan offset 6px
         globalList.BorderColor3 = Color3.fromRGB(0, 0, 0)
         globalList.Name = "NotificationList"
