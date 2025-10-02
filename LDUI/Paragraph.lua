@@ -2503,10 +2503,12 @@ ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ValueLabel.Font = Enum.Font.GothamBold
 ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
 ValueLabel.BackgroundTransparency = 1
+ValueLabel.AnchorPoint = Vector2.new(0, 0)
 ValueLabel.Size = UDim2.new(1, -10, 0, 14)
 ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ValueLabel.Text = ""
 ValueLabel.Name = "Title"
+ValueLabel.Position = UDim2.new(0, 0, 0, 0)
 ValueLabel.Parent = ValueButton
 
 -- Arrow Icon
