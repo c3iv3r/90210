@@ -5,36 +5,6 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local Themes = loadstring(game:HttpGet("https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/Notify.lua"))()
--- Di bagian atas file, setelah Services
-local FetchIcons, Icons = pcall(function()
-    return loadstring(
-        game:HttpGet("https://raw.githubusercontent.com/deividcomsono/lucide-roblox-direct/refs/heads/main/source.lua")
-    )()
-end)
-
--- Helper function untuk resolve icon
-local function ResolveIcon(iconInput)
-    if not iconInput or iconInput == "" then
-        return nil
-    end
-    
-    -- Cek apakah rbxassetid atau pure number
-    if string.find(iconInput, "rbxassetid") or string.match(iconInput, "^%d+$") then
-        return iconInput
-    end
-    
-    -- Coba ambil dari Lucide Icons
-    if FetchIcons then
-        local success, iconAsset = pcall(Icons.GetAsset, iconInput)
-        if success and iconAsset then
-            return iconAsset
-        end
-    end
-    
-    -- Fallback ke input asli
-    return iconInput
-end
-
 local CurrentTheme = Themes.Dark
 
 -- SetTheme yang support string atau table
@@ -62,6 +32,91 @@ function Library:GetAvailableThemes()
         table.insert(names, name)
     end
     return names
+end
+
+local Icons = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"))()
+
+-- Set default icon type (bisa "geist", "lucide", atau yang lain)
+Icons.SetIconsType("lucide") -- atau "geist" sesuai preferensi
+
+-- Helper function untuk create icon (rbxassetid atau icon name)
+local function CreateIcon(config)
+    local IconConfig = {
+        Icon = config.Icon or "rbxassetid://113216930555884", -- default icon
+        Size = config.Size or UDim2.new(0, 20, 0, 20),
+        Position = config.Position or UDim2.new(0, 0, 0, 0),
+        AnchorPoint = config.AnchorPoint or Vector2.new(0, 0),
+        ImageColor3 = config.ImageColor3 or Color3.fromRGB(197, 204, 219),
+        ImageTransparency = config.ImageTransparency or 0,
+        Parent = config.Parent,
+        Name = config.Name or "Icon",
+        BackgroundTransparency = config.BackgroundTransparency or 1,
+        Active = config.Active or false,
+        Interactable = config.Interactable or false,
+        SecondaryColor = config.SecondaryColor -- untuk gradient/dual color icons
+    }
+    
+    -- Check if it's rbxassetid or icon name
+    local isRbxAsset = string.find(IconConfig.Icon, "rbxassetid") or string.match(IconConfig.Icon, "^%d+$")
+    
+    if isRbxAsset then
+        -- Create ImageButton/ImageLabel for rbxassetid
+        local IconElement = Instance.new("ImageButton")
+        IconElement.Active = IconConfig.Active
+        IconElement.Interactable = IconConfig.Interactable
+        IconElement.BorderSizePixel = 0
+        IconElement.AutoButtonColor = false
+        IconElement.BackgroundTransparency = IconConfig.BackgroundTransparency
+        IconElement.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        IconElement.ImageColor3 = IconConfig.ImageColor3
+        IconElement.ImageTransparency = IconConfig.ImageTransparency
+        IconElement.AnchorPoint = IconConfig.AnchorPoint
+        IconElement.Image = IconConfig.Icon
+        IconElement.Size = IconConfig.Size
+        IconElement.Position = IconConfig.Position
+        IconElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        IconElement.Name = IconConfig.Name
+        IconElement.Parent = IconConfig.Parent
+        
+        return IconElement
+    else
+        -- Create icon using Icons.Image()
+        local success, iconElement = pcall(function()
+            local colors = IconConfig.SecondaryColor and 
+                {IconConfig.ImageColor3, IconConfig.SecondaryColor} or 
+                {IconConfig.ImageColor3}
+            
+            return Icons.Image({
+                Icon = IconConfig.Icon,
+                Colors = colors,
+                Size = IconConfig.Size
+            })
+        end)
+        
+        if success and iconElement then
+            -- Setup properties
+            iconElement.Name = IconConfig.Name
+            iconElement.AnchorPoint = IconConfig.AnchorPoint
+            iconElement.Position = IconConfig.Position
+            iconElement.BackgroundTransparency = IconConfig.BackgroundTransparency
+            iconElement.Parent = IconConfig.Parent
+            
+            return iconElement
+        else
+            -- Fallback ke ImageButton kosong jika icon gagal
+            warn("Failed to create icon '" .. IconConfig.Icon .. "', creating empty icon")
+            local FallbackIcon = Instance.new("ImageButton")
+            FallbackIcon.Active = false
+            FallbackIcon.BorderSizePixel = 0
+            FallbackIcon.BackgroundTransparency = 1
+            FallbackIcon.Size = IconConfig.Size
+            FallbackIcon.Position = IconConfig.Position
+            FallbackIcon.AnchorPoint = IconConfig.AnchorPoint
+            FallbackIcon.Name = IconConfig.Name
+            FallbackIcon.Parent = IconConfig.Parent
+            return FallbackIcon
+        end
+    end
 end
 
 -- Animation Configs
@@ -160,7 +215,7 @@ local function CreateDialog(parent, config)
     local DialogData = {
         Title = config.Title or "Dialog",
         Content = config.Content or "",
-        Icon = ResolveIcon(config.Icon),
+        Icon = config.Icon,
         Buttons = config.Buttons or {},
         Size = nil,
         PressDecreaseSize = UDim2.fromOffset(5, 5)
@@ -246,19 +301,18 @@ local function CreateDialog(parent, config)
     -- Title Icon (optional)
     local TitleIcon = nil
     if DialogData.Icon then
-        TitleIcon = Instance.new("ImageButton")
-        TitleIcon.BorderSizePixel = 0
-        TitleIcon.Visible = true
-        TitleIcon.BackgroundTransparency = 1
-        TitleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TitleIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
-        TitleIcon.Size = UDim2.new(0, 33, 0, 25)
-        TitleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TitleIcon.Name = "Icon"
-        TitleIcon.Position = UDim2.new(0, 0, 0.2125, 0)
-        TitleIcon.Image = DialogData.Icon
-        TitleIcon.Parent = TitleFrame
-
+        TitleIcon = CreateIcon({
+            Icon = DialogData.Icon,
+            Size = UDim2.new(0, 33, 0, 25),
+            Position = UDim2.new(0, 0, 0.2125, 0),
+            ImageColor3 = Color3.fromRGB(197, 204, 219),
+            Parent = TitleFrame,
+            Name = "Icon",
+            BackgroundTransparency = 1,
+            Active = false,
+            Interactable = false
+        })
+        
         local IconAspectRatio = Instance.new("UIAspectRatioConstraint")
         IconAspectRatio.Parent = TitleIcon
     end
@@ -469,7 +523,7 @@ function Library:Notify(config)
     local NotificationData = {
         Title = config.Title or "Notification",
         Content = config.Content or "This is a notification",
-        Icon = ResolveIcon(config.Icon) or "rbxassetid://92049322344253",
+        Icon = config.Icon or "rbxassetid://92049322344253",
         Duration = config.Duration or 5
     }
     
@@ -651,19 +705,17 @@ function Library:Notify(config)
     TitlePadding.Parent = NotificationTitle
 
     -- Create Icon
-    local NotificationIcon = Instance.new("ImageButton")
-    NotificationIcon.BorderSizePixel = 0
-    NotificationIcon.BackgroundTransparency = 1
-    NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
-    NotificationIcon.Image = NotificationData.Icon
-    NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
-    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationIcon.Name = "Icon"
-    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
-    NotificationIcon.Parent = NotificationTitle
-
+    local NotificationIcon = CreateIcon({
+        Icon = NotificationData.Icon,
+        Size = UDim2.new(0.09706, 0, 1.33333, 0),
+        AnchorPoint = Vector2.new(0, 0.5),
+        Position = UDim2.new(0, -30, 0.5, 0),
+        ImageColor3 = Color3.fromRGB(197, 204, 219),
+        Parent = NotificationTitle,
+        Name = "Icon",
+        BackgroundTransparency = 1
+    })
+    
     local IconAspect = Instance.new("UIAspectRatioConstraint")
     IconAspect.Parent = NotificationIcon
 
@@ -1787,7 +1839,7 @@ local function CreateToggle(parent, config)
         Desc = config.Desc,
         State = config.Default or config.Value or false,
         Locked = config.Locked or false,
-        Icon = ResolveIcon(config.Icon),
+        Icon = config.Icon,
         Callback = config.Callback or function() end
     }
 
@@ -3779,7 +3831,7 @@ function Library:CreateWindow(config)
         LeftTitle = config.LeftTitle or "",
         LeftSubtitle = config.LeftSubtitle or "",
         Footer = config.Footer or "",
-        Icon = ResolveIcon(config.Icon) or "rbxassetid://113216930555884",
+        Icon = config.Icon or "rbxassetid://113216930555884",
         Version = config.Author or config.Version or "",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
         ToggleKey = config.ToggleKey or Enum.KeyCode.RightShift,
@@ -4497,7 +4549,7 @@ end)
         local TabMethods = {}
         local TabConfig = {
             Title = config.Title or "Tab",
-            Icon = ResolveIcon(config.Icon) or "rbxassetid://113216930555884"
+            Icon = config.Icon or "rbxassetid://113216930555884"
         }
 
         -- Create Tab Button
@@ -4514,21 +4566,19 @@ end)
         TabButton.Name = "TabButton"
         TabButton.Parent = TabButtonsList
 
-        local TabButtonIcon = Instance.new("ImageButton")
-        TabButtonIcon.BorderSizePixel = 0
-        TabButtonIcon.ImageTransparency = 0.5
-        TabButtonIcon.BackgroundTransparency = 1
-        TabButtonIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        TabButtonIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
-        TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
-        TabButtonIcon.Image = TabConfig.Icon
-        TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-        TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
-        TabButtonIcon.Parent = TabButton
-
-        local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
-        TabButtonAspect.Parent = TabButtonIcon
+        local TabButtonIcon = CreateIcon({
+        Icon = NotificationData.Icon,
+        Size = UDim2.new(0.09706, 0, 1.33333, 0),
+        AnchorPoint = Vector2.new(0, 0.5),
+        Position = UDim2.new(0, -30, 0.5, 0),
+        ImageColor3 = Color3.fromRGB(197, 204, 219),
+        Parent = TabButton,
+        Name = "Icon",
+        BackgroundTransparency = 1
+    })
+    
+    local IconAspect = Instance.new("UIAspectRatioConstraint")
+    IconAspect.Parent = TabButtonIcon
 
         local TabButtonLabel = Instance.new("TextLabel")
         TabButtonLabel.TextWrapped = true
