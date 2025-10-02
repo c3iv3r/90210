@@ -580,7 +580,7 @@ local IconAspect = Instance.new("UIAspectRatioConstraint")
 IconAspect.Parent = NotificationIcon
 
 local NotificationTitle = Instance.new("TextLabel")
-NotificationTitle.TextWrapped = false
+NotificationTitle.TextWrapped = true  -- UBAH: false jadi true
 NotificationTitle.BorderSizePixel = 0
 NotificationTitle.TextSize = 16
 NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -588,13 +588,19 @@ NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
 NotificationTitle.BackgroundTransparency = 1
-NotificationTitle.AutomaticSize = Enum.AutomaticSize.XY
-NotificationTitle.Size = UDim2.new(0, 0, 0, 24)
+NotificationTitle.AutomaticSize = Enum.AutomaticSize.Y  -- UBAH: XY jadi Y saja
+NotificationTitle.Size = UDim2.new(0, 100, 0, 24)  -- UBAH: kasih min-width 150px
 NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NotificationTitle.Text = NotificationData.Title
 NotificationTitle.Name = "Title"
 NotificationTitle.LayoutOrder = 1
 NotificationTitle.Parent = TitleContainer
+
+-- TAMBAH: Constraint untuk title
+local TitleSizeConstraint = Instance.new("UISizeConstraint")
+TitleSizeConstraint.MaxSize = Vector2.new(200, math.huge)  -- Max 200px width untuk title
+TitleSizeConstraint.MinSize = Vector2.new(50, 0)  -- Min 50px width
+TitleSizeConstraint.Parent = NotificationTitle
 
 local CloseButton = Instance.new("ImageButton")
 CloseButton.BorderSizePixel = 0
