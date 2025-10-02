@@ -2365,7 +2365,6 @@ local function CreateDropdown(parent, config)
     local DropdownData = {
         Title = config.Title or "Dropdown",
         Desc = config.Desc,
-        Placeholder = config.Placeholder or "Select",
         Multi = config.Multi or false,
         Values = config.Values or {},
         Value = config.Value or config.Default,
@@ -2508,7 +2507,6 @@ ValueLabel.Size = UDim2.new(1, -10, 0, 14)
 ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ValueLabel.Text = ""
 ValueLabel.Name = "Title"
-ValueLabel.PlaceholderText = DropdownData.Placeholder
 ValueLabel.Parent = ValueButton
 
 -- Arrow Icon
@@ -2625,16 +2623,16 @@ ValuePadding.Parent = ValueButton
             ValueLabel.Text = displayText
             ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         else
-            ValueLabel.Text = ""
-            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna placeholder
+            ValueLabel.Text = "Select..." -- Placeholder manual
+            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna abu seperti placeholder
         end
     else
         if CurrentValue and CurrentValue ~= "" then
             ValueLabel.Text = displayText
             ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         else
-            ValueLabel.Text = ""
-            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna placeholder
+            ValueLabel.Text = "Select..." -- Placeholder manual
+            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna abu seperti placeholder
         end
     end
 end
