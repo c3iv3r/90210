@@ -640,7 +640,7 @@ function Library:Notify(config)
     -- Max Width Constraint
     local ContentSizeConstraint = Instance.new("UISizeConstraint")
     ContentSizeConstraint.MaxSize = Vector2.new(300, math.huge)
-    ContentSizeConstraint.MinSize = Vector2.new(200, 0)
+    ContentSizeConstraint.MinSize = Vector2.new(50, 0)
     ContentSizeConstraint.Parent = NotificationContent
 
     -- Timer Bar
