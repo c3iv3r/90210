@@ -504,172 +504,174 @@ function Library:Notify(config)
         globalPadding.Parent = globalList
     end
     notificationParent = globalNotificationGui.NotificationList
+    
+local Notification = Instance.new("Frame")
+Notification.Visible = false
+Notification.BorderSizePixel = 0
+Notification.BackgroundColor3 = CurrentTheme.WindowBackground
+Notification.AnchorPoint = Vector2.new(1, 0)
+Notification.AutomaticSize = Enum.AutomaticSize.XY  -- UBAH: Auto width & height
+Notification.Size = UDim2.new(0, 0, 0, 0)  -- UBAH: Start dari 0
+Notification.Position = UDim2.new(1, 0, 0, 0)
+Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Notification.Name = "Notification"
+Notification.BackgroundTransparency = 1
+Notification.Parent = notificationParent
 
-    -- Create Notification Frame - UKURAN DIUBAH
-    local Notification = Instance.new("Frame")
-    Notification.Visible = false
-    Notification.BorderSizePixel = 0
-    Notification.BackgroundColor3 = CurrentTheme.WindowBackground
-    Notification.AnchorPoint = Vector2.new(1, 0)  -- UBAH: Anchor ke kanan
-    Notification.AutomaticSize = Enum.AutomaticSize.Y
-    Notification.Size = UDim2.new(1, 0, 0, 65)
-    Notification.Position = UDim2.new(1, 0, 0, 0)  -- UBAH: Posisi dari kanan
-    Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Notification.Name = "Notification"
-    Notification.BackgroundTransparency = 1
-    Notification.Parent = notificationParent
+-- Create Items Container - AUTO SIZE
+local NotificationItems = Instance.new("CanvasGroup")
+NotificationItems.ZIndex = 2
+NotificationItems.BorderSizePixel = 0
+NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
+NotificationItems.AutomaticSize = Enum.AutomaticSize.XY  -- UBAH: Auto width & height
+NotificationItems.Size = UDim2.new(0, 0, 0, 0)  -- UBAH: Start dari 0
+NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationItems.Name = "Items"
+NotificationItems.Parent = Notification
 
-    -- Create Items Container (CanvasGroup for group transparency) - UKURAN DIUBAH
-    local NotificationItems = Instance.new("CanvasGroup")
-    NotificationItems.ZIndex = 2
-    NotificationItems.BorderSizePixel = 0
-    NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
-    NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationItems.Size = UDim2.new(0, 300, 0, 70)  -- UBAH: Width 300px
-    NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationItems.Name = "Items"
-    NotificationItems.Parent = Notification
+-- Create Content Frame
+local NotificationContent = Instance.new("Frame")
+NotificationContent.BorderSizePixel = 0
+NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationContent.AutomaticSize = Enum.AutomaticSize.XY  -- UBAH: Auto size
+NotificationContent.Size = UDim2.new(0, 0, 0, 0)  -- UBAH: Start dari 0
+NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationContent.BackgroundTransparency = 1
+NotificationContent.Parent = NotificationItems
 
-    -- Create Content Frame
-    local NotificationContent = Instance.new("Frame")
-    NotificationContent.BorderSizePixel = 0
-    NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationContent.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationContent.Size = UDim2.new(0, 265, 0, 70)
-    NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationContent.BackgroundTransparency = 1
-    NotificationContent.Parent = NotificationItems
+local NotificationLayout = Instance.new("UIListLayout")
+NotificationLayout.Padding = UDim.new(0, 8)  -- UBAH: Spacing antar elemen
+NotificationLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+NotificationLayout.SortOrder = Enum.SortOrder.LayoutOrder
+NotificationLayout.Parent = NotificationContent
 
-    local NotificationLayout = Instance.new("UIListLayout")
-    NotificationLayout.Padding = UDim.new(0, 5)
-    NotificationLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    NotificationLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    NotificationLayout.Parent = NotificationContent
+local NotificationPadding = Instance.new("UIPadding")
+NotificationPadding.PaddingTop = UDim.new(0, 15)
+NotificationPadding.PaddingLeft = UDim.new(0, 15)
+NotificationPadding.PaddingBottom = UDim.new(0, 15)
+NotificationPadding.PaddingRight = UDim.new(0, 45)  -- UBAH: Space untuk close button
+NotificationPadding.Parent = NotificationContent
 
-    local NotificationPadding = Instance.new("UIPadding")
-    NotificationPadding.PaddingTop = UDim.new(0, 15)
-    NotificationPadding.PaddingLeft = UDim.new(0, 15)
-    NotificationPadding.PaddingBottom = UDim.new(0, 15)
-    NotificationPadding.Parent = NotificationContent
+-- Create Title Container (Icon + Text)
+local TitleContainer = Instance.new("Frame")
+TitleContainer.BackgroundTransparency = 1
+TitleContainer.AutomaticSize = Enum.AutomaticSize.XY
+TitleContainer.Size = UDim2.new(0, 0, 0, 0)
+TitleContainer.Name = "TitleContainer"
+TitleContainer.Parent = NotificationContent
 
-    -- Create SubContent (Optional - for additional info)
-    local NotificationSubContent = Instance.new("TextLabel")
-    NotificationSubContent.TextWrapped = true
-    NotificationSubContent.BorderSizePixel = 0
-    NotificationSubContent.TextSize = 12
-    NotificationSubContent.TextXAlignment = Enum.TextXAlignment.Left
-    NotificationSubContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationSubContent.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-    NotificationSubContent.TextColor3 = Color3.fromRGB(181, 181, 181)
-    NotificationSubContent.BackgroundTransparency = 1
-    NotificationSubContent.AnchorPoint = Vector2.new(0, 0.5)
-    NotificationSubContent.Size = UDim2.new(0, 218, 0, 10)
-    NotificationSubContent.Visible = false
-    NotificationSubContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationSubContent.Text = "This is a notification"
-    NotificationSubContent.LayoutOrder = 1
-    NotificationSubContent.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationSubContent.Name = "SubContent"
-    NotificationSubContent.Position = UDim2.new(0, 0, 0, 19)
-    NotificationSubContent.Parent = NotificationContent
+local TitleLayout = Instance.new("UIListLayout")
+TitleLayout.FillDirection = Enum.FillDirection.Horizontal
+TitleLayout.Padding = UDim.new(0, 10)
+TitleLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+TitleLayout.SortOrder = Enum.SortOrder.LayoutOrder
+TitleLayout.Parent = TitleContainer
 
-    -- Create SubContent Gradient (matching OGLIB)
-    local SubContentGradient = Instance.new("UIGradient")
-    SubContentGradient.Enabled = false
-    SubContentGradient.Rotation = -90
-    SubContentGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
-    }
-    SubContentGradient.Parent = NotificationSubContent
+-- Create Icon
+local NotificationIcon = Instance.new("ImageButton")
+NotificationIcon.BorderSizePixel = 0
+NotificationIcon.BackgroundTransparency = 1
+NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+NotificationIcon.Image = NotificationData.Icon
+NotificationIcon.Size = UDim2.new(0, 24, 0, 24)  -- UBAH: Ukuran icon 24x24
+NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationIcon.Name = "Icon"
+NotificationIcon.LayoutOrder = 0
+NotificationIcon.Parent = TitleContainer
 
-    -- Create Title
-    local NotificationTitle = Instance.new("TextLabel")
-    NotificationTitle.TextWrapped = true
-    NotificationTitle.BorderSizePixel = 0
-    NotificationTitle.TextSize = 16
-    NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
-    NotificationTitle.TextScaled = true
-    NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-    NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
-    NotificationTitle.BackgroundTransparency = 1
-    NotificationTitle.AnchorPoint = Vector2.new(0, 0.5)
-    NotificationTitle.Size = UDim2.new(0, 235, 0, 18)
-    NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationTitle.Text = NotificationData.Title
-    NotificationTitle.Name = "Title"
-    NotificationTitle.Position = UDim2.new(0, 0, 0, 9)
-    NotificationTitle.Parent = NotificationContent
+local IconAspect = Instance.new("UIAspectRatioConstraint")
+IconAspect.Parent = NotificationIcon
 
-    -- Create Close Button
-    local CloseButton = Instance.new("ImageButton")
-    CloseButton.BorderSizePixel = 0
-    CloseButton.BackgroundTransparency = 1
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
-    CloseButton.Image = "rbxassetid://132453323679056"
-    CloseButton.Size = UDim2.new(0.09706, 0, 1.33333, 0)
-    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CloseButton.Name = "Close"
-    CloseButton.Position = UDim2.new(0.92, 0, 0.5, 0)
-    CloseButton.Parent = NotificationTitle
+-- Create Title
+local NotificationTitle = Instance.new("TextLabel")
+NotificationTitle.TextWrapped = false
+NotificationTitle.BorderSizePixel = 0
+NotificationTitle.TextSize = 16
+NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
+NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+NotificationTitle.BackgroundTransparency = 1
+NotificationTitle.AutomaticSize = Enum.AutomaticSize.XY
+NotificationTitle.Size = UDim2.new(0, 0, 0, 24)  -- UBAH: Height 24 sesuai icon
+NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationTitle.Text = NotificationData.Title
+NotificationTitle.Name = "Title"
+NotificationTitle.LayoutOrder = 1
+NotificationTitle.Parent = TitleContainer
 
-    local CloseAspect = Instance.new("UIAspectRatioConstraint")
-    CloseAspect.Parent = CloseButton
+-- Create Close Button - POSISI BARU
+local CloseButton = Instance.new("ImageButton")
+CloseButton.BorderSizePixel = 0
+CloseButton.BackgroundTransparency = 1
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
+CloseButton.AnchorPoint = Vector2.new(1, 0)  -- UBAH: Anchor kanan atas
+CloseButton.Image = "rbxassetid://132453323679056"
+CloseButton.Size = UDim2.new(0, 20, 0, 20)
+CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CloseButton.Name = "Close"
+CloseButton.Position = UDim2.new(1, -10, 0, 10)  -- UBAH: Pojok kanan atas
+CloseButton.Parent = NotificationItems  -- UBAH: Parent ke Items bukan Title
 
-    -- Create Title Padding
-    local TitlePadding = Instance.new("UIPadding")
-    TitlePadding.PaddingLeft = UDim.new(0, 30)
-    TitlePadding.Parent = NotificationTitle
+local CloseAspect = Instance.new("UIAspectRatioConstraint")
+CloseAspect.Parent = CloseButton
 
-    -- Create Icon
-    local NotificationIcon = Instance.new("ImageButton")
-    NotificationIcon.BorderSizePixel = 0
-    NotificationIcon.BackgroundTransparency = 1
-    NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
-    NotificationIcon.Image = NotificationData.Icon
-    NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
-    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationIcon.Name = "Icon"
-    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
-    NotificationIcon.Parent = NotificationTitle
+-- Create SubContent (Optional - hide if not used)
+local NotificationSubContent = Instance.new("TextLabel")
+NotificationSubContent.TextWrapped = true
+NotificationSubContent.BorderSizePixel = 0
+NotificationSubContent.TextSize = 12
+NotificationSubContent.TextXAlignment = Enum.TextXAlignment.Left
+NotificationSubContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationSubContent.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+NotificationSubContent.TextColor3 = Color3.fromRGB(181, 181, 181)
+NotificationSubContent.BackgroundTransparency = 1
+NotificationSubContent.AutomaticSize = Enum.AutomaticSize.Y
+NotificationSubContent.Size = UDim2.new(0, 250, 0, 0)  -- UBAH: Max width 250
+NotificationSubContent.Visible = false
+NotificationSubContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationSubContent.Text = ""
+NotificationSubContent.LayoutOrder = 1
+NotificationSubContent.Name = "SubContent"
+NotificationSubContent.Parent = NotificationContent
 
-    local IconAspect = Instance.new("UIAspectRatioConstraint")
-    IconAspect.Parent = NotificationIcon
+local SubContentGradient = Instance.new("UIGradient")
+SubContentGradient.Enabled = false
+SubContentGradient.Rotation = -90
+SubContentGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+}
+SubContentGradient.Parent = NotificationSubContent
 
-    -- Create Content Text
-    local NotificationContentText = Instance.new("TextLabel")
-    NotificationContentText.TextWrapped = true
-    NotificationContentText.BorderSizePixel = 0
-    NotificationContentText.TextSize = 16
-    NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
-    NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-    NotificationContentText.TextColor3 = Color3.fromRGB(197, 204, 219)
-    NotificationContentText.BackgroundTransparency = 1
-    NotificationContentText.AnchorPoint = Vector2.new(0, 0.5)
-    NotificationContentText.Size = UDim2.new(0, 218, 0, 10)
-    NotificationContentText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationContentText.Text = NotificationData.Content
-    NotificationContentText.LayoutOrder = 2
-    NotificationContentText.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationContentText.Name = "Content"
-    NotificationContentText.Position = UDim2.new(0, 0, 0, 19)
-    NotificationContentText.Parent = NotificationContent
+-- Create Content Text
+local NotificationContentText = Instance.new("TextLabel")
+NotificationContentText.TextWrapped = true
+NotificationContentText.BorderSizePixel = 0
+NotificationContentText.TextSize = 14
+NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
+NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+NotificationContentText.TextColor3 = Color3.fromRGB(197, 204, 219)
+NotificationContentText.BackgroundTransparency = 1
+NotificationContentText.AutomaticSize = Enum.AutomaticSize.Y
+NotificationContentText.Size = UDim2.new(0, 250, 0, 0)  -- UBAH: Max width 250, auto height
+NotificationContentText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationContentText.Text = NotificationData.Content
+NotificationContentText.LayoutOrder = 2
+NotificationContentText.Name = "Content"
+NotificationContentText.Parent = NotificationContent
 
-    -- Create Content Gradient (matching OGLIB)
-    local ContentGradient = Instance.new("UIGradient")
-    ContentGradient.Enabled = false
-    ContentGradient.Rotation = -90
-    ContentGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
-    }
-    ContentGradient.Parent = NotificationContentText
+local ContentGradient = Instance.new("UIGradient")
+ContentGradient.Enabled = false
+ContentGradient.Rotation = -90
+ContentGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(3, 100, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 226))
+}
+ContentGradient.Parent = NotificationContentText
 
     -- Create Timer Bar Container
     local TimerBarFill = Instance.new("Frame")
