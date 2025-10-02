@@ -504,8 +504,8 @@ function Library:Notify(config)
     -- WRAPPER untuk animasi yang lebih smooth
     local NotificationWrapper = Instance.new("Frame")
     NotificationWrapper.BackgroundTransparency = 1
-    NotificationWrapper.Size = UDim2.new(1, 0, 0, 0)
-    NotificationWrapper.AutomaticSize = Enum.AutomaticSize.Y
+    NotificationWrapper.Size = UDim2.new(0, 0, 0, 0)
+    NotificationWrapper.AutomaticSize = Enum.AutomaticSize.XY
     NotificationWrapper.ClipsDescendants = false  -- Penting untuk slide animation
     NotificationWrapper.Parent = notificationParent
 
@@ -514,8 +514,8 @@ function Library:Notify(config)
 Notification.Visible = true
 Notification.BorderSizePixel = 0
 Notification.BackgroundColor3 = CurrentTheme.WindowBackground
-Notification.AutomaticSize = Enum.AutomaticSize.Y
-Notification.Size = UDim2.new(1, 0, 0, 0)  -- CHANGED: Let auto size handle it
+Notification.AutomaticSize = Enum.AutomaticSize.XY
+Notification.Size = UDim2.new(0, 0, 0, 0)  -- CHANGED: Let auto size handle it
 Notification.Position = UDim2.new(1, 20, 0, 0)
 Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Notification.Name = "Notification"
@@ -528,8 +528,8 @@ Notification.Parent = NotificationWrapper
 NotificationItems.ZIndex = 2
 NotificationItems.BorderSizePixel = 0
 NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
-NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
-NotificationItems.Size = UDim2.new(1, 0, 0, 0)  -- CHANGED: Auto size
+NotificationItems.AutomaticSize = Enum.AutomaticSize.XY
+NotificationItems.Size = UDim2.new(0, 0, 0, 0)  -- CHANGED: Auto size
 NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NotificationItems.Name = "Items"
 NotificationItems.Parent = Notification
@@ -538,8 +538,8 @@ NotificationItems.Parent = Notification
     local NotificationContent = Instance.new("Frame")
 NotificationContent.BorderSizePixel = 0
 NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-NotificationContent.AutomaticSize = Enum.AutomaticSize.Y
-NotificationContent.Size = UDim2.new(1, 0, 0, 0)  -- CHANGED: Biarkan AutomaticSize yang handle
+NotificationContent.AutomaticSize = Enum.AutomaticSize.XY
+NotificationContent.Size = UDim2.new(0, 0, 0, 0)  -- CHANGED: Biarkan AutomaticSize yang handle
 NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NotificationContent.BackgroundTransparency = 1
 NotificationContent.Parent = NotificationItems
