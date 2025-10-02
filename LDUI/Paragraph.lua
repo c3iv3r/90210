@@ -1646,7 +1646,7 @@ InputBoxStroke.Parent = InputBox
 
     ActualTextBox.FocusLost:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.WindowBorder}, AnimationConfig.Global)
+            CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             TextBoxData.Text = ActualTextBox.Text
             TextBoxData.Callback(TextBoxData.Text)
         end
@@ -2522,7 +2522,7 @@ ArrowIcon.Image = "rbxassetid://120292618616139"  -- Arrow down icon
 ArrowIcon.Size = UDim2.new(0, 12, 0, 12)
 ArrowIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ArrowIcon.Name = "Arrow"
-ArrowIcon.Position = UDim2.new(1, -5, 0.5, 0)
+ArrowIcon.Position = UDim2.new(1, -3, 0.5, 0)
 ArrowIcon.Rotation = 90
 ArrowIcon.Parent = ValueDisplay
     
