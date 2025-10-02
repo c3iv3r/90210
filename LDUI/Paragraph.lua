@@ -1561,13 +1561,13 @@ InputBox.Position = UDim2.new(0.5, 0, 0.5, 0)
 InputBox.Parent = BoxFrame
 
 local InputBoxCorner = Instance.new("UICorner")
-InputBoxCorner.CornerRadius = UDim.new(0, 5)
+InputBoxCorner.CornerRadius = UDim.new(0, 0)
 InputBoxCorner.Parent = InputBox
 
 local InputBoxStroke = Instance.new("UIStroke")
 InputBoxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 InputBoxStroke.Thickness = 1
-InputBoxStroke.Color = CurrentTheme.WindowBorder
+InputBoxStroke.Color = CurrentTheme.TabContentBackground
 InputBoxStroke.Parent = InputBox
 
     -- Actual TextBox
@@ -1580,7 +1580,7 @@ InputBoxStroke.Parent = InputBox
     ActualTextBox.TextSize = 12
     ActualTextBox.TextColor3 = Color3.fromRGB(197, 204, 219)
     ActualTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ActualTextBox.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+    ActualTextBox.Font = Enum.Font.GothamBold
     ActualTextBox.AutomaticSize = Enum.AutomaticSize.Y
     ActualTextBox.ClipsDescendants = true
     ActualTextBox.PlaceholderText = TextBoxData.Placeholder
@@ -1679,7 +1679,7 @@ InputBoxStroke.Parent = InputBox
                 DescriptionLabel.TextSize = 12
                 DescriptionLabel.TextXAlignment = Enum.TextXAlignment.Left
                 DescriptionLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                DescriptionLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                DescriptionLabel.Font = Enum.Font.GothamBold
                 DescriptionLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
                 DescriptionLabel.BackgroundTransparency = 1
                 DescriptionLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -1916,7 +1916,7 @@ local function CreateToggle(parent, config)
         elseif state == false then
             -- OFF state
             CreateTween(ToggleBall, {Position = UDim2.new(0, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 1}, AnimationConfig.Global)
         end
     end
@@ -2475,13 +2475,13 @@ ValueButton.Position = UDim2.new(0.5, 0, 0.5, 0)
 ValueButton.Parent = ValueDisplay
 
 local ValueCorner = Instance.new("UICorner")
-ValueCorner.CornerRadius = UDim.new(0, 5)
+ValueCorner.CornerRadius = UDim.new(0, 0)
 ValueCorner.Parent = ValueButton
 
 local ValueStroke = Instance.new("UIStroke")
 ValueStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ValueStroke.Thickness = 1
-ValueStroke.Color = CurrentTheme.WindowBorder
+ValueStroke.Color = CurrentTheme.TabContentBackground
 ValueStroke.Parent = ValueButton
 
 local ValueLayout = Instance.new("UIListLayout")
@@ -2500,7 +2500,7 @@ ValueLabel.TextScaled = false
 ValueLabel.TextTruncate = Enum.TextTruncate.AtEnd
 ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
 ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ValueLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+ValueLabel.Font = Enum.Font.GothamBold
 ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
 ValueLabel.BackgroundTransparency = 1
 ValueLabel.AnchorPoint = Vector2.new(0.5, 0.5)
