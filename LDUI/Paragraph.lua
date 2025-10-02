@@ -580,7 +580,7 @@ local IconAspect = Instance.new("UIAspectRatioConstraint")
 IconAspect.Parent = NotificationIcon
 
 local NotificationTitle = Instance.new("TextLabel")
-NotificationTitle.TextWrapped = true  -- UBAH: false jadi true
+NotificationTitle.TextWrapped = false  -- UBAH: false jadi true
 NotificationTitle.BorderSizePixel = 0
 NotificationTitle.TextSize = 16
 NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -588,7 +588,7 @@ NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NotificationTitle.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 NotificationTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
 NotificationTitle.BackgroundTransparency = 1
-NotificationTitle.AutomaticSize = Enum.AutomaticSize.Y  -- UBAH: XY jadi Y saja
+NotificationTitle.AutomaticSize = Enum.AutomaticSize.X  -- UBAH: XY jadi Y saja
 NotificationTitle.Size = UDim2.new(0, 100, 0, 24)  -- UBAH: kasih min-width 150px
 NotificationTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 NotificationTitle.Text = NotificationData.Title
