@@ -4567,7 +4567,7 @@ end)
         TabButton.Parent = TabButtonsList
 
         local TabButtonIcon = CreateIcon({
-        Icon = TabButtonIconData.Icon,
+        Icon = TabConfig.Icon,
         Size = UDim2.new(0.09706, 0, 1.33333, 0),
         AnchorPoint = Vector2.new(0, 0.5),
         Position = UDim2.new(0, -30, 0.5, 0),
