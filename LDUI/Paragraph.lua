@@ -2365,6 +2365,7 @@ local function CreateDropdown(parent, config)
     local DropdownData = {
         Title = config.Title or "Dropdown",
         Desc = config.Desc,
+        Placeholder = config.Placeholder or "Select",
         Multi = config.Multi or false,
         Values = config.Values or {},
         Value = config.Value or config.Default,
@@ -2503,12 +2504,11 @@ ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ValueLabel.Font = Enum.Font.GothamBold
 ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
 ValueLabel.BackgroundTransparency = 1
-ValueLabel.AnchorPoint = Vector2.new(0.5, 0.5)
 ValueLabel.Size = UDim2.new(1, -10, 0, 14)
 ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ValueLabel.Text = ""
 ValueLabel.Name = "Title"
-ValueLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+ValueLabel.PlaceholderText = DropdownData.Placeholder
 ValueLabel.Parent = ValueButton
 
 -- Arrow Icon
@@ -2617,9 +2617,27 @@ ValuePadding.Parent = ValueButton
     end
 
     local function UpdateValueDisplay()
-        ValueLabel.Text = FormatValueText(CurrentValue)
+    local displayText = FormatValueText(CurrentValue)
+    
+    -- Cek apakah ada value atau tidak
+    if DropdownData.Multi then
+        if type(CurrentValue) == "table" and #CurrentValue > 0 then
+            ValueLabel.Text = displayText
+            ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        else
+            ValueLabel.Text = ""
+            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna placeholder
+        end
+    else
+        if CurrentValue and CurrentValue ~= "" then
+            ValueLabel.Text = displayText
+            ValueLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
+        else
+            ValueLabel.Text = ""
+            ValueLabel.TextColor3 = Color3.fromRGB(140, 140, 140) -- Warna placeholder
+        end
     end
-
+end
     -- Handle duplicate values with counter (matching OGLIB logic)
     local function ProcessValues(values, reset)
         local processed = {}
