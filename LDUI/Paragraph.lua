@@ -4047,7 +4047,7 @@ function Library:CreateWindow(config)
     TabButtons.BorderSizePixel = 0
     TabButtons.BackgroundColor3 = CurrentTheme.WindowBackground
     TabButtons.ClipsDescendants = true
-    TabButtons.Size = UDim2.new(0, 120, 1, -35)
+    TabButtons.Size = UDim2.new(0, 120, 1, -70)
     TabButtons.Position = UDim2.new(0, 0, 0, 35)
     TabButtons.BorderColor3 = CurrentTheme.ElementStroke
     TabButtons.Name = "TabButtons"
@@ -4117,7 +4117,7 @@ function Library:CreateWindow(config)
     local Tabs = Instance.new("Frame")
     Tabs.BorderSizePixel = 0
     Tabs.BackgroundColor3 = CurrentTheme.TabContentBackground
-    Tabs.Size = UDim2.new(1, -120, 1, -35)
+    Tabs.Size = UDim2.new(1, -120, 1, -70)
     Tabs.Position = UDim2.new(0, 120, 0, 35)
     Tabs.BorderColor3 = CurrentTheme.ElementStroke
     Tabs.Name = "Tabs"
@@ -4180,7 +4180,7 @@ function Library:CreateWindow(config)
     NotificationList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     NotificationList.AnchorPoint = Vector2.new(0.5, 0)
     NotificationList.ClipsDescendants = true
-    NotificationList.Size = UDim2.new(0, 630, 1, -35)
+    NotificationList.Size = UDim2.new(0, 630, 1, -70)
     NotificationList.Position = UDim2.new(1, 0, 0, 35)
     NotificationList.BorderColor3 = Color3.fromRGB(0, 0, 0)
     NotificationList.Name = "NotificationList"
