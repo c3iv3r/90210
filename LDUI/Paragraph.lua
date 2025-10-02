@@ -5,6 +5,35 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local Themes = loadstring(game:HttpGet("https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/Notify.lua"))()
+-- Di bagian atas file, setelah Services
+local FetchIcons, Icons = pcall(function()
+    return loadstring(
+        game:HttpGet("https://raw.githubusercontent.com/deividcomsono/lucide-roblox-direct/refs/heads/main/source.lua")
+    )()
+end)
+
+-- Helper function untuk resolve icon
+local function ResolveIcon(iconInput)
+    if not iconInput or iconInput == "" then
+        return nil
+    end
+    
+    -- Cek apakah rbxassetid atau pure number
+    if string.find(iconInput, "rbxassetid") or string.match(iconInput, "^%d+$") then
+        return iconInput
+    end
+    
+    -- Coba ambil dari Lucide Icons
+    if FetchIcons then
+        local success, iconAsset = pcall(Icons.GetAsset, iconInput)
+        if success and iconAsset then
+            return iconAsset
+        end
+    end
+    
+    -- Fallback ke input asli
+    return iconInput
+end
 
 local CurrentTheme = Themes.Dark
 
@@ -131,7 +160,7 @@ local function CreateDialog(parent, config)
     local DialogData = {
         Title = config.Title or "Dialog",
         Content = config.Content or "",
-        Icon = config.Icon,
+        Icon = ResolveIcon(config.Icon),
         Buttons = config.Buttons or {},
         Size = nil,
         PressDecreaseSize = UDim2.fromOffset(5, 5)
@@ -440,7 +469,7 @@ function Library:Notify(config)
     local NotificationData = {
         Title = config.Title or "Notification",
         Content = config.Content or "This is a notification",
-        Icon = config.Icon or "rbxassetid://92049322344253",
+        Icon = ResolveIcon(config.Icon) or "rbxassetid://92049322344253",
         Duration = config.Duration or 5
     }
     
@@ -1758,7 +1787,7 @@ local function CreateToggle(parent, config)
         Desc = config.Desc,
         State = config.Default or config.Value or false,
         Locked = config.Locked or false,
-        Icon = config.Icon,
+        Icon = ResolveIcon(config.Icon),
         Callback = config.Callback or function() end
     }
 
@@ -3750,7 +3779,7 @@ function Library:CreateWindow(config)
         LeftTitle = config.LeftTitle or "",
         LeftSubtitle = config.LeftSubtitle or "",
         Footer = config.Footer or "",
-        Icon = config.Icon or "rbxassetid://113216930555884",
+        Icon = ResolveIcon(config.Icon) "rbxassetid://113216930555884",
         Version = config.Author or config.Version or "",
         Size = config.Size or UDim2.new(0, 528, 0, 334),
         ToggleKey = config.ToggleKey or Enum.KeyCode.RightShift,
@@ -4468,7 +4497,7 @@ end)
         local TabMethods = {}
         local TabConfig = {
             Title = config.Title or "Tab",
-            Icon = config.Icon or "rbxassetid://113216930555884"
+            Icon = ResolveIcon(config.Icon) or "rbxassetid://113216930555884"
         }
 
         -- Create Tab Button
