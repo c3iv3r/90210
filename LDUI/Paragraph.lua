@@ -3551,12 +3551,34 @@ local function CreateSection(parent, config)
 
     -- Create Divider
     local SectionDivider = Instance.new("Frame")
-    SectionDivider.BorderSizePixel = 0
-    SectionDivider.BackgroundColor3 = CurrentTheme.ElementStroke
-    SectionDivider.Size = UDim2.new(1, 0, 0, 3)
-    SectionDivider.BorderColor3 = CurrentTheme.ElementStroke
-    SectionDivider.Name = "Divider"
-    SectionDivider.Parent = SectionContent
+SectionDivider.BorderSizePixel = 0
+SectionDivider.BackgroundTransparency = 1
+SectionDivider.Size = UDim2.new(1, -4, 0, 2)
+SectionDivider.Position = UDim2.new(0, 2, 0, 0)
+SectionDivider.Name = "Divider"
+SectionDivider.Parent = SectionContent
+
+local DividerLine = Instance.new("Frame")
+DividerLine.BorderSizePixel = 0
+DividerLine.BackgroundColor3 = CurrentTheme.AccentPrimary
+DividerLine.Size = UDim2.new(1, 0, 1, 0)
+DividerLine.BorderColor3 = CurrentTheme.AccentPrimary
+DividerLine.Parent = SectionDivider
+
+local DividerGradient = Instance.new("UIGradient")
+DividerGradient.Transparency = NumberSequence.new({
+    NumberSequenceKeypoint.new(0, 1),
+    NumberSequenceKeypoint.new(0.15, 0.3),
+    NumberSequenceKeypoint.new(0.5, 0),
+    NumberSequenceKeypoint.new(0.85, 0.3),
+    NumberSequenceKeypoint.new(1, 1)
+})
+DividerGradient.Rotation = 0
+DividerGradient.Parent = DividerLine
+
+local DividerCorner = Instance.new("UICorner")
+DividerCorner.CornerRadius = UDim.new(1, 0)
+DividerCorner.Parent = DividerLine
 
     -- Section Toggle Logic
     local function ToggleSection()
