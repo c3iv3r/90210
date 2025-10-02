@@ -2527,8 +2527,10 @@ ArrowIcon.Rotation = 90
 ArrowIcon.Parent = ValueDisplay
     
 local ValuePadding = Instance.new("UIPadding")
-ValuePadding.PaddingRight = UDim.new(0, 5)
-ValuePadding.PaddingLeft = UDim.new(0, 5)
+ValuePadding.PaddingTop = UDim.new(0, 3)
+ValuePadding.PaddingRight = UDim.new(0, 8)
+ValuePadding.PaddingLeft = UDim.new(0, 8)
+ValuePadding.PaddingBottom = UDim.new(0, 3)
 ValuePadding.Parent = ValueButton
 
 
