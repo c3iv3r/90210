@@ -5,6 +5,7 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local Themes = loadstring(game:HttpGet("https://raw.githubusercontent.com/c3iv3r/90210/refs/heads/main/LDUI/Notify.lua"))()
+
 local CurrentTheme = Themes.Dark
 
 -- SetTheme yang support string atau table
@@ -36,87 +37,27 @@ end
 
 local Icons = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"))()
 
--- Set default icon type (bisa "geist", "lucide", atau yang lain)
-Icons.SetIconsType("lucide") -- atau "geist" sesuai preferensi
+-- SET DEFAULT (opsional)
+Icons.SetIconsType("lucide") -- atau "geist"
 
--- Helper function untuk create icon (rbxassetid atau icon name)
-local function CreateIcon(config)
-    local IconConfig = {
-        Icon = config.Icon or "rbxassetid://113216930555884", -- default icon
-        Size = config.Size or UDim2.new(0, 20, 0, 20),
-        Position = config.Position or UDim2.new(0, 0, 0, 0),
-        AnchorPoint = config.AnchorPoint or Vector2.new(0, 0),
-        ImageColor3 = config.ImageColor3 or Color3.fromRGB(197, 204, 219),
-        ImageTransparency = config.ImageTransparency or 0,
-        Parent = config.Parent,
-        Name = config.Name or "Icon",
-        BackgroundTransparency = config.BackgroundTransparency or 1,
-        Active = config.Active or false,
-        Interactable = config.Interactable or false,
-        SecondaryColor = config.SecondaryColor -- untuk gradient/dual color icons
-    }
+-- HELPER FUNCTION UNTUK INTEGRASI
+local function ProcessIcon(iconInput, size, colors)
+    if not iconInput then return nil end
     
-    -- Check if it's rbxassetid or icon name
-    local isRbxAsset = string.find(IconConfig.Icon, "rbxassetid") or string.match(IconConfig.Icon, "^%d+$")
-    
-    if isRbxAsset then
-        -- Create ImageButton/ImageLabel for rbxassetid
-        local IconElement = Instance.new("ImageButton")
-        IconElement.Active = IconConfig.Active
-        IconElement.Interactable = IconConfig.Interactable
-        IconElement.BorderSizePixel = 0
-        IconElement.AutoButtonColor = false
-        IconElement.BackgroundTransparency = IconConfig.BackgroundTransparency
-        IconElement.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        IconElement.ImageColor3 = IconConfig.ImageColor3
-        IconElement.ImageTransparency = IconConfig.ImageTransparency
-        IconElement.AnchorPoint = IconConfig.AnchorPoint
-        IconElement.Image = IconConfig.Icon
-        IconElement.Size = IconConfig.Size
-        IconElement.Position = IconConfig.Position
-        IconElement.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        IconElement.Name = IconConfig.Name
-        IconElement.Parent = IconConfig.Parent
-        
-        return IconElement
-    else
-        -- Create icon using Icons.Image()
-        local success, iconElement = pcall(function()
-            local colors = IconConfig.SecondaryColor and 
-                {IconConfig.ImageColor3, IconConfig.SecondaryColor} or 
-                {IconConfig.ImageColor3}
-            
-            return Icons.Image({
-                Icon = IconConfig.Icon,
-                Colors = colors,
-                Size = IconConfig.Size
-            })
-        end)
-        
-        if success and iconElement then
-            -- Setup properties
-            iconElement.Name = IconConfig.Name
-            iconElement.AnchorPoint = IconConfig.AnchorPoint
-            iconElement.Position = IconConfig.Position
-            iconElement.BackgroundTransparency = IconConfig.BackgroundTransparency
-            iconElement.Parent = IconConfig.Parent
-            
-            return iconElement
-        else
-            -- Fallback ke ImageButton kosong jika icon gagal
-            warn("Failed to create icon '" .. IconConfig.Icon .. "', creating empty icon")
-            local FallbackIcon = Instance.new("ImageButton")
-            FallbackIcon.Active = false
-            FallbackIcon.BorderSizePixel = 0
-            FallbackIcon.BackgroundTransparency = 1
-            FallbackIcon.Size = IconConfig.Size
-            FallbackIcon.Position = IconConfig.Position
-            FallbackIcon.AnchorPoint = IconConfig.AnchorPoint
-            FallbackIcon.Name = IconConfig.Name
-            FallbackIcon.Parent = IconConfig.Parent
-            return FallbackIcon
-        end
+    -- Cek apakah rbxassetid langsung
+    if type(iconInput) == "string" and string.find(iconInput, "rbxassetid://") then
+        return iconInput
     end
+    
+    -- Gunakan Icons module untuk name-based icons
+    local iconElement = Icons.Image({
+        Icon = iconInput,
+        Size = size or UDim2.new(0, 20, 0, 20),
+        Colors = colors
+    })
+    
+    -- Return Image property dari icon element
+    return iconElement.Image
 end
 
 -- Animation Configs
@@ -301,18 +242,19 @@ local function CreateDialog(parent, config)
     -- Title Icon (optional)
     local TitleIcon = nil
     if DialogData.Icon then
-        TitleIcon = CreateIcon({
-            Icon = DialogData.Icon,
-            Size = UDim2.new(0, 33, 0, 25),
-            Position = UDim2.new(0, 0, 0.2125, 0),
-            ImageColor3 = Color3.fromRGB(197, 204, 219),
-            Parent = TitleFrame,
-            Name = "Icon",
-            BackgroundTransparency = 1,
-            Active = false,
-            Interactable = false
-        })
-        
+    TitleIcon = Instance.new("ImageButton")
+    TitleIcon.BorderSizePixel = 0
+    TitleIcon.Visible = true
+    TitleIcon.BackgroundTransparency = 1
+    TitleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TitleIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    TitleIcon.Size = UDim2.new(0, 33, 0, 25)
+    TitleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TitleIcon.Name = "Icon"
+    TitleIcon.Position = UDim2.new(0, 0, 0.2125, 0)
+    TitleIcon.Image = ProcessIcon(DialogData.Icon, UDim2.new(0, 25, 0, 25))
+    TitleIcon.Parent = TitleFrame
+
         local IconAspectRatio = Instance.new("UIAspectRatioConstraint")
         IconAspectRatio.Parent = TitleIcon
     end
@@ -705,17 +647,19 @@ function Library:Notify(config)
     TitlePadding.Parent = NotificationTitle
 
     -- Create Icon
-    local NotificationIcon = CreateIcon({
-        Icon = NotificationData.Icon,
-        Size = UDim2.new(0.09706, 0, 1.33333, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
-        Position = UDim2.new(0, -30, 0.5, 0),
-        ImageColor3 = Color3.fromRGB(197, 204, 219),
-        Parent = NotificationTitle,
-        Name = "Icon",
-        BackgroundTransparency = 1
-    })
-    
+    local NotificationIcon = Instance.new("ImageButton")
+NotificationIcon.BorderSizePixel = 0
+NotificationIcon.BackgroundTransparency = 1
+NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
+NotificationIcon.Image = ProcessIcon(NotificationData.Icon, UDim2.new(0, 18, 0, 18))
+NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
+    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    NotificationIcon.Name = "Icon"
+    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
+    NotificationIcon.Parent = NotificationTitle
+
     local IconAspect = Instance.new("UIAspectRatioConstraint")
     IconAspect.Parent = NotificationIcon
 
@@ -1979,13 +1923,10 @@ local function CreateToggle(parent, config)
 
     -- Set icon if provided
     if ToggleData.Icon then
-        if string.find(ToggleData.Icon, "rbxassetid") or string.match(ToggleData.Icon, "%d") then
-            ToggleIcon.Image = ToggleData.Icon
-        else
-            -- For non-rbxassetid icons, assume it's a placeholder
-            ToggleIcon.Image = ""
-        end
-    end
+    ToggleIcon.Image = ProcessIcon(ToggleData.Icon, UDim2.new(0, 11, 0, 11))
+else
+    ToggleIcon.Image = ""
+end
 
     -- Helper Functions
     local function UpdateToggleVisual(state)
@@ -2207,18 +2148,18 @@ local function CreateButton(parent, config)
 
     -- Click Icon (for visual feedback)
     local ClickIcon = Instance.new("ImageButton")
-    ClickIcon.BorderSizePixel = 0
-    ClickIcon.AutoButtonColor = false
-    ClickIcon.BackgroundTransparency = 1
-    ClickIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ClickIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
-    ClickIcon.Image = "rbxassetid://91877599529856"
-    ClickIcon.Size = UDim2.new(0, 18, 0, 18)
-    ClickIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ClickIcon.Name = "ClickIcon"
-    ClickIcon.Position = UDim2.new(1, 0, 0.5, 0)
-    ClickIcon.Parent = ButtonTitle
+ClickIcon.BorderSizePixel = 0
+ClickIcon.AutoButtonColor = false
+ClickIcon.BackgroundTransparency = 1
+ClickIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ClickIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
+ClickIcon.Image = ProcessIcon(config.Icon or "rbxassetid://91877599529856", UDim2.new(0, 18, 0, 18))
+ClickIcon.Size = UDim2.new(0, 18, 0, 18)
+ClickIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ClickIcon.Name = "ClickIcon"
+ClickIcon.Position = UDim2.new(1, 0, 0.5, 0)
+ClickIcon.Parent = ButtonTitle
 
     -- Description Label (if provided)
     local DescriptionLabel = nil
@@ -3907,15 +3848,15 @@ function Library:CreateWindow(config)
     FloatLayout.Parent = FloatIcon
 
     local FloatIconImage = Instance.new("ImageButton")
-    FloatIconImage.Active = false
-    FloatIconImage.Interactable = false
-    FloatIconImage.BorderSizePixel = 0
-    FloatIconImage.AutoButtonColor = false
-    FloatIconImage.BackgroundTransparency = 1
-    FloatIconImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    FloatIconImage.AnchorPoint = Vector2.new(0, 0.5)
-    FloatIconImage.Image = WindowData.Icon
-    FloatIconImage.Size = UDim2.new(1, 0, 1, 0)
+FloatIconImage.Active = false
+FloatIconImage.Interactable = false
+FloatIconImage.BorderSizePixel = 0
+FloatIconImage.AutoButtonColor = false
+FloatIconImage.BackgroundTransparency = 1
+FloatIconImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+FloatIconImage.AnchorPoint = Vector2.new(0, 0.5)
+FloatIconImage.Image = ProcessIcon(WindowData.Icon, UDim2.new(0, 29, 0, 29))
+FloatIconImage.Size = UDim2.new(1, 0, 1, 0)
     FloatIconImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
     FloatIconImage.Name = "Icon"
     FloatIconImage.Position = UDim2.new(0, 10, 0.5, 0)
@@ -4011,14 +3952,14 @@ function Library:CreateWindow(config)
 
     -- TopFrame Icon
     local TopIcon = Instance.new("ImageButton")
-    TopIcon.Active = false
-    TopIcon.Interactable = false
-    TopIcon.BorderSizePixel = 0
-    TopIcon.BackgroundTransparency = 1
-    TopIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TopIcon.AnchorPoint = Vector2.new(0, 0.5)
-    TopIcon.Image = WindowData.Icon
-    TopIcon.Size = UDim2.new(0, 25, 0, 25)
+TopIcon.Active = false
+TopIcon.Interactable = false
+TopIcon.BorderSizePixel = 0
+TopIcon.BackgroundTransparency = 1
+TopIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopIcon.AnchorPoint = Vector2.new(0, 0.5)
+TopIcon.Image = ProcessIcon(WindowData.Icon, UDim2.new(0, 25, 0, 25))
+TopIcon.Size = UDim2.new(0, 25, 0, 25)
     TopIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TopIcon.Name = "Icon"
     TopIcon.Position = UDim2.new(0, 10, 0.5, 0)
@@ -4566,19 +4507,21 @@ end)
         TabButton.Name = "TabButton"
         TabButton.Parent = TabButtonsList
 
-        local TabButtonIcon = CreateIcon({
-        Icon = TabConfig.Icon,
-        Size = UDim2.new(0.09706, 0, 1.33333, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
-        Position = UDim2.new(0, -30, 0.5, 0),
-        ImageColor3 = Color3.fromRGB(197, 204, 219),
-        Parent = TabButton,
-        Name = "Icon",
-        BackgroundTransparency = 1
-    })
-    
-    local IconAspect = Instance.new("UIAspectRatioConstraint")
-    IconAspect.Parent = TabButtonIcon
+        local TabButtonIcon = Instance.new("ImageButton")
+TabButtonIcon.BorderSizePixel = 0
+TabButtonIcon.ImageTransparency = 0.5
+TabButtonIcon.BackgroundTransparency = 1
+TabButtonIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TabButtonIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
+TabButtonIcon.Image = ProcessIcon(TabConfig.Icon, UDim2.new(0, 20, 0, 20))
+TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
+        TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
+        TabButtonIcon.Parent = TabButton
+
+        local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
+        TabButtonAspect.Parent = TabButtonIcon
 
         local TabButtonLabel = Instance.new("TextLabel")
         TabButtonLabel.TextWrapped = true
