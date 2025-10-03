@@ -2718,15 +2718,15 @@ local function CreateGlobalDropdownSystem()
     OverlayCorner.CornerRadius = UDim.new(0, 10)
     OverlayCorner.Parent = DarkOverlay
 
-    -- Popup (lebih ramping, tidak keluar window)
+    -- Popup (lebih compact: 200px, tidak keluar window)
     DropdownPopup = Instance.new("Frame")
     DropdownPopup.Visible = false
     DropdownPopup.BorderSizePixel = 0
     DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
     DropdownPopup.AnchorPoint = Vector2.new(1, 0)
     DropdownPopup.ClipsDescendants = true
-    DropdownPopup.Size = UDim2.new(0, 280, 1, -70)  -- fixed 280px width
-    DropdownPopup.Position = UDim2.new(1, 280, 0, 35)  -- start offscreen (1 + 280px offset)
+    DropdownPopup.Size = UDim2.new(0, 200, 1, -70)  -- ubah dari 280 ke 200
+    DropdownPopup.Position = UDim2.new(1, -10, 0, 35)  -- posisi akhir (di dalam window)
     DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
     DropdownPopup.Name = "DropdownSelection"
     DropdownPopup.ZIndex = 51
@@ -2789,11 +2789,11 @@ local function CreateGlobalDropdownSystem()
     PopupTitle.Position = UDim2.new(0, 35, 0.5, 0)
     PopupTitle.Parent = PopupHeader
 
-    -- Search box (kanan, lebih kecil)
+    -- Search box (kanan, disesuaikan dengan ukuran popup baru)
     local SearchFrame = Instance.new("Frame")
     SearchFrame.BorderSizePixel = 0
     SearchFrame.AnchorPoint = Vector2.new(1, 0.5)
-    SearchFrame.Size = UDim2.new(0, 100, 0, 22)  -- fixed 100px width, 22px height
+    SearchFrame.Size = UDim2.new(0, 90, 0, 22)  -- ubah dari 100 ke 90
     SearchFrame.Position = UDim2.new(1, -10, 0.5, 0)
     SearchFrame.Name = "BoxFrame"
     SearchFrame.BackgroundTransparency = 1
@@ -3189,7 +3189,7 @@ end
         end
     end
 
-    local function OpenDropdown()
+   local function OpenDropdown()
     if not GlobalDropdownSystem then
         CreateGlobalDropdownSystem()
     end
@@ -3203,22 +3203,26 @@ end
 
     RefreshDropdownItems()
     
+    -- Set initial state (di dalam window, tapi tidak visible)
     GlobalDropdownSystem.Overlay.BackgroundTransparency = 1
     GlobalDropdownSystem.Overlay.Visible = true
-    GlobalDropdownSystem.Popup.Position = UDim2.new(1, 280, 0, 35)  -- offscreen: 280px ke kanan
-    GlobalDropdownSystem.Popup.Visible = true
+    GlobalDropdownSystem.Popup.Position = UDim2.new(1, -10, 0, 35)  -- posisi akhir
+    GlobalDropdownSystem.Popup.Size = UDim2.new(0, 0, 1, -70)  -- mulai dari width 0
+    GlobalDropdownPopup.Visible = true
     
+    -- Animasi: expand width dari 0 ke 200
     CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, AnimationConfig.PopupOpen)
-    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1, -10, 0, 35)}, AnimationConfig.PopupOpen)  -- final: 10px dari kanan window
+    CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0, 200, 1, -70)}, AnimationConfig.PopupOpen)
     
     IsDropdownOpen = true
 end
 
-    function CloseDropdown()
+   function CloseDropdown()
     if not GlobalDropdownSystem then return end
     
+    -- Animasi: shrink width dari 200 ke 0
     local closeTween = CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, AnimationConfig.PopupClose)
-    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1, 280, 0, 35)}, AnimationConfig.PopupClose)  -- slide ke kanan 280px (offscreen)
+    CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0, 0, 1, -70)}, AnimationConfig.PopupClose)
     
     closeTween.Completed:Wait()
     GlobalDropdownSystem.Overlay.Visible = false
@@ -4521,7 +4525,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonLabel.Size = UDim2.new(0, 78, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
-        TabButtonLabel.Position = UDim2.new(0, 30, 0.5, 0)
+        TabButtonLabel.Position = UDim2.new(0, 32, 0.5, 0)
         TabButtonLabel.Parent = TabButton
 
         local TabButtonBar = Instance.new("Frame")
