@@ -3024,10 +3024,10 @@ end
     ItemLayout.Parent = ItemFrame
 
     local ItemPadding = Instance.new("UIPadding")
-    ItemPadding.PaddingTop = UDim.new(0, 4)  -- reduced from 10
-    ItemPadding.PaddingRight = UDim.new(0, 6)
-    ItemPadding.PaddingLeft = UDim.new(0, 6)
-    ItemPadding.PaddingBottom = UDim.new(0, 4)
+    ItemPadding.PaddingTop = UDim.new(0, 0)  -- reduced from 10
+    ItemPadding.PaddingRight = UDim.new(0, 0)
+    ItemPadding.PaddingLeft = UDim.new(0, 0)
+    ItemPadding.PaddingBottom = UDim.new(0, 0)
     ItemPadding.Parent = ItemFrame
 
     local ItemTitle = Instance.new("TextLabel")
