@@ -41,30 +41,40 @@ local Icons = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/Fo
 Icons.SetIconsType("lucide") -- atau "geist"
 
 -- HELPER FUNCTION UNTUK INTEGRASI
-local function ProcessIcon(iconInput, size, colors)
-    if not iconInput then return "rbxassetid://0" end
+local function ProcessIcon(iconInput, targetImageLabel, size, colors)
+    if not iconInput then 
+        targetImageLabel.Image = ""
+        return 
+    end
     
     -- Direct rbxassetid
     if type(iconInput) == "string" and string.find(iconInput, "rbxassetid://") then
-        return iconInput
+        targetImageLabel.Image = iconInput
+        return
     end
     
     -- Icon name (lucide/geist)
-    local success, result = pcall(function()
-        local iconObj = Icons.Image({
+    local success, iconObj = pcall(function()
+        return Icons.Image({
             Icon = iconInput,
             Size = size or UDim2.new(0, 20, 0, 20),
             Colors = colors or {Color3.fromRGB(197, 204, 219)}
         })
-        return iconObj.Image -- Ambil Image property dari ImageLabel yang direturn
     end)
     
-    if success and result then
-        return result
+    if success and iconObj and iconObj.IconFrame then
+        local iconFrame = iconObj.IconFrame
+        
+        -- Copy spritesheet data ke target ImageLabel
+        targetImageLabel.Image = iconFrame.Image
+        targetImageLabel.ImageRectSize = iconFrame.ImageRectSize
+        targetImageLabel.ImageRectOffset = iconFrame.ImageRectOffset or Vector2.new(0, 0)
+        
+        -- Destroy temporary icon
+        iconFrame:Destroy()
+    else
+        targetImageLabel.Image = ""
     end
-    
-    -- Fallback
-    return "rbxassetid://0"
 end
 
 -- Animation Configs
@@ -246,9 +256,9 @@ local function CreateDialog(parent, config)
     TitlePadding.PaddingBottom = UDim.new(0, 5)
     TitlePadding.Parent = TitleFrame
 
-    -- Title Icon (optional)
-    local TitleIcon = nil
-    if DialogData.Icon then
+-- Title Icon (optional)
+local TitleIcon = nil
+if DialogData.Icon then
     TitleIcon = Instance.new("ImageButton")
     TitleIcon.BorderSizePixel = 0
     TitleIcon.Visible = true
@@ -259,12 +269,14 @@ local function CreateDialog(parent, config)
     TitleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TitleIcon.Name = "Icon"
     TitleIcon.Position = UDim2.new(0, 0, 0.2125, 0)
-    TitleIcon.Image = ProcessIcon(DialogData.Icon, UDim2.new(0, 25, 0, 25))
     TitleIcon.Parent = TitleFrame
 
-        local IconAspectRatio = Instance.new("UIAspectRatioConstraint")
-        IconAspectRatio.Parent = TitleIcon
-    end
+    local IconAspectRatio = Instance.new("UIAspectRatioConstraint")
+    IconAspectRatio.Parent = TitleIcon
+    
+    -- Apply icon
+    ProcessIcon(DialogData.Icon, TitleIcon, UDim2.new(0, 25, 0, 25))
+end
 
     -- Title Label
     local TitleLabel = Instance.new("TextLabel")
@@ -653,22 +665,24 @@ function Library:Notify(config)
     TitlePadding.PaddingLeft = UDim.new(0, 30)
     TitlePadding.Parent = NotificationTitle
 
-    -- Create Icon
-    local NotificationIcon = Instance.new("ImageButton")
+   -- Create Icon
+local NotificationIcon = Instance.new("ImageButton")
 NotificationIcon.BorderSizePixel = 0
 NotificationIcon.BackgroundTransparency = 1
 NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NotificationIcon.ImageColor3 = CurrentTheme.AccentPrimary
 NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
-NotificationIcon.Image = ProcessIcon(NotificationData.Icon, UDim2.new(0, 18, 0, 18))
 NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
-    NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NotificationIcon.Name = "Icon"
-    NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
-    NotificationIcon.Parent = NotificationTitle
+NotificationIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+NotificationIcon.Name = "Icon"
+NotificationIcon.Position = UDim2.new(0, -30, 0.5, 0)
+NotificationIcon.Parent = NotificationTitle
 
-    local IconAspect = Instance.new("UIAspectRatioConstraint")
-    IconAspect.Parent = NotificationIcon
+local IconAspect = Instance.new("UIAspectRatioConstraint")
+IconAspect.Parent = NotificationIcon
+
+-- Apply icon
+ProcessIcon(NotificationData.Icon, NotificationIcon, UDim2.new(0, 18, 0, 18))
 
     -- Create Content Text
     local NotificationContentText = Instance.new("TextLabel")
@@ -1915,22 +1929,22 @@ local function CreateToggle(parent, config)
     ToggleBallCorner.CornerRadius = UDim.new(100, 0)
     ToggleBallCorner.Parent = ToggleBall
 
-    -- Toggle Icon (inside the ball)
-    local ToggleIcon = Instance.new("ImageLabel")
-    ToggleIcon.BorderSizePixel = 0
-    ToggleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleIcon.ImageColor3 = Color3.fromRGB(54, 57, 63)
-    ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-    ToggleIcon.Size = UDim2.new(1, -5, 1, -5)
-    ToggleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleIcon.BackgroundTransparency = 1
-    ToggleIcon.Name = "Icon"
-    ToggleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ToggleIcon.Parent = ToggleBall
+-- Toggle Icon (inside the ball)
+local ToggleIcon = Instance.new("ImageLabel")
+ToggleIcon.BorderSizePixel = 0
+ToggleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ToggleIcon.ImageColor3 = Color3.fromRGB(54, 57, 63)
+ToggleIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+ToggleIcon.Size = UDim2.new(1, -5, 1, -5)
+ToggleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ToggleIcon.BackgroundTransparency = 1
+ToggleIcon.Name = "Icon"
+ToggleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+ToggleIcon.Parent = ToggleBall
 
-    -- Set icon if provided
-    if ToggleData.Icon then
-    ToggleIcon.Image = ProcessIcon(ToggleData.Icon, UDim2.new(0, 11, 0, 11))
+-- Set icon if provided
+if ToggleData.Icon then
+    ProcessIcon(ToggleData.Icon, ToggleIcon, UDim2.new(0, 11, 0, 11))
 else
     ToggleIcon.Image = ""
 end
@@ -2153,20 +2167,26 @@ local function CreateButton(parent, config)
     ButtonTitle.Name = "Title"
     ButtonTitle.Parent = ButtonContent
 
-    -- Click Icon (for visual feedback)
-    local ClickIcon = Instance.new("ImageButton")
+-- Click Icon (for visual feedback)
+local ClickIcon = Instance.new("ImageButton")
 ClickIcon.BorderSizePixel = 0
 ClickIcon.AutoButtonColor = false
 ClickIcon.BackgroundTransparency = 1
 ClickIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ClickIcon.ImageColor3 = CurrentTheme.AccentPrimary
 ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
-ClickIcon.Image = ProcessIcon(config.Icon or "rbxassetid://91877599529856", UDim2.new(0, 18, 0, 18))
 ClickIcon.Size = UDim2.new(0, 18, 0, 18)
 ClickIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ClickIcon.Name = "ClickIcon"
 ClickIcon.Position = UDim2.new(1, 0, 0.5, 0)
 ClickIcon.Parent = ButtonTitle
+
+-- Apply icon (dengan fallback default)
+ProcessIcon(
+    config.Icon or "rbxassetid://91877599529856", 
+    ClickIcon, 
+    UDim2.new(0, 18, 0, 18)
+)
 
     -- Description Label (if provided)
     local DescriptionLabel = nil
@@ -3854,7 +3874,8 @@ function Library:CreateWindow(config)
     FloatLayout.FillDirection = Enum.FillDirection.Horizontal
     FloatLayout.Parent = FloatIcon
 
-    local FloatIconImage = Instance.new("ImageButton")
+    -- Float Icon Image
+local FloatIconImage = Instance.new("ImageButton")
 FloatIconImage.Active = false
 FloatIconImage.Interactable = false
 FloatIconImage.BorderSizePixel = 0
@@ -3862,15 +3883,17 @@ FloatIconImage.AutoButtonColor = false
 FloatIconImage.BackgroundTransparency = 1
 FloatIconImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 FloatIconImage.AnchorPoint = Vector2.new(0, 0.5)
-FloatIconImage.Image = ProcessIcon(WindowData.Icon, UDim2.new(0, 29, 0, 29))
 FloatIconImage.Size = UDim2.new(1, 0, 1, 0)
-    FloatIconImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    FloatIconImage.Name = "Icon"
-    FloatIconImage.Position = UDim2.new(0, 10, 0.5, 0)
-    FloatIconImage.Parent = FloatIcon
+FloatIconImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+FloatIconImage.Name = "Icon"
+FloatIconImage.Position = UDim2.new(0, 10, 0.5, 0)
+FloatIconImage.Parent = FloatIcon
 
-    local FloatAspect = Instance.new("UIAspectRatioConstraint")
-    FloatAspect.Parent = FloatIconImage
+local FloatAspect = Instance.new("UIAspectRatioConstraint")
+FloatAspect.Parent = FloatIconImage
+
+-- Apply icon
+ProcessIcon(WindowData.Icon, FloatIconImage, UDim2.new(0, 29, 0, 29))
 
     local FloatLabel = Instance.new("TextLabel")
     FloatLabel.Interactable = false
@@ -3957,23 +3980,25 @@ FloatIconImage.Size = UDim2.new(1, 0, 1, 0)
     TopBorder.Name = "Border"
     TopBorder.Parent = TopFrame
 
-    -- TopFrame Icon
-    local TopIcon = Instance.new("ImageButton")
+-- TopFrame Icon
+local TopIcon = Instance.new("ImageButton")
 TopIcon.Active = false
 TopIcon.Interactable = false
 TopIcon.BorderSizePixel = 0
 TopIcon.BackgroundTransparency = 1
 TopIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TopIcon.AnchorPoint = Vector2.new(0, 0.5)
-TopIcon.Image = ProcessIcon(WindowData.Icon, UDim2.new(0, 25, 0, 25))
 TopIcon.Size = UDim2.new(0, 25, 0, 25)
-    TopIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TopIcon.Name = "Icon"
-    TopIcon.Position = UDim2.new(0, 10, 0.5, 0)
-    TopIcon.Parent = TopFrame
+TopIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TopIcon.Name = "Icon"
+TopIcon.Position = UDim2.new(0, 10, 0.5, 0)
+TopIcon.Parent = TopFrame
 
-    local TopIconAspect = Instance.new("UIAspectRatioConstraint")
-    TopIconAspect.Parent = TopIcon
+local TopIconAspect = Instance.new("UIAspectRatioConstraint")
+TopIconAspect.Parent = TopIcon
+
+-- Apply icon
+ProcessIcon(WindowData.Icon, TopIcon, UDim2.new(0, 25, 0, 25))
 
     -- TopFrame Title
     local TopTitle = Instance.new("TextLabel")
@@ -4514,21 +4539,24 @@ end)
         TabButton.Name = "TabButton"
         TabButton.Parent = TabButtonsList
 
-        local TabButtonIcon = Instance.new("ImageButton")
+        -- Tab Button Icon
+local TabButtonIcon = Instance.new("ImageButton")
 TabButtonIcon.BorderSizePixel = 0
 TabButtonIcon.ImageTransparency = 0.5
 TabButtonIcon.BackgroundTransparency = 1
 TabButtonIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TabButtonIcon.ImageColor3 = CurrentTheme.AccentPrimary
 TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
-TabButtonIcon.Image = ProcessIcon(TabConfig.Icon, UDim2.new(0, 20, 0, 20))
 TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-        TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
-        TabButtonIcon.Parent = TabButton
+TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
+TabButtonIcon.Parent = TabButton
 
-        local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
-        TabButtonAspect.Parent = TabButtonIcon
+local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
+TabButtonAspect.Parent = TabButtonIcon
+
+-- Apply icon
+ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
 
         local TabButtonLabel = Instance.new("TextLabel")
         TabButtonLabel.TextWrapped = true
