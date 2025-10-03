@@ -50,14 +50,21 @@ local function ProcessIcon(iconInput, size, colors)
     end
     
     -- Gunakan Icons module untuk name-based icons
-    local iconElement = Icons.Image({
-        Icon = iconInput,
-        Size = size or UDim2.new(0, 20, 0, 20),
-        Colors = colors
-    })
+    local success, iconElement = pcall(function()
+        return Icons.Image({
+            Icon = iconInput,
+            Size = size or UDim2.new(0, 20, 0, 20),
+            Colors = colors
+        })
+    end)
     
-    -- Return Image property dari icon element
-    return iconElement.Image
+    -- Return Image property, bukan object-nya
+    if success and iconElement and iconElement.Image then
+        return iconElement.Image
+    end
+    
+    -- Fallback ke input original kalau gagal
+    return iconInput
 end
 
 -- Animation Configs
