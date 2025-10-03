@@ -3208,7 +3208,7 @@ end
     GlobalDropdownSystem.Overlay.Visible = true
     GlobalDropdownSystem.Popup.Position = UDim2.new(1, -10, 0, 35)  -- posisi akhir
     GlobalDropdownSystem.Popup.Size = UDim2.new(0, 0, 1, -70)  -- mulai dari width 0
-    GlobalDropdownPopup.Visible = true
+    GlobalDropdownSystem.Visible = true
     
     -- Animasi: expand width dari 0 ke 200
     CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, AnimationConfig.PopupOpen)
