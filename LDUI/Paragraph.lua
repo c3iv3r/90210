@@ -628,7 +628,7 @@ function Library:Notify(config)
     local NotificationTitle = Instance.new("TextLabel")
     NotificationTitle.TextWrapped = true
     NotificationTitle.BorderSizePixel = 0
-    NotificationTitle.TextSize = 16
+    NotificationTitle.TextSize = 14
     NotificationTitle.TextXAlignment = Enum.TextXAlignment.Left
     NotificationTitle.TextScaled = true
     NotificationTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -688,7 +688,7 @@ ProcessIcon(NotificationData.Icon, NotificationIcon, UDim2.new(0, 18, 0, 18))
     local NotificationContentText = Instance.new("TextLabel")
     NotificationContentText.TextWrapped = true
     NotificationContentText.BorderSizePixel = 0
-    NotificationContentText.TextSize = 16
+    NotificationContentText.TextSize = 12
     NotificationContentText.TextXAlignment = Enum.TextXAlignment.Left
     NotificationContentText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     NotificationContentText.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
@@ -717,7 +717,7 @@ ProcessIcon(NotificationData.Icon, NotificationIcon, UDim2.new(0, 18, 0, 18))
     -- Create Timer Bar Container
     local TimerBarFill = Instance.new("Frame")
     TimerBarFill.BorderSizePixel = 0
-    TimerBarFill.BackgroundColor3 = CurrentTheme.ElementStroke
+    TimerBarFill.BackgroundColor3 = CurrentTheme.WindowBorder
     TimerBarFill.AnchorPoint = Vector2.new(0, 1)
     TimerBarFill.Size = UDim2.new(1, 0, 0, 5)
     TimerBarFill.Position = UDim2.new(0, 0, 1, 0)
@@ -727,18 +727,20 @@ ProcessIcon(NotificationData.Icon, NotificationIcon, UDim2.new(0, 18, 0, 18))
     TimerBarFill.Parent = NotificationItems
 
     local TimerCorner = Instance.new("UICorner")
+    TimerCorner.CornerRadius = UDim.new(0, 0)
     TimerCorner.Parent = TimerBarFill
 
     -- Create Timer Bar
     local TimerBar = Instance.new("Frame")
     TimerBar.BorderSizePixel = 0
-    TimerBar.BackgroundColor3 = CurrentTheme.ElementStroke
+    TimerBar.BackgroundColor3 = CurrentTheme.AccentPrimary
     TimerBar.Size = UDim2.new(1, 0, 1, 0)
     TimerBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TimerBar.Name = "Bar"
     TimerBar.Parent = TimerBarFill
 
     local TimerBarCorner = Instance.new("UICorner")
+    TimerBarCorner.CornerRadius = UDim.new(0, 0)
     TimerBarCorner.Parent = TimerBar
 
     -- Create Stroke for Items
@@ -749,6 +751,7 @@ ProcessIcon(NotificationData.Icon, NotificationIcon, UDim2.new(0, 18, 0, 18))
     ItemsStroke.Parent = NotificationItems
 
     local ItemsCorner = Instance.new("UICorner")
+    ItemsCorner.CornerRadius = UDim.new(0, 0)
     ItemsCorner.Parent = NotificationItems
 
     -- Close Function
