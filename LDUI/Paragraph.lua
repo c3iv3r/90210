@@ -1286,7 +1286,7 @@ local function CreateSlider(parent, config)
         isHovering = true
         if not SliderData.Locked then
             CreateTween(SliderStroke, {
-                Color = CurrentTheme.AccentPrimary
+                Color = CurrentTheme.ElementStroke
             }, AnimationConfig.Global)
         end
     end)
@@ -1633,7 +1633,7 @@ InputBoxStroke.Parent = InputBox
     -- TextBox Interaction Events
     ActualTextBox.MouseEnter:Connect(function()
         if not TextBoxData.Locked then
-            CreateTween(TextBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
@@ -1646,7 +1646,7 @@ InputBoxStroke.Parent = InputBox
     ActualTextBox.Focused:Connect(function()
         if not TextBoxData.Locked then
             CreateTween(TextBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
-            CreateTween(InputBoxStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(InputBoxStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
@@ -1914,12 +1914,12 @@ end
         if state == true then
             -- ON state
             CreateTween(ToggleBall, {Position = UDim2.new(0.5, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 0}, AnimationConfig.Global)
         elseif state == false then
             -- OFF state
             CreateTween(ToggleBall, {Position = UDim2.new(0, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.TabContentBackground}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementStroke}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 1}, AnimationConfig.Global)
         end
     end
@@ -1952,7 +1952,7 @@ end
     -- Toggle Interaction Events
     ToggleSwitch.MouseEnter:Connect(function()
         if not ToggleData.Locked then
-            CreateTween(ToggleStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ToggleStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
@@ -2247,7 +2247,7 @@ ProcessIcon(
     -- Button Interaction Events
     ButtonFrame.MouseEnter:Connect(function()
         if not ButtonData.Locked then
-            CreateTween(ButtonStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(ButtonStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
@@ -2999,7 +2999,7 @@ end
     ItemButton.BackgroundColor3 = CurrentTheme.SectionBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-    ItemButton.Size = UDim2.new(1, 0, 0, 24)  -- reduced from 35
+    ItemButton.Size = UDim2.new(1, 0, 0, 13)  -- reduced from 35
     ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemButton.Name = tostring(value)
     ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
@@ -3013,7 +3013,7 @@ end
     ItemFrame.BorderSizePixel = 0
     ItemFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ItemFrame.Size = UDim2.new(1, 0, 0, 28)
+    ItemFrame.Size = UDim2.new(1, 0, 0, 13)
     ItemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemFrame.BackgroundTransparency = 1
     ItemFrame.Parent = ItemButton
@@ -3128,7 +3128,7 @@ end
             if isSelected then
                 CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
                 CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+                CreateTween(ItemStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
                 CreateTween(ItemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
             else
                 CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
@@ -3235,7 +3235,7 @@ end
     -- Handle hover effects (matching OGLIB)
     DropdownFrame.MouseEnter:Connect(function()
         if not DropdownData.Locked then
-            CreateTween(DropdownStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+            CreateTween(DropdownStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         end
     end)
 
