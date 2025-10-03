@@ -525,7 +525,7 @@ function Library:Notify(config)
             globalList.BorderSizePixel = 0
             globalList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             globalList.AnchorPoint = Vector2.new(0.5, 0)
-            globalList.Size = UDim2.new(0, 630, 1, 0)
+            globalList.Size = UDim2.new(0, 500, 1, 0)
             globalList.Position = UDim2.new(1, 0, 0, 0)
             globalList.BorderColor3 = Color3.fromRGB(0, 0, 0)
             globalList.Name = "NotificationList"
@@ -566,7 +566,7 @@ function Library:Notify(config)
     NotificationItems.BorderSizePixel = 0
     NotificationItems.BackgroundColor3 = CurrentTheme.WindowBackground
     NotificationItems.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationItems.Size = UDim2.new(0, 265, 0, 70)
+    NotificationItems.Size = UDim2.new(0, 200, 0, 70)
     NotificationItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
     NotificationItems.Name = "Items"
     NotificationItems.Parent = Notification
@@ -576,7 +576,7 @@ function Library:Notify(config)
     NotificationContent.BorderSizePixel = 0
     NotificationContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     NotificationContent.AutomaticSize = Enum.AutomaticSize.Y
-    NotificationContent.Size = UDim2.new(0, 265, 0, 70)
+    NotificationContent.Size = UDim2.new(0, 200, 0, 70)
     NotificationContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
     NotificationContent.BackgroundTransparency = 1
     NotificationContent.Parent = NotificationItems
@@ -4252,7 +4252,7 @@ ProcessIcon(WindowData.Icon, TopIcon, UDim2.new(0, 25, 0, 25))
     NotificationList.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     NotificationList.AnchorPoint = Vector2.new(0.5, 0)
     NotificationList.ClipsDescendants = true
-    NotificationList.Size = UDim2.new(0, 630, 1, -70)
+    NotificationList.Size = UDim2.new(0, 500, 1, -70)
     NotificationList.Position = UDim2.new(1, 0, 0, 35)
     NotificationList.BorderColor3 = Color3.fromRGB(0, 0, 0)
     NotificationList.Name = "NotificationList"
