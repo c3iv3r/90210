@@ -2687,7 +2687,7 @@ end
         end
     end
 
-    -- Adjustment untuk CreateGlobalDropdownSystem() di dalam CreateDropdown function
+    -- Adjustment untuk CreateGlobalDropdownSystem()
 
 local function CreateGlobalDropdownSystem()
     if GlobalDropdownSystem then return end
@@ -2699,7 +2699,7 @@ local function CreateGlobalDropdownSystem()
 
     if not window then return end
 
-    -- Dark overlay (ukuran penuh)
+    -- Dark overlay
     DarkOverlay = Instance.new("TextButton")
     DarkOverlay.Visible = false
     DarkOverlay.BorderSizePixel = 0
@@ -2718,15 +2718,15 @@ local function CreateGlobalDropdownSystem()
     OverlayCorner.CornerRadius = UDim.new(0, 10)
     OverlayCorner.Parent = DarkOverlay
 
-    -- Popup (di kanan, antara TopFrame dan BottomFrame)
+    -- Popup (lebih ramping, tidak keluar window)
     DropdownPopup = Instance.new("Frame")
     DropdownPopup.Visible = false
     DropdownPopup.BorderSizePixel = 0
     DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
-    DropdownPopup.AnchorPoint = Vector2.new(1, 0)  -- anchor kanan atas
+    DropdownPopup.AnchorPoint = Vector2.new(1, 0)
     DropdownPopup.ClipsDescendants = true
-    DropdownPopup.Size = UDim2.new(0.4, 0, 1, -70)  -- 40% width, tinggi dari TopFrame ke BottomFrame
-    DropdownPopup.Position = UDim2.new(1.5, 0, 0, 35)  -- start offscreen kanan (1.5), Y start after TopFrame
+    DropdownPopup.Size = UDim2.new(0, 280, 1, -70)  -- fixed 280px width
+    DropdownPopup.Position = UDim2.new(1, 280, 0, 35)  -- start offscreen (1 + 280px offset)
     DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
     DropdownPopup.Name = "DropdownSelection"
     DropdownPopup.ZIndex = 51
@@ -2742,22 +2742,58 @@ local function CreateGlobalDropdownSystem()
     PopupStroke.Color = CurrentTheme.ElementStroke
     PopupStroke.Parent = DropdownPopup
 
-    -- Header
+    -- Header (lebih compact)
     local PopupHeader = Instance.new("Frame")
     PopupHeader.BorderSizePixel = 0
     PopupHeader.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    PopupHeader.Size = UDim2.new(1, 0, 0, 50)
+    PopupHeader.Size = UDim2.new(1, 0, 0, 45)  -- 45px instead of 50px
     PopupHeader.Position = UDim2.new(0, 0, 0, 0)
     PopupHeader.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupHeader.Name = "TopBar"
     PopupHeader.BackgroundTransparency = 1
     PopupHeader.Parent = DropdownPopup
 
-    -- Search box
+    -- Close button (kiri)
+    local CloseButton = Instance.new("ImageButton")
+    CloseButton.BorderSizePixel = 0
+    CloseButton.BackgroundTransparency = 1
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    CloseButton.ZIndex = 52
+    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
+    CloseButton.Image = "rbxassetid://132453323679056"
+    CloseButton.Size = UDim2.new(0, 20, 0, 20)
+    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    CloseButton.Name = "Close"
+    CloseButton.Position = UDim2.new(0, 10, 0.5, 0)
+    CloseButton.Parent = PopupHeader
+
+    -- Title (setelah close)
+    local PopupTitle = Instance.new("TextLabel")
+    PopupTitle.TextWrapped = true
+    PopupTitle.Interactable = false
+    PopupTitle.ZIndex = 0
+    PopupTitle.BorderSizePixel = 0
+    PopupTitle.TextSize = 14
+    PopupTitle.TextXAlignment = Enum.TextXAlignment.Left
+    PopupTitle.TextScaled = false
+    PopupTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    PopupTitle.Font = Enum.Font.GothamBold
+    PopupTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    PopupTitle.BackgroundTransparency = 1
+    PopupTitle.AnchorPoint = Vector2.new(0, 0.5)
+    PopupTitle.Size = UDim2.new(0, 100, 0, 16)
+    PopupTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    PopupTitle.Text = "Dropdown"
+    PopupTitle.Name = "Title"
+    PopupTitle.Position = UDim2.new(0, 35, 0.5, 0)
+    PopupTitle.Parent = PopupHeader
+
+    -- Search box (kanan, lebih kecil)
     local SearchFrame = Instance.new("Frame")
     SearchFrame.BorderSizePixel = 0
     SearchFrame.AnchorPoint = Vector2.new(1, 0.5)
-    SearchFrame.Size = UDim2.new(0.5, 0, 0, 25)  -- 50% dari popup width
+    SearchFrame.Size = UDim2.new(0, 100, 0, 22)  -- fixed 100px width, 22px height
     SearchFrame.Position = UDim2.new(1, -10, 0.5, 0)
     SearchFrame.Name = "BoxFrame"
     SearchFrame.BackgroundTransparency = 1
@@ -2781,7 +2817,6 @@ local function CreateGlobalDropdownSystem()
     local SearchContainer = Instance.new("Frame")
     SearchContainer.BorderSizePixel = 0
     SearchContainer.BackgroundColor3 = CurrentTheme.ElementBackground
-    SearchContainer.AutomaticSize = Enum.AutomaticSize.Y
     SearchContainer.Size = UDim2.new(1, 0, 1, 0)
     SearchContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SearchContainer.Parent = SearchFrame
@@ -2799,25 +2834,25 @@ local function CreateGlobalDropdownSystem()
     SearchBox = Instance.new("TextBox")
     SearchBox.TextXAlignment = Enum.TextXAlignment.Left
     SearchBox.BorderSizePixel = 0
-    SearchBox.TextWrapped = true
+    SearchBox.TextWrapped = false
     SearchBox.TextTruncate = Enum.TextTruncate.AtEnd
-    SearchBox.TextSize = 12
+    SearchBox.TextSize = 11
     SearchBox.TextColor3 = Color3.fromRGB(197, 204, 219)
     SearchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     SearchBox.Font = Enum.Font.GothamBold
     SearchBox.ClipsDescendants = true
     SearchBox.PlaceholderText = "Search..."
-    SearchBox.Size = UDim2.new(1, -25, 1, 0)
+    SearchBox.Size = UDim2.new(1, -20, 1, 0)
     SearchBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SearchBox.Text = ""
     SearchBox.BackgroundTransparency = 1
     SearchBox.Parent = SearchContainer
 
     local SearchPadding = Instance.new("UIPadding")
-    SearchPadding.PaddingTop = UDim.new(0, 8)
-    SearchPadding.PaddingRight = UDim.new(0, 8)
-    SearchPadding.PaddingLeft = UDim.new(0, 8)
-    SearchPadding.PaddingBottom = UDim.new(0, 8)
+    SearchPadding.PaddingTop = UDim.new(0, 5)
+    SearchPadding.PaddingRight = UDim.new(0, 5)
+    SearchPadding.PaddingLeft = UDim.new(0, 6)
+    SearchPadding.PaddingBottom = UDim.new(0, 5)
     SearchPadding.Parent = SearchBox
 
     local SearchIcon = Instance.new("ImageButton")
@@ -2827,46 +2862,10 @@ local function CreateGlobalDropdownSystem()
     SearchIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
     SearchIcon.AnchorPoint = Vector2.new(1, 0.5)
     SearchIcon.Image = "rbxassetid://86928976705683"
-    SearchIcon.Size = UDim2.new(0, 15, 0, 15)
+    SearchIcon.Size = UDim2.new(0, 12, 0, 12)
     SearchIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    SearchIcon.Position = UDim2.new(1, -5, 0.5, 0)
+    SearchIcon.Position = UDim2.new(1, -4, 0.5, 0)
     SearchIcon.Parent = SearchContainer
-
-    -- Close button
-    local CloseButton = Instance.new("ImageButton")
-    CloseButton.BorderSizePixel = 0
-    CloseButton.BackgroundTransparency = 1
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    CloseButton.ZIndex = 52
-    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
-    CloseButton.Image = "rbxassetid://132453323679056"
-    CloseButton.Size = UDim2.new(0, 25, 0, 25)
-    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CloseButton.Name = "Close"
-    CloseButton.Position = UDim2.new(0, 10, 0.5, 0)
-    CloseButton.Parent = PopupHeader
-
-    -- Title (setelah close button)
-    local PopupTitle = Instance.new("TextLabel")
-    PopupTitle.TextWrapped = true
-    PopupTitle.Interactable = false
-    PopupTitle.ZIndex = 0
-    PopupTitle.BorderSizePixel = 0
-    PopupTitle.TextSize = 16
-    PopupTitle.TextXAlignment = Enum.TextXAlignment.Left
-    PopupTitle.TextScaled = false
-    PopupTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    PopupTitle.Font = Enum.Font.GothamBold
-    PopupTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
-    PopupTitle.BackgroundTransparency = 1
-    PopupTitle.AnchorPoint = Vector2.new(0, 0.5)
-    PopupTitle.Size = UDim2.new(0.4, 0, 0, 18)
-    PopupTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    PopupTitle.Text = "Dropdown"
-    PopupTitle.Name = "Title"
-    PopupTitle.Position = UDim2.new(0, 40, 0.5, 0)
-    PopupTitle.Parent = PopupHeader
 
     -- Dropdowns folder
     local DropdownsFolder = Instance.new("Folder")
@@ -2891,9 +2890,9 @@ local function CreateGlobalDropdownSystem()
     PopupList.Selectable = false
     PopupList.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
     PopupList.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    PopupList.Size = UDim2.new(1, 0, 1, -50)
+    PopupList.Size = UDim2.new(1, 0, 1, -45)  -- adjust for smaller header
     PopupList.ScrollBarImageColor3 = Color3.fromRGB(99, 106, 122)
-    PopupList.Position = UDim2.new(0, 0, 0, 50)
+    PopupList.Position = UDim2.new(0, 0, 0, 45)
     PopupList.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupList.ScrollBarThickness = 5
     PopupList.BackgroundTransparency = 1
@@ -2913,36 +2912,36 @@ local function CreateGlobalDropdownSystem()
     PopupListSearch.Selectable = false
     PopupListSearch.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
     PopupListSearch.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    PopupListSearch.Size = UDim2.new(1, 0, 1, -50)
+    PopupListSearch.Size = UDim2.new(1, 0, 1, -45)
     PopupListSearch.ScrollBarImageColor3 = Color3.fromRGB(99, 106, 122)
-    PopupListSearch.Position = UDim2.new(0, 0, 0, 50)
+    PopupListSearch.Position = UDim2.new(0, 0, 0, 45)
     PopupListSearch.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupListSearch.ScrollBarThickness = 5
     PopupListSearch.BackgroundTransparency = 1
     PopupListSearch.Parent = DropdownContainer
 
     local ListLayout = Instance.new("UIListLayout")
-    ListLayout.Padding = UDim.new(0, 15)
+    ListLayout.Padding = UDim.new(0, 8)  -- reduced from 15
     ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ListLayout.Parent = PopupList
 
     local ListPadding = Instance.new("UIPadding")
-    ListPadding.PaddingTop = UDim.new(0, 2)
-    ListPadding.PaddingRight = UDim.new(0, 10)
-    ListPadding.PaddingLeft = UDim.new(0, 10)
-    ListPadding.PaddingBottom = UDim.new(0, 10)
+    ListPadding.PaddingTop = UDim.new(0, 8)
+    ListPadding.PaddingRight = UDim.new(0, 8)
+    ListPadding.PaddingLeft = UDim.new(0, 8)
+    ListPadding.PaddingBottom = UDim.new(0, 8)
     ListPadding.Parent = PopupList
 
     local SearchListLayout = Instance.new("UIListLayout")
-    SearchListLayout.Padding = UDim.new(0, 15)
+    SearchListLayout.Padding = UDim.new(0, 8)
     SearchListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     SearchListLayout.Parent = PopupListSearch
 
     local SearchListPadding = Instance.new("UIPadding")
-    SearchListPadding.PaddingTop = UDim.new(0, 2)
-    SearchListPadding.PaddingRight = UDim.new(0, 10)
-    SearchListPadding.PaddingLeft = UDim.new(0, 10)
-    SearchListPadding.PaddingBottom = UDim.new(0, 10)
+    SearchListPadding.PaddingTop = UDim.new(0, 8)
+    SearchListPadding.PaddingRight = UDim.new(0, 8)
+    SearchListPadding.PaddingLeft = UDim.new(0, 8)
+    SearchListPadding.PaddingBottom = UDim.new(0, 8)
     SearchListPadding.Parent = PopupListSearch
 
     local function SetPopupZIndex()
@@ -2993,84 +2992,83 @@ local function CreateGlobalDropdownSystem()
 end
 
     local function CreateDropdownItem(value, targetList)
-        local ItemButton = Instance.new("ImageButton")
-        ItemButton.BorderSizePixel = 0
-        ItemButton.AutoButtonColor = false
-        ItemButton.Visible = false
-        ItemButton.BackgroundColor3 = CurrentTheme.ElementBackground
-        ItemButton.Selectable = false
-        ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-        ItemButton.Size = UDim2.new(1, 0, 0, 35)
-        ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ItemButton.Name = tostring(value)
-        ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
-        ItemButton.Parent = targetList
+    local ItemButton = Instance.new("ImageButton")
+    ItemButton.BorderSizePixel = 0
+    ItemButton.AutoButtonColor = false
+    ItemButton.Visible = false
+    ItemButton.BackgroundColor3 = CurrentTheme.ElementBackground
+    ItemButton.Selectable = false
+    ItemButton.AutomaticSize = Enum.AutomaticSize.Y
+    ItemButton.Size = UDim2.new(1, 0, 0, 28)  -- reduced from 35
+    ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ItemButton.Name = tostring(value)
+    ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
+    ItemButton.Parent = targetList
 
-        local ItemCorner = Instance.new("UICorner")
-        ItemCorner.CornerRadius = UDim.new(0, 6)
-        ItemCorner.Parent = ItemButton
+    local ItemCorner = Instance.new("UICorner")
+    ItemCorner.CornerRadius = UDim.new(0, 6)
+    ItemCorner.Parent = ItemButton
 
-        local ItemFrame = Instance.new("Frame")
-        ItemFrame.BorderSizePixel = 0
-        ItemFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemFrame.AutomaticSize = Enum.AutomaticSize.Y
-        ItemFrame.Size = UDim2.new(1, 0, 0, 35)
-        ItemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ItemFrame.BackgroundTransparency = 1
-        ItemFrame.Parent = ItemButton
+    local ItemFrame = Instance.new("Frame")
+    ItemFrame.BorderSizePixel = 0
+    ItemFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ItemFrame.AutomaticSize = Enum.AutomaticSize.Y
+    ItemFrame.Size = UDim2.new(1, 0, 0, 28)
+    ItemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ItemFrame.BackgroundTransparency = 1
+    ItemFrame.Parent = ItemButton
 
-        local ItemLayout = Instance.new("UIListLayout")
-        ItemLayout.Padding = UDim.new(0, 5)
-        ItemLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        ItemLayout.Parent = ItemFrame
+    local ItemLayout = Instance.new("UIListLayout")
+    ItemLayout.Padding = UDim.new(0, 3)
+    ItemLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ItemLayout.Parent = ItemFrame
 
-        local ItemPadding = Instance.new("UIPadding")
-        ItemPadding.PaddingTop = UDim.new(0, 10)
-        ItemPadding.PaddingRight = UDim.new(0, 10)
-        ItemPadding.PaddingLeft = UDim.new(0, 10)
-        ItemPadding.PaddingBottom = UDim.new(0, 10)
-        ItemPadding.Parent = ItemFrame
+    local ItemPadding = Instance.new("UIPadding")
+    ItemPadding.PaddingTop = UDim.new(0, 6)  -- reduced from 10
+    ItemPadding.PaddingRight = UDim.new(0, 8)
+    ItemPadding.PaddingLeft = UDim.new(0, 8)
+    ItemPadding.PaddingBottom = UDim.new(0, 6)
+    ItemPadding.Parent = ItemFrame
 
-        local ItemTitle = Instance.new("TextLabel")
-        ItemTitle.TextWrapped = true
-        ItemTitle.Interactable = false
-        ItemTitle.BorderSizePixel = 0
-        ItemTitle.TextSize = 16
-        ItemTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemTitle.Font = Enum.Font.GothamBold
-        ItemTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
-        ItemTitle.BackgroundTransparency = 1
-        ItemTitle.Size = UDim2.new(1, 0, 0, 15)
-        ItemTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ItemTitle.Text = tostring(value)
-        ItemTitle.Name = "Title"
-        ItemTitle.Parent = ItemFrame
+    local ItemTitle = Instance.new("TextLabel")
+    ItemTitle.TextWrapped = true
+    ItemTitle.Interactable = false
+    ItemTitle.BorderSizePixel = 0
+    ItemTitle.TextSize = 13  -- reduced from 16
+    ItemTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ItemTitle.Font = Enum.Font.GothamBold
+    ItemTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ItemTitle.BackgroundTransparency = 1
+    ItemTitle.Size = UDim2.new(1, 0, 0, 13)
+    ItemTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ItemTitle.Text = tostring(value)
+    ItemTitle.Name = "Title"
+    ItemTitle.Parent = ItemFrame
 
-        -- Item description (if needed)
-        local ItemDescription = Instance.new("TextLabel")
-        ItemDescription.TextWrapped = true
-        ItemDescription.Interactable = false
-        ItemDescription.BorderSizePixel = 0
-        ItemDescription.TextSize = 16
-        ItemDescription.TextXAlignment = Enum.TextXAlignment.Left
-        ItemDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemDescription.Font = Enum.Font.GothamBold
-        ItemDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
-        ItemDescription.BackgroundTransparency = 1
-        ItemDescription.Size = UDim2.new(1, 0, 0, 15)
-        ItemDescription.Visible = false
-        ItemDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ItemDescription.Text = ""
-        ItemDescription.LayoutOrder = 1
-        ItemDescription.AutomaticSize = Enum.AutomaticSize.Y
-        ItemDescription.Name = "Description"
-        ItemDescription.Parent = ItemFrame
+    local ItemDescription = Instance.new("TextLabel")
+    ItemDescription.TextWrapped = true
+    ItemDescription.Interactable = false
+    ItemDescription.BorderSizePixel = 0
+    ItemDescription.TextSize = 11  -- reduced from 16
+    ItemDescription.TextXAlignment = Enum.TextXAlignment.Left
+    ItemDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ItemDescription.Font = Enum.Font.GothamBold
+    ItemDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
+    ItemDescription.BackgroundTransparency = 1
+    ItemDescription.Size = UDim2.new(1, 0, 0, 11)
+    ItemDescription.Visible = false
+    ItemDescription.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ItemDescription.Text = ""
+    ItemDescription.LayoutOrder = 1
+    ItemDescription.AutomaticSize = Enum.AutomaticSize.Y
+    ItemDescription.Name = "Description"
+    ItemDescription.Parent = ItemFrame
 
-        local ItemStroke = Instance.new("UIStroke")
-        ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-        ItemStroke.Thickness = 1.5
-        ItemStroke.Color = CurrentTheme.ElementStroke
-        ItemStroke.Parent = ItemButton
+    local ItemStroke = Instance.new("UIStroke")
+    ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ItemStroke.Thickness = 1.5
+    ItemStroke.Color = CurrentTheme.ElementStroke
+    ItemStroke.Parent = ItemButton
 
         -- Item gradients (matching OGLIB style)
         local ItemGradient1 = Instance.new("UIGradient")
@@ -3205,14 +3203,13 @@ end
 
     RefreshDropdownItems()
     
-    -- Animasi dari kanan (offscreen) ke posisi final
     GlobalDropdownSystem.Overlay.BackgroundTransparency = 1
     GlobalDropdownSystem.Overlay.Visible = true
-    GlobalDropdownSystem.Popup.Position = UDim2.new(1.5, 0, 0, 35)  -- start offscreen kanan
+    GlobalDropdownSystem.Popup.Position = UDim2.new(1, 280, 0, 35)  -- offscreen: 280px ke kanan
     GlobalDropdownSystem.Popup.Visible = true
     
     CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, AnimationConfig.PopupOpen)
-    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1, 0, 0, 35)}, AnimationConfig.PopupOpen)  -- slide ke kanan window
+    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1, -10, 0, 35)}, AnimationConfig.PopupOpen)  -- final: 10px dari kanan window
     
     IsDropdownOpen = true
 end
@@ -3221,7 +3218,7 @@ end
     if not GlobalDropdownSystem then return end
     
     local closeTween = CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, AnimationConfig.PopupClose)
-    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1.5, 0, 0, 35)}, AnimationConfig.PopupClose)  -- slide keluar ke kanan
+    CreateTween(GlobalDropdownSystem.Popup, {Position = UDim2.new(1, 280, 0, 35)}, AnimationConfig.PopupClose)  -- slide ke kanan 280px (offscreen)
     
     closeTween.Completed:Wait()
     GlobalDropdownSystem.Overlay.Visible = false
