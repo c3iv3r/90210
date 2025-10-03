@@ -2999,21 +2999,21 @@ end
     ItemButton.BackgroundColor3 = CurrentTheme.SectionBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-    ItemButton.Size = UDim2.new(1, 0, 0, 20)  -- reduced from 35
+    ItemButton.Size = UDim2.new(1, 0, 0, 25)  -- reduced from 35
     ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemButton.Name = tostring(value)
     ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
     ItemButton.Parent = targetList
 
     local ItemCorner = Instance.new("UICorner")
-    ItemCorner.CornerRadius = UDim.new(0, 6)
+    ItemCorner.CornerRadius = UDim.new(0, 0)
     ItemCorner.Parent = ItemButton
 
     local ItemFrame = Instance.new("Frame")
     ItemFrame.BorderSizePixel = 0
     ItemFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ItemFrame.Size = UDim2.new(1, 0, 0, 23)
+    ItemFrame.Size = UDim2.new(1, 0, 0, 28)
     ItemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemFrame.BackgroundTransparency = 1
     ItemFrame.Parent = ItemButton
@@ -3024,7 +3024,7 @@ end
     ItemLayout.Parent = ItemFrame
 
     local ItemPadding = Instance.new("UIPadding")
-    ItemPadding.PaddingTop = UDim.new(0, 0)  -- reduced from 10
+    ItemPadding.PaddingTop = UDim.new(0, 6)  -- reduced from 10
     ItemPadding.PaddingRight = UDim.new(0, 0)
     ItemPadding.PaddingLeft = UDim.new(0, 0)
     ItemPadding.PaddingBottom = UDim.new(0, 0)
