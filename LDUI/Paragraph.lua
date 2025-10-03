@@ -4394,7 +4394,7 @@ FooterLabel.Parent = BottomFrame
                     TextTransparency = 0.5
                 }, AnimationConfig.Global)
                 CreateTween(tabInfo.TabButton.ImageButton, {
-                    Position = UDim2.new(0, 12, 0, 18),
+                    Position = UDim2.new(0, 12, 0.5, 0),
                     ImageTransparency = 0.5
                 }, AnimationConfig.Global)
                 CreateTween(tabInfo.TabButton.Bar, {
@@ -4411,7 +4411,7 @@ FooterLabel.Parent = BottomFrame
                     TextTransparency = 0
                 }, AnimationConfig.Global)
                 CreateTween(tabInfo.TabButton.ImageButton, {
-                    Position = UDim2.new(0, 25, 0, 18),
+                    Position = UDim2.new(0, 25, 0.5, 0),
                     ImageTransparency = 0
                 }, AnimationConfig.Global)
                 CreateTween(tabInfo.TabButton.Bar, {
@@ -4549,7 +4549,7 @@ TabButtonIcon.ImageColor3 = CurrentTheme.AccentPrimary
 TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
 TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
 TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TabButtonIcon.Position = UDim2.new(0, 8, 0.5, 14)
+TabButtonIcon.Position = UDim2.new(0, 8, 0.5, 0)
 TabButtonIcon.Parent = TabButton
 
 local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
@@ -4581,7 +4581,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonBar.BackgroundColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonBar.AnchorPoint = Vector2.new(0, 0.5)
         TabButtonBar.Size = UDim2.new(0, 3, 0, 0)
-        TabButtonBar.Position = UDim2.new(0, 4, 0, 14)
+        TabButtonBar.Position = UDim2.new(0, 4, 0.5, 0)
         TabButtonBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonBar.Name = "Bar"
         TabButtonBar.BackgroundTransparency = 1
