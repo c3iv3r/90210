@@ -42,29 +42,29 @@ Icons.SetIconsType("lucide") -- atau "geist"
 
 -- HELPER FUNCTION UNTUK INTEGRASI
 local function ProcessIcon(iconInput, size, colors)
-    if not iconInput then return nil end
+    if not iconInput then return "rbxassetid://0" end
     
-    -- Cek apakah rbxassetid langsung
+    -- Direct rbxassetid
     if type(iconInput) == "string" and string.find(iconInput, "rbxassetid://") then
         return iconInput
     end
     
-    -- Gunakan Icons module untuk name-based icons
-    local success, iconElement = pcall(function()
-        return Icons.Image({
+    -- Icon name (lucide/geist)
+    local success, result = pcall(function()
+        local iconObj = Icons.Image({
             Icon = iconInput,
             Size = size or UDim2.new(0, 20, 0, 20),
-            Colors = colors
+            Colors = colors or {Color3.fromRGB(197, 204, 219)}
         })
+        return iconObj.Image -- Ambil Image property dari ImageLabel yang direturn
     end)
     
-    -- Return Image property, bukan object-nya
-    if success and iconElement and iconElement.Image then
-        return iconElement.Image
+    if success and result then
+        return result
     end
     
-    -- Fallback ke input original kalau gagal
-    return iconInput
+    -- Fallback
+    return "rbxassetid://0"
 end
 
 -- Animation Configs
@@ -254,7 +254,7 @@ local function CreateDialog(parent, config)
     TitleIcon.Visible = true
     TitleIcon.BackgroundTransparency = 1
     TitleIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TitleIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+    TitleIcon.ImageColor3 = CurrentTheme.AccentPrimary
     TitleIcon.Size = UDim2.new(0, 33, 0, 25)
     TitleIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TitleIcon.Name = "Icon"
@@ -658,7 +658,7 @@ function Library:Notify(config)
 NotificationIcon.BorderSizePixel = 0
 NotificationIcon.BackgroundTransparency = 1
 NotificationIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-NotificationIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+NotificationIcon.ImageColor3 = CurrentTheme.AccentPrimary
 NotificationIcon.AnchorPoint = Vector2.new(0, 0.5)
 NotificationIcon.Image = ProcessIcon(NotificationData.Icon, UDim2.new(0, 18, 0, 18))
 NotificationIcon.Size = UDim2.new(0.09706, 0, 1.33333, 0)
@@ -2159,7 +2159,7 @@ ClickIcon.BorderSizePixel = 0
 ClickIcon.AutoButtonColor = false
 ClickIcon.BackgroundTransparency = 1
 ClickIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ClickIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+ClickIcon.ImageColor3 = CurrentTheme.AccentPrimary
 ClickIcon.AnchorPoint = Vector2.new(1, 0.5)
 ClickIcon.Image = ProcessIcon(config.Icon or "rbxassetid://91877599529856", UDim2.new(0, 18, 0, 18))
 ClickIcon.Size = UDim2.new(0, 18, 0, 18)
@@ -4519,7 +4519,7 @@ TabButtonIcon.BorderSizePixel = 0
 TabButtonIcon.ImageTransparency = 0.5
 TabButtonIcon.BackgroundTransparency = 1
 TabButtonIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabButtonIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
+TabButtonIcon.ImageColor3 = CurrentTheme.AccentPrimary
 TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
 TabButtonIcon.Image = ProcessIcon(TabConfig.Icon, UDim2.new(0, 20, 0, 20))
 TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
