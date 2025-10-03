@@ -2306,7 +2306,7 @@ ProcessIcon(
         if not ButtonData.Locked then
             CycleGradient()
             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
             end
@@ -2317,7 +2317,7 @@ ProcessIcon(
     ButtonFrame.MouseButton1Up:Connect(function()
         if not ButtonData.Locked then
             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             end
@@ -2328,7 +2328,7 @@ ProcessIcon(
     ButtonFrame.MouseLeave:Connect(function()
         if not ButtonData.Locked then
             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-            CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+            CreateTween(ClickIcon, {ImageColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
             end
@@ -2396,7 +2396,7 @@ ProcessIcon(
         CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.ElementBackground}, AnimationConfig.Global)
         CreateTween(ButtonStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
         CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-        CreateTween(ClickIcon, {ImageColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+        CreateTween(ClickIcon, {ImageColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
         if DescriptionLabel then
             CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
         end
