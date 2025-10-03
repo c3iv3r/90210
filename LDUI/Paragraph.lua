@@ -4389,7 +4389,7 @@ FooterLabel.Parent = BottomFrame
                 -- Hide inactive tabs
                 tabInfo.TabObject.Visible = false
                 CreateTween(tabInfo.TabButton.TextLabel, {
-                    Position = UDim2.new(0, 22, 0.5, 0),
+                    Position = UDim2.new(0, 38, 0.5, 0),
                     Size = UDim2.new(0, 103, 0, 16),
                     TextTransparency = 0.5
                 }, AnimationConfig.Global)
@@ -4406,7 +4406,7 @@ FooterLabel.Parent = BottomFrame
                 CurrentTab = tabName
                 tabInfo.TabObject.Visible = true
                 CreateTween(tabInfo.TabButton.TextLabel, {
-                    Position = UDim2.new(0, 22, 0.5, 0),
+                    Position = UDim2.new(0, 53, 0.5, 0),
                     Size = UDim2.new(0, 88, 0, 16),
                     TextTransparency = 0
                 }, AnimationConfig.Global)
@@ -4573,7 +4573,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonLabel.Size = UDim2.new(0, 78, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
-        TabButtonLabel.Position = UDim2.new(0, 22, 0.5, 0)
+        TabButtonLabel.Position = UDim2.new(0, 28, 0.5, 0)
         TabButtonLabel.Parent = TabButton
 
         local TabButtonBar = Instance.new("Frame")
