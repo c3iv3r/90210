@@ -4549,7 +4549,7 @@ TabButtonIcon.ImageColor3 = CurrentTheme.AccentPrimary
 TabButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
 TabButtonIcon.Size = UDim2.new(0, 20, 0, 20)
 TabButtonIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TabButtonIcon.Position = UDim2.new(0, 8, 0, 14)
+TabButtonIcon.Position = UDim2.new(0, 8, 0.5, 14)
 TabButtonIcon.Parent = TabButton
 
 local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
@@ -4570,7 +4570,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         TabButtonLabel.BackgroundTransparency = 1
         TabButtonLabel.AnchorPoint = Vector2.new(0, 0.5)
-        TabButtonLabel.Size = UDim2.new(0, 85, 0, 14)
+        TabButtonLabel.Size = UDim2.new(0, 78, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
         TabButtonLabel.Position = UDim2.new(0, 32, 0.5, 0)
