@@ -2725,7 +2725,7 @@ local function CreateGlobalDropdownSystem()
     DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
     DropdownPopup.AnchorPoint = Vector2.new(1, 0)
     DropdownPopup.ClipsDescendants = true
-    DropdownPopup.Size = UDim2.new(0, 220, 1, -70)  -- fixed 280px width
+    DropdownPopup.Size = UDim2.new(0, 140, 1, -70)  -- fixed 280px width
     DropdownPopup.Position = UDim2.new(1, 0, 0, 35)  -- start offscreen (1 + 280px offset)
     DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
     DropdownPopup.Name = "DropdownSelection"
@@ -2774,7 +2774,7 @@ local function CreateGlobalDropdownSystem()
     PopupTitle.Interactable = false
     PopupTitle.ZIndex = 0
     PopupTitle.BorderSizePixel = 0
-    PopupTitle.TextSize = 14
+    PopupTitle.TextSize = 12
     PopupTitle.TextXAlignment = Enum.TextXAlignment.Left
     PopupTitle.TextScaled = false
     PopupTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2996,7 +2996,7 @@ end
     ItemButton.BorderSizePixel = 0
     ItemButton.AutoButtonColor = false
     ItemButton.Visible = false
-    ItemButton.BackgroundColor3 = CurrentTheme.ElementBackground
+    ItemButton.BackgroundColor3 = CurrentTheme.SectionBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
     ItemButton.Size = UDim2.new(1, 0, 0, 24)  -- reduced from 35
@@ -3067,7 +3067,7 @@ end
 
     local ItemStroke = Instance.new("UIStroke")
     ItemStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    ItemStroke.Thickness = 1.5
+    ItemStroke.Thickness = 1
     ItemStroke.Color = CurrentTheme.ElementStroke
     ItemStroke.Parent = ItemButton
 
