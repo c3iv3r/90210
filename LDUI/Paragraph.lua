@@ -2718,15 +2718,15 @@ local function CreateGlobalDropdownSystem()
     OverlayCorner.CornerRadius = UDim.new(0, 10)
     OverlayCorner.Parent = DarkOverlay
 
-    -- Popup (lebih compact: 200px, tidak keluar window)
+    -- Popup (lebih ramping, tidak keluar window)
     DropdownPopup = Instance.new("Frame")
     DropdownPopup.Visible = false
     DropdownPopup.BorderSizePixel = 0
     DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
     DropdownPopup.AnchorPoint = Vector2.new(1, 0)
     DropdownPopup.ClipsDescendants = true
-    DropdownPopup.Size = UDim2.new(0, 200, 1, -70)  -- ubah dari 280 ke 200
-    DropdownPopup.Position = UDim2.new(1, -10, 0, 35)  -- posisi akhir (di dalam window)
+    DropdownPopup.Size = UDim2.new(0, 220, 1, -70)  -- fixed 280px width
+    DropdownPopup.Position = UDim2.new(1, 0, 0, 35)  -- start offscreen (1 + 280px offset)
     DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
     DropdownPopup.Name = "DropdownSelection"
     DropdownPopup.ZIndex = 51
@@ -2789,11 +2789,11 @@ local function CreateGlobalDropdownSystem()
     PopupTitle.Position = UDim2.new(0, 35, 0.5, 0)
     PopupTitle.Parent = PopupHeader
 
-    -- Search box (kanan, disesuaikan dengan ukuran popup baru)
+    -- Search box (kanan, lebih kecil)
     local SearchFrame = Instance.new("Frame")
     SearchFrame.BorderSizePixel = 0
     SearchFrame.AnchorPoint = Vector2.new(1, 0.5)
-    SearchFrame.Size = UDim2.new(0, 90, 0, 22)  -- ubah dari 100 ke 90
+    SearchFrame.Size = UDim2.new(0, 100, 0, 22)  -- fixed 100px width, 22px height
     SearchFrame.Position = UDim2.new(1, -10, 0.5, 0)
     SearchFrame.Name = "BoxFrame"
     SearchFrame.BackgroundTransparency = 1
@@ -2921,15 +2921,15 @@ local function CreateGlobalDropdownSystem()
     PopupListSearch.Parent = DropdownContainer
 
     local ListLayout = Instance.new("UIListLayout")
-    ListLayout.Padding = UDim.new(0, 8)  -- reduced from 15
+    ListLayout.Padding = UDim.new(0, 4)  -- reduced from 15
     ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ListLayout.Parent = PopupList
 
     local ListPadding = Instance.new("UIPadding")
-    ListPadding.PaddingTop = UDim.new(0, 8)
-    ListPadding.PaddingRight = UDim.new(0, 8)
-    ListPadding.PaddingLeft = UDim.new(0, 8)
-    ListPadding.PaddingBottom = UDim.new(0, 8)
+    ListPadding.PaddingTop = UDim.new(0, 6)
+    ListPadding.PaddingRight = UDim.new(0, 6)
+    ListPadding.PaddingLeft = UDim.new(0, 6)
+    ListPadding.PaddingBottom = UDim.new(0, 6)
     ListPadding.Parent = PopupList
 
     local SearchListLayout = Instance.new("UIListLayout")
@@ -2999,7 +2999,7 @@ end
     ItemButton.BackgroundColor3 = CurrentTheme.ElementBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-    ItemButton.Size = UDim2.new(1, 0, 0, 28)  -- reduced from 35
+    ItemButton.Size = UDim2.new(1, 0, 0, 24)  -- reduced from 35
     ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemButton.Name = tostring(value)
     ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
@@ -3024,17 +3024,18 @@ end
     ItemLayout.Parent = ItemFrame
 
     local ItemPadding = Instance.new("UIPadding")
-    ItemPadding.PaddingTop = UDim.new(0, 6)  -- reduced from 10
-    ItemPadding.PaddingRight = UDim.new(0, 8)
-    ItemPadding.PaddingLeft = UDim.new(0, 8)
-    ItemPadding.PaddingBottom = UDim.new(0, 6)
+    ItemPadding.PaddingTop = UDim.new(0, 4)  -- reduced from 10
+    ItemPadding.PaddingRight = UDim.new(0, 6)
+    ItemPadding.PaddingLeft = UDim.new(0, 6)
+    ItemPadding.PaddingBottom = UDim.new(0, 4)
     ItemPadding.Parent = ItemFrame
 
     local ItemTitle = Instance.new("TextLabel")
     ItemTitle.TextWrapped = true
     ItemTitle.Interactable = false
     ItemTitle.BorderSizePixel = 0
-    ItemTitle.TextSize = 13  -- reduced from 16
+    ItemTitle.TextSize = 12  -- reduced from 16
+    ItemTitle.TextXAlignment = Enum.TextXAlignment.Left
     ItemTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemTitle.Font = Enum.Font.GothamBold
     ItemTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
@@ -3189,7 +3190,7 @@ end
         end
     end
 
-   local function OpenDropdown()
+    local function OpenDropdown()
     if not GlobalDropdownSystem then
         CreateGlobalDropdownSystem()
     end
@@ -3203,26 +3204,25 @@ end
 
     RefreshDropdownItems()
     
-    -- Set initial state (di dalam window, tapi tidak visible)
+    -- Simple fade in
     GlobalDropdownSystem.Overlay.BackgroundTransparency = 1
     GlobalDropdownSystem.Overlay.Visible = true
-    GlobalDropdownSystem.Popup.Position = UDim2.new(1, -10, 0, 35)  -- posisi akhir
-    GlobalDropdownSystem.Popup.Size = UDim2.new(0, 0, 1, -70)  -- mulai dari width 0
-    GlobalDropdownSystem.Visible = true
+    GlobalDropdownSystem.Popup.BackgroundTransparency = 1
+    GlobalDropdownSystem.Popup.Position = UDim2.new(1, -10, 0, 35)
+    GlobalDropdownSystem.Popup.Visible = true
     
-    -- Animasi: expand width dari 0 ke 200
-    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, AnimationConfig.PopupOpen)
-    CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0, 200, 1, -70)}, AnimationConfig.PopupOpen)
+    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, {Duration = 0.15})
+    CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 0}, {Duration = 0.15})
     
     IsDropdownOpen = true
 end
 
-   function CloseDropdown()
+function CloseDropdown()
     if not GlobalDropdownSystem then return end
     
-    -- Animasi: shrink width dari 200 ke 0
-    local closeTween = CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, AnimationConfig.PopupClose)
-    CreateTween(GlobalDropdownSystem.Popup, {Size = UDim2.new(0, 0, 1, -70)}, AnimationConfig.PopupClose)
+    -- Simple fade out
+    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, {Duration = 0.15})
+    local closeTween = CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 1}, {Duration = 0.15})
     
     closeTween.Completed:Wait()
     GlobalDropdownSystem.Overlay.Visible = false
@@ -4525,7 +4525,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonLabel.Size = UDim2.new(0, 78, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
-        TabButtonLabel.Position = UDim2.new(0, 32, 0.5, 0)
+        TabButtonLabel.Position = UDim2.new(0, 30, 0.5, 0)
         TabButtonLabel.Parent = TabButton
 
         local TabButtonBar = Instance.new("Frame")
