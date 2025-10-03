@@ -1914,7 +1914,7 @@ end
         if state == true then
             -- ON state
             CreateTween(ToggleBall, {Position = UDim2.new(0.5, 0, 0.5, 0)}, AnimationConfig.Global)
-            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+            CreateTween(ToggleSwitch, {BackgroundColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             CreateTween(ToggleIcon, {ImageTransparency = 0}, AnimationConfig.Global)
         elseif state == false then
             -- OFF state
@@ -2999,7 +2999,7 @@ end
     ItemButton.BackgroundColor3 = CurrentTheme.SectionBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-    ItemButton.Size = UDim2.new(1, 0, 0, 13)  -- reduced from 35
+    ItemButton.Size = UDim2.new(1, 0, 0, 20)  -- reduced from 35
     ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemButton.Name = tostring(value)
     ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
@@ -3013,7 +3013,7 @@ end
     ItemFrame.BorderSizePixel = 0
     ItemFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemFrame.AutomaticSize = Enum.AutomaticSize.Y
-    ItemFrame.Size = UDim2.new(1, 0, 0, 13)
+    ItemFrame.Size = UDim2.new(1, 0, 0, 23)
     ItemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemFrame.BackgroundTransparency = 1
     ItemFrame.Parent = ItemButton
