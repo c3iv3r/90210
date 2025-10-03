@@ -4573,7 +4573,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
         TabButtonLabel.Size = UDim2.new(0, 78, 0, 14)
         TabButtonLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
         TabButtonLabel.Text = TabConfig.Title
-        TabButtonLabel.Position = UDim2.new(0, 28, 0.5, 0)
+        TabButtonLabel.Position = UDim2.new(0, 30, 0.5, 0)
         TabButtonLabel.Parent = TabButton
 
         local TabButtonBar = Instance.new("Frame")
