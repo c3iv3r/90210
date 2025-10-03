@@ -1102,7 +1102,7 @@ local function CreateSlider(parent, config)
     SliderFillBackground.Interactable = false
     SliderFillBackground.BorderSizePixel = 0
     SliderFillBackground.AutoButtonColor = false
-    SliderFillBackground.BackgroundColor3 = CurrentTheme.AccentPrimary
+    SliderFillBackground.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     SliderFillBackground.Selectable = false
     SliderFillBackground.AnchorPoint = Vector2.new(0, 0.5)
     SliderFillBackground.Size = UDim2.new(1, 0, 1, 0)
@@ -1116,7 +1116,46 @@ local function CreateSlider(parent, config)
     SliderFillBgCorner.Parent = SliderFillBackground
     
     -- Create Fill Gradients
-        
+    local FillGradients = {}
+    
+    local FillGradient1 = Instance.new("UIGradient")
+    FillGradient1.Enabled = false
+    FillGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient1.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient1)
+    
+    local FillGradient2 = Instance.new("UIGradient")
+    FillGradient2.Enabled = false
+    FillGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient2.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient2)
+    
+    local FillGradient3 = Instance.new("UIGradient")
+    FillGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    FillGradient3.Parent = SliderFillBackground
+    table.insert(FillGradients, FillGradient3)
+    
     -- Create Value Display
     local ValueText = Instance.new("TextLabel")
     ValueText.TextWrapped = true
@@ -1144,9 +1183,35 @@ local function CreateSlider(parent, config)
     local isHovering = false
     local dragRatio = 0
     
+    -- Gradient cycling function
+    local function CycleGradient()
+        for _, gradient in ipairs(FillGradients) do
+            gradient.Enabled = false
+        end
+        local randomGradient = FillGradients[math.random(1, #FillGradients)]
+        randomGradient.Enabled = true
+        return randomGradient
+    end
+    
+    -- Initialize gradient and fill size
+    CycleGradient()
+    SliderFillBackground.Size = UDim2.new(0, SliderTrack.AbsoluteSize.X, 1, 0)
+    SliderTrack:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        SliderFillBackground.Size = UDim2.new(0, SliderTrack.AbsoluteSize.X, 1, 0)
+    end)
     
     -- Monitor fill size changes for gradient cycling
-     
+    local lastFillSize = nil
+    SliderFill:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+        if SliderFill.AbsoluteSize.X <= 3 then
+            lastFillSize = SliderFill.AbsoluteSize.X
+        end
+        if lastFillSize and SliderFill.AbsoluteSize.X > lastFillSize then
+            CycleGradient()
+            lastFillSize = nil
+        end
+    end)
+    
     -- Apply locked state if needed
     if SliderData.Locked then
         SliderStroke.Color = Color3.fromRGB(47, 47, 58)
@@ -2108,15 +2173,66 @@ ProcessIcon(
     end
 
     -- Button Gradients (matching OGLIB style)
+    local ButtonGradients = {}
     
+    local ButtonGradient1 = Instance.new("UIGradient")
+    ButtonGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient1.Enabled = false
+    ButtonGradient1.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient1)
+
+    local ButtonGradient2 = Instance.new("UIGradient")
+    ButtonGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient2.Enabled = false
+    ButtonGradient2.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient2)
+
+    local ButtonGradient3 = Instance.new("UIGradient")
+    ButtonGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    ButtonGradient3.Enabled = false
+    ButtonGradient3.Parent = ButtonContent
+    table.insert(ButtonGradients, ButtonGradient3)
+
     local ButtonContentCorner = Instance.new("UICorner")
     ButtonContentCorner.CornerRadius = UDim.new(0, 6)
     ButtonContentCorner.Parent = ButtonContent
 
-    
+    -- Gradient cycling function
+    local function CycleGradient()
+        -- Disable all gradients
+        for _, gradient in ipairs(ButtonGradients) do
+            gradient.Enabled = false
+        end
+        -- Enable random gradient
+        local randomGradient = ButtonGradients[math.random(1, #ButtonGradients)]
+        randomGradient.Enabled = true
+        return randomGradient
+    end
 
     -- Initialize with random gradient
- 
+    CycleGradient()
+
     -- Apply locked state if needed
     if ButtonData.Locked then
         ButtonStroke.Color = Color3.fromRGB(47, 47, 58)
@@ -2148,8 +2264,8 @@ ProcessIcon(
 
     ButtonFrame.MouseButton1Down:Connect(function()
         if not ButtonData.Locked then
-            CreateTween(ButtonFrame, {BackgroundColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
-             CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+            CycleGradient()
+            CreateTween(ButtonTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
             CreateTween(ClickIcon, {ImageColor3 = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
             if DescriptionLabel then
                 CreateTween(DescriptionLabel, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
@@ -2450,7 +2566,42 @@ ValuePadding.Parent = ValueButton
     end
 
     -- Add Gradient Effects to main dropdown (matching OGLIB style)
-   
+    local DropdownGradient1 = Instance.new("UIGradient")
+    DropdownGradient1.Enabled = false
+    DropdownGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    DropdownGradient1.Parent = DropdownFrame
+
+    local DropdownGradient2 = Instance.new("UIGradient")
+    DropdownGradient2.Enabled = false
+    DropdownGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    DropdownGradient2.Parent = DropdownFrame
+
+    local DropdownGradient3 = Instance.new("UIGradient")
+    DropdownGradient3.Enabled = false
+    DropdownGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    DropdownGradient3.Parent = DropdownFrame
+
     -- Global popup management variables
     local GlobalDropdownSystem = nil
     local DropdownPopup = nil
@@ -2520,6 +2671,21 @@ end
         return processed
     end
 
+    -- Random gradient selector (matching OGLIB behavior)
+    local function GetRandomGradient(frame)
+        local gradients = {}
+        for _, child in ipairs(frame:GetChildren()) do
+            if child:IsA("UIGradient") then
+                child.Enabled = false
+                table.insert(gradients, child)
+            end
+        end
+        if #gradients > 0 then
+            local selected = gradients[math.random(1, #gradients)]
+            selected.Enabled = true
+            return selected
+        end
+    end
 
     -- Adjustment untuk CreateGlobalDropdownSystem()
 
@@ -2906,7 +3072,41 @@ end
     ItemStroke.Parent = ItemButton
 
         -- Item gradients (matching OGLIB style)
-  
+        local ItemGradient1 = Instance.new("UIGradient")
+        ItemGradient1.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+            ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+            ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+        }
+        ItemGradient1.Parent = ItemFrame
+
+        local ItemGradient2 = Instance.new("UIGradient")
+        ItemGradient2.Enabled = false
+        ItemGradient2.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+            ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+            ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+        }
+        ItemGradient2.Parent = ItemFrame
+
+        local ItemGradient3 = Instance.new("UIGradient")
+        ItemGradient3.Enabled = false
+        ItemGradient3.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+            ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+            ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+            ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+        }
+        ItemGradient3.Parent = ItemFrame
+
         local ItemFrameCorner = Instance.new("UICorner")
         ItemFrameCorner.CornerRadius = UDim.new(0, 6)
         ItemFrameCorner.Parent = ItemFrame
@@ -2914,7 +3114,8 @@ end
         ItemButton.Visible = true
 
         -- Random gradient selection (matching OGLIB behavior)
- 
+        GetRandomGradient(ItemFrame)
+
         -- Update visual based on selection
         local function UpdateItemVisual()
             local isSelected = false
@@ -2925,10 +3126,15 @@ end
             end
 
             if isSelected then
-               ItemFrame.BackgroundColor3 = CurrentTheme.AccentPrimary
-               ItemFrame.BackgroundTransparency = 0
+                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
+                CreateTween(ItemStroke, {Color = CurrentTheme.AccentPrimary}, AnimationConfig.Global)
+                CreateTween(ItemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
             else
-               ItemFrame.BackgroundTransparency = 1
+                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
+                CreateTween(ItemStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
+                CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
             end
         end
 
@@ -3423,7 +3629,46 @@ DividerCorner.Parent = DividerLine
     end)
 
     -- Gradient effects (matching OGLIB style)
-   
+    local SectionGradient1 = Instance.new("UIGradient")
+    SectionGradient1.Enabled = false
+    SectionGradient1.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    SectionGradient1.Parent = SectionButton
+
+    local SectionGradient2 = Instance.new("UIGradient")
+    SectionGradient2.Enabled = false
+    SectionGradient2.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0, 1),
+        NumberSequenceKeypoint.new(1, 1)
+    }
+    SectionGradient2.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    SectionGradient2.Parent = SectionButton
+
+    local SectionGradient3 = Instance.new("UIGradient")
+    SectionGradient3.Enabled = false
+    SectionGradient3.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(0.32, Color3.fromRGB(0, 158, 255)),
+        ColorSequenceKeypoint.new(0.54, Color3.fromRGB(0, 5, 255)),
+        ColorSequenceKeypoint.new(0.782, Color3.fromRGB(0, 235, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 158, 255))
+    }
+    SectionGradient3.Parent = SectionButton
+
     local SectionStroke2 = Instance.new("UIStroke")
     SectionStroke2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     SectionStroke2.Thickness = 1.5
