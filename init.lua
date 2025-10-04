@@ -14,7 +14,7 @@ local themes = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
 				['True'] = {
 					['Toggle Background'] = Color3.fromRGB(40, 40, 40),
-					['Toggle Value'] = Color3.fromRGB(70, 130, 180),
+					['Toggle Value'] = Color3.fromRGB(230, 230, 230),
 				},
 				['False'] = {
 					['Toggle Background'] = Color3.fromRGB(30, 30, 30),
@@ -29,9 +29,9 @@ local themes = {
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Dropdown Select'] = {
-					['Background'] = Color3.fromRGB(20, 20, 20),
-					['Search'] = Color3.fromRGB(30, 30, 30),
-					['Item Background'] = Color3.fromRGB(30, 30, 30),
+					['Background'] = Color3.fromRGB(18, 18, 18),
+					['Search'] = Color3.fromRGB(18, 18, 18),
+					['Item Background'] = Color3.fromRGB(18, 18, 18),
 				}
 			},
 			['Slider'] = {
@@ -1155,13 +1155,13 @@ function Library:Window(p)
 	ChSize_1.ImageTransparency = 0.5
 
 	DropdownValue_1.Name = "DropdownValue"
-	DropdownValue_1.Parent = Td_1
+	DropdownValue_1.Parent = Ct_1
 	DropdownValue_1.AnchorPoint = Vector2.new(1, 0.5)
 	DropdownValue_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
 	DropdownValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownValue_1.BorderSizePixel = 0
 	DropdownValue_1.Position = UDim2.new(1, 0,0.5, 0)
-	DropdownValue_1.Size = UDim2.new(0, 120,0, 20)
+	DropdownValue_1.Size = UDim2.new(0, 50,0, 20)
 	DropdownValue_1.LayoutOrder = 2
 	DropdownValue_1.Transparency = 1
 
