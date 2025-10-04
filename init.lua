@@ -644,7 +644,7 @@ do
     local UIPadding_3 = Instance.new("UIPadding")
     local UIPadding_4 = Instance.new("UIPadding")
 
-    DropdownSelect.Parent = popupParent  -- PARENT KE WINDOW
+    DropdownSelect.Parent = ScreenGui -- PARENT KE WINDOW
     DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
     DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
     DropdownSelect.BorderSizePixel = 0
@@ -817,7 +817,11 @@ do
             return
         end
         DropdownSelect.Visible = true
-        
+        local btnPos = DropdownValue.AbsolutePosition
+    local targetX = btnPos.X
+    local targetY = btnPos.Y + DropdownValue.AbsoluteSize.Y + 5
+    
+    DropdownSelect.Position = UDim2.new(0, targetX, 0, targetY)
         -- HANYA animate HEIGHT, position TETAP (sudah fix di UDim2.new(1, -10, 0, 40))
         local contentHeight = UIListLayout_1.AbsoluteContentSize.Y + 54
         if contentHeight <= 200 then
@@ -4755,4 +4759,3 @@ function Library:Window(p)
 end
 
 return Library
-
