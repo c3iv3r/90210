@@ -644,20 +644,24 @@ do
     local UIPadding_3 = Instance.new("UIPadding")
     local UIPadding_4 = Instance.new("UIPadding")
 
-    DropdownSelect.Parent = ScreenGui -- PARENT KE WINDOW
-    DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
-    DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
-    DropdownSelect.BorderSizePixel = 0
-    DropdownSelect.Size = UDim2.new(0, 140,0, 0)  -- Width 140px
-    DropdownSelect.ClipsDescendants = true
-    DropdownSelect.ZIndex = 100  -- Pastikan di atas semua element
+    DropdownSelect.Parent = popupParent  -- Tetap ke window parent
+DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
+DropdownSelect.BorderSizePixel = 0
+DropdownSelect.Size = UDim2.new(0, 300, 0, 0)  -- Width lebih besar: 300px
+DropdownSelect.ClipsDescendants = true
+DropdownSelect.ZIndex = 100
+DropdownSelect.Visible = false
 
-    addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
+-- POSITIONING: Anchor ke kanan window dengan offset dari tepi
+DropdownSelect.AnchorPoint = Vector2.new(1, 0)
+DropdownSelect.Position = UDim2.new(1, -10, 0, 45)  -- 10px dari kanan, 45px dari atas
+  -- Pastikan di atas semua element
 
-    -- POSITIONING: Anchor ke KANAN window seperti Paragraph.lua
-    -- Position relatif ke parent window (bukan absolut)
-    DropdownSelect.AnchorPoint = Vector2.new(1, 0)  -- Anchor di kanan-atas
-    DropdownSelect.Position = UDim2.new(1, -10, 0, 40)  -- 10px dari kanan, 40px dari atas
+    DropdownSelect.AnchorPoint = Vector2.new(1, 0)
+DropdownSelect.Position = UDim2.new(1, -10, 0, 45)  -- 10px dari kanan, 45px dari atas
+
+addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
+
 
     -- [Sisa UI elements untuk popup - Search box, scrolling frame, dll]
     UICorner_1.Parent = DropdownSelect
@@ -774,24 +778,31 @@ do
     local isopen = false
 
     local function updateDropdownSize()
-        if not isopen then return end
+    if not isopen then return end
 
-        local visibleCount = 0
-        for i, v in pairs(ScrollingFrame_1:GetChildren()) do
-            if v:IsA("Frame") and v.Visible then
-                visibleCount = visibleCount + 1
-            end
+    -- Hitung tinggi konten
+    local visibleCount = 0
+    for i, v in pairs(ScrollingFrame_1:GetChildren()) do
+        if v:IsA("Frame") and v.Visible then
+            visibleCount = visibleCount + 1
         end
-
-        local contentHeight = (UIListLayout_1.AbsoluteContentSize.Y + 54)
-        if contentHeight > 200 then
-            contentHeight = 200
-        end
-
-        -- Height animation saja, TIDAK ada position animation
-        tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", 
-            g = {Size = UDim2.new(0, 140, 0, contentHeight)}}):Play()
     end
+
+    local contentHeight = UIListLayout_1.AbsoluteContentSize.Y + 60
+    
+    -- Max height mengikuti tinggi window (dikurangi offset atas bawah)
+    local windowHeight = popupParent.AbsoluteSize.Y
+    local maxHeight = windowHeight - 90  -- 45px dari atas, 45px dari bawah
+    
+    if contentHeight > maxHeight then
+        contentHeight = maxHeight
+    end
+
+    -- Animate tinggi saja, posisi tetap fix di kanan
+    tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", 
+        g = {Size = UDim2.new(0, 300, 0, contentHeight)}
+    }):Play()
+end
 
     -- Search functionality tetap sama
     TextBox_1.Changed:Connect(function()
@@ -813,43 +824,47 @@ do
     end)
 
     local function open()
-        if isopen then
-            return
-        end
-        DropdownSelect.Visible = true
-        local btnPos = DropdownValue.AbsolutePosition
-    local targetX = btnPos.X
-    local targetY = btnPos.Y + DropdownValue.AbsoluteSize.Y + 5
+    if isopen then return end
     
-    DropdownSelect.Position = UDim2.new(0, targetX, 0, targetY)
-        -- HANYA animate HEIGHT, position TETAP (sudah fix di UDim2.new(1, -10, 0, 40))
-        local contentHeight = UIListLayout_1.AbsoluteContentSize.Y + 54
-        if contentHeight <= 200 then
-            tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-                g = {Size = UDim2.new(0, 140, 0, contentHeight)}}):Play()
-        else
-            tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-                g = {Size = UDim2.new(0, 140, 0, 200)}}):Play()
-        end
-        tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-            g = {Transparency = 0.95}}):Play()
-        isopen = true
+    DropdownSelect.Visible = true
+    
+    -- Tidak perlu update position karena sudah fix di kanan
+    -- Langsung animate tinggi
+    local contentHeight = UIListLayout_1.AbsoluteContentSize.Y + 60
+    local windowHeight = popupParent.AbsoluteSize.Y
+    local maxHeight = windowHeight - 90
+    
+    if contentHeight > maxHeight then
+        contentHeight = maxHeight
     end
+    
+    tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", 
+        g = {Size = UDim2.new(0, 300, 0, contentHeight)}
+    }):Play()
+    
+    tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
+        g = {Transparency = 0.95}
+    }):Play()
+    
+    isopen = true
+end
 
     local function close()
-        if not isopen then
-            return
-        end
-        tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-            g = {Transparency = 1}}):Play()
-        local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-            g = {Size = UDim2.new(0, 140, 0, 0)}})
-        gf:Play()
-        gf.Completed:Connect(function()
-            DropdownSelect.Visible = false
-            isopen = false
-        end)
-    end
+    if not isopen then return end
+    
+    tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
+        g = {Transparency = 1}
+    }):Play()
+    
+    local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", 
+        g = {Size = UDim2.new(0, 300, 0, 0)}
+    })
+    gf:Play()
+    gf.Completed:Connect(function()
+        DropdownSelect.Visible = false
+        isopen = false
+    end)
+end
 
     -- Click outside to close
     U.InputBegan:Connect(function(A)
