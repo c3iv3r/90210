@@ -788,16 +788,11 @@ local function open()
     end
     DropdownSelect.Visible = true
     
-    -- Position di samping kanan DropdownValue
-    local targetX = DropdownValue.AbsolutePosition.X - DropdownSelect.Parent.AbsolutePosition.X + DropdownValue.Size.X.Offset + 5 -- +5 untuk spacing
-    local targetY = DropdownValue.AbsolutePosition.Y - DropdownSelect.Parent.AbsolutePosition.Y
-    
-    -- Hitung max height dari viewport
+    -- Fixed di kanan layar, ignore button position
     local viewportSize = workspace.CurrentCamera.ViewportSize
-    local maxHeight = viewportSize.Y - targetY - 40 -- -40 untuk margin bawah
-    
-    -- Clamp ke min 100 dan max viewport
-    local finalHeight = math.clamp(maxHeight, 100, viewportSize.Y * 0.8)
+    local targetX = viewportSize.X - 220 -- 200 (width) + 20 (margin dari edge)
+    local targetY = 10 -- margin dari atas
+    local finalHeight = viewportSize.Y - 20 -- full height minus margin atas bawah
     
     tw({
         v = DropdownSelect, 
@@ -805,7 +800,7 @@ local function open()
         s = Enum.EasingStyle.Exponential, 
         d = "Out", 
         g = {
-            Size = UDim2.new(0, 200, 0, finalHeight), -- Ubah width jadi 200
+            Size = UDim2.new(0, 200, 0, finalHeight),
             Position = UDim2.new(0, targetX, 0, targetY)
         }
     }):Play()
