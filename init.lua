@@ -1778,31 +1778,32 @@ function Library:Window(p)
     end
     
     -- Override parent agar element masuk ke Container
-    for funcName, funcValue in pairs(SectionFunc) do
-        if funcName ~= "SetTitle" then
-            SectionFunc[funcName] = function(...)
-                local args = {...}
-                local originalParent = args[1] and args[1].Parent or ScrollingFrame_1
-                
-                -- Backup original Func
-                local originalFunc = Func[funcName]
-                
-                -- Temporary override ScrollingFrame_1 reference
-                local oldScrollFrame = ScrollingFrame_1
-                ScrollingFrame_1 = Container
-                
-                local result = originalFunc(Func, ...)
-                
-                -- Restore
-                ScrollingFrame_1 = oldScrollFrame
-                
-                return result
-            end
+    local originalFuncs = {}
+for funcName in pairs(SectionFunc) do
+    if funcName ~= "SetTitle" then
+        originalFuncs[funcName] = Func[funcName]
+        
+        SectionFunc[funcName] = function(self, ...)
+            local args = {...}
+            
+            -- Backup ScrollingFrame_1
+            local oldScrollFrame = ScrollingFrame_1
+            
+            -- Redirect ke Container
+            ScrollingFrame_1 = Container
+            
+            -- Panggil function asli
+            local result = originalFuncs[funcName](Func, ...)
+            
+            -- Restore ScrollingFrame_1
+            ScrollingFrame_1 = oldScrollFrame
+            
+            return result
         end
     end
-    
-    return SectionFunc
 end
+
+return SectionFunc
 
 			local New = {}
 
