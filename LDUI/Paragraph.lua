@@ -286,7 +286,7 @@ end
     TitleLabel.TextSize = 20
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+    TitleLabel.FontFace =  Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
     TitleLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.AnchorPoint = Vector2.new(0, 0.5)
@@ -335,7 +335,7 @@ end
         ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
         ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
         ContentLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ContentLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+        ContentLabel.FontFace =  Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
         ContentLabel.TextColor3 = Color3.fromRGB(145, 154, 173)
         ContentLabel.BackgroundTransparency = 1
         ContentLabel.Size = UDim2.new(1, 0, 0, 0)
@@ -430,7 +430,7 @@ end
         ButtonLabel.TextSize = 14
         ButtonLabel.TextScaled = true
         ButtonLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ButtonLabel.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+        ButtonLabel.FontFace =  Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
         ButtonLabel.TextColor3 = Color3.fromRGB(197, 204, 219)
         ButtonLabel.BackgroundTransparency = 1
         ButtonLabel.Size = UDim2.new(1, 0, 0.45, 0)
@@ -1061,7 +1061,7 @@ local function CreateSlider(parent, config)
     SliderTrigger.AutoButtonColor = false
     SliderTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
     SliderTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    SliderTrigger.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    SliderTrigger.Font = Enum.Font.GothamBold
     SliderTrigger.BackgroundTransparency = 1
     SliderTrigger.Size = UDim2.new(1, 0, 1, 0)
     SliderTrigger.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1330,7 +1330,7 @@ local function CreateSlider(parent, config)
                 SliderDescription.TextSize = 12
                 SliderDescription.TextXAlignment = Enum.TextXAlignment.Left
                 SliderDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                SliderDescription.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+                SliderDescription.Font = Enum.Font.GothamBold
                 SliderDescription.TextColor3 = Color3.fromRGB(197, 204, 219)
                 SliderDescription.BackgroundTransparency = 1
                 SliderDescription.Size = UDim2.new(1, 0, 0, 15)
@@ -2999,7 +2999,7 @@ end
     ItemButton.BackgroundColor3 = CurrentTheme.SectionBackground
     ItemButton.Selectable = false
     ItemButton.AutomaticSize = Enum.AutomaticSize.Y
-    ItemButton.Size = UDim2.new(1, 0, 0, 25)  -- reduced from 35
+    ItemButton.Size = UDim2.new(1, 0, 0, 25)
     ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ItemButton.Name = tostring(value)
     ItemButton.Position = UDim2.new(0, 0, 0.384, 0)
@@ -3024,9 +3024,9 @@ end
     ItemLayout.Parent = ItemFrame
 
     local ItemPadding = Instance.new("UIPadding")
-    ItemPadding.PaddingTop = UDim.new(0, 6)  -- reduced from 10
+    ItemPadding.PaddingTop = UDim.new(0, 6)
     ItemPadding.PaddingRight = UDim.new(0, 0)
-    ItemPadding.PaddingLeft = UDim.new(0, 0)
+    ItemPadding.PaddingLeft = UDim.new(0, 20)  -- Beri space untuk bar
     ItemPadding.PaddingBottom = UDim.new(0, 0)
     ItemPadding.Parent = ItemFrame
 
@@ -3034,7 +3034,7 @@ end
     ItemTitle.TextWrapped = true
     ItemTitle.Interactable = false
     ItemTitle.BorderSizePixel = 0
-    ItemTitle.TextSize = 12  -- reduced from 16
+    ItemTitle.TextSize = 12
     ItemTitle.TextXAlignment = Enum.TextXAlignment.Left
     ItemTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemTitle.Font = Enum.Font.GothamBold
@@ -3050,7 +3050,7 @@ end
     ItemDescription.TextWrapped = true
     ItemDescription.Interactable = false
     ItemDescription.BorderSizePixel = 0
-    ItemDescription.TextSize = 11  -- reduced from 16
+    ItemDescription.TextSize = 11
     ItemDescription.TextXAlignment = Enum.TextXAlignment.Left
     ItemDescription.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     ItemDescription.Font = Enum.Font.GothamBold
@@ -3071,7 +3071,29 @@ end
     ItemStroke.Color = CurrentTheme.ElementStroke
     ItemStroke.Parent = ItemButton
 
-        -- Item gradients (matching OGLIB style)
+    -- Bar indicator (seperti tab bar)
+    local ItemBar = Instance.new("Frame")
+    ItemBar.BorderSizePixel = 0
+    ItemBar.BackgroundColor3 = CurrentTheme.AccentPrimary
+    ItemBar.AnchorPoint = Vector2.new(0, 0.5)
+    ItemBar.Size = UDim2.new(0, 3, 0, 0)  -- Start with 0 height
+    ItemBar.Position = UDim2.new(0, 8, 0.5, 0)
+    ItemBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ItemBar.Name = "Bar"
+    ItemBar.BackgroundTransparency = 1
+    ItemBar.Parent = ItemButton
+
+    local ItemBarCorner = Instance.new("UICorner")
+    ItemBarCorner.CornerRadius = UDim.new(0, 100)
+    ItemBarCorner.Parent = ItemBar
+
+    local ItemFrameCorner = Instance.new("UICorner")
+    ItemFrameCorner.CornerRadius = UDim.new(0, 6)
+    ItemFrameCorner.Parent = ItemFrame
+
+    ItemButton.Visible = true
+
+        --[[-- Item gradients (matching OGLIB style)
         local ItemGradient1 = Instance.new("UIGradient")
         ItemGradient1.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 5, 255)),
@@ -3114,57 +3136,73 @@ end
         ItemButton.Visible = true
 
         -- Random gradient selection (matching OGLIB behavior)
-        GetRandomGradient(ItemFrame)
+        GetRandomGradient(ItemFrame)]]
 
         -- Update visual based on selection
-        local function UpdateItemVisual()
-            local isSelected = false
-            if DropdownData.Multi then
-                isSelected = table.find(CurrentValue, value) ~= nil
-            else
-                isSelected = CurrentValue == value
-            end
-
-            if isSelected then
-                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(255, 255, 255)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
-                CreateTween(ItemFrame, {BackgroundTransparency = 0}, AnimationConfig.Global)
-            else
-                CreateTween(ItemTitle, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                CreateTween(ItemDescription, {TextColor3 = Color3.fromRGB(196, 203, 218)}, AnimationConfig.Global)
-                CreateTween(ItemStroke, {Color = CurrentTheme.ElementStroke}, AnimationConfig.Global)
-                CreateTween(ItemFrame, {BackgroundTransparency = 1}, AnimationConfig.Global)
-            end
+       local function UpdateItemVisual()
+        local isSelected = false
+        if DropdownData.Multi then
+            isSelected = table.find(CurrentValue, value) ~= nil
+        else
+            isSelected = CurrentValue == value
         end
+
+        if isSelected then
+            -- Active state (seperti active tab)
+            CreateTween(ItemTitle, {
+                TextTransparency = 0,
+                TextColor3 = Color3.fromRGB(197, 204, 219)
+            }, AnimationConfig.Global)
+            CreateTween(ItemDescription, {
+                TextTransparency = 0
+            }, AnimationConfig.Global)
+            CreateTween(ItemBar, {
+                Size = UDim2.new(0, 3, 0, 15),  -- Bar muncul
+                BackgroundTransparency = 0
+            }, AnimationConfig.Global)
+        else
+            -- Inactive state (seperti inactive tab)
+            CreateTween(ItemTitle, {
+                TextTransparency = 0.5,
+                TextColor3 = Color3.fromRGB(197, 204, 219)
+            }, AnimationConfig.Global)
+            CreateTween(ItemDescription, {
+                TextTransparency = 0.5
+            }, AnimationConfig.Global)
+            CreateTween(ItemBar, {
+                Size = UDim2.new(0, 3, 0, 0),  -- Bar hilang
+                BackgroundTransparency = 1
+            }, AnimationConfig.Global)
+        end
+    end
 
         -- Item click handler
         ItemButton.MouseButton1Click:Connect(function()
-            if not DropdownData.Locked then
-                if DropdownData.Multi then
-                    local index = table.find(CurrentValue, value)
-                    if index then
-                        if not DropdownData.AllowNone and #CurrentValue == 1 then
-                            return -- Can't remove last item if AllowNone is false
-                        end
-                        table.remove(CurrentValue, index)
-                    else
-                        table.insert(CurrentValue, value)
+        if not DropdownData.Locked then
+            if DropdownData.Multi then
+                local index = table.find(CurrentValue, value)
+                if index then
+                    if not DropdownData.AllowNone and #CurrentValue == 1 then
+                        return
                     end
+                    table.remove(CurrentValue, index)
                 else
-                    CurrentValue = value
-                    CloseDropdown()
+                    table.insert(CurrentValue, value)
                 end
-                
-                UpdateValueDisplay()
-                UpdateItemVisual()
-                DropdownData.Callback(CurrentValue)
+            else
+                CurrentValue = value
+                CloseDropdown()
             end
-        end)
+            
+            UpdateValueDisplay()
+            UpdateItemVisual()
+            DropdownData.Callback(CurrentValue)
+        end
+    end)
 
-        UpdateItemVisual()
-        return ItemButton
-    end
+    UpdateItemVisual()
+    return ItemButton
+end
 
     local function RefreshDropdownItems()
         if not PopupList or not PopupListSearch then return end
@@ -3978,7 +4016,7 @@ ProcessIcon(WindowData.Icon, TopIcon, UDim2.new(0, 25, 0, 25))
     TopSubtitle.TextSize = 7
     TopSubtitle.TextScaled = true
     TopSubtitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TopSubtitle.FontFace = Font.new("rbxassetid://11702779517", Enum.FontWeight.Medium, Enum.FontStyle.Italic)
+    TopSubtitle.FontFace =  Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Italic)
     TopSubtitle.TextColor3 = Color3.fromRGB(150, 155, 165)
     TopSubtitle.BackgroundTransparency = 1
     TopSubtitle.AnchorPoint = Vector2.new(0.5, 0)
