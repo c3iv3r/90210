@@ -635,7 +635,7 @@ do
 	DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
 	DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownSelect.BorderSizePixel = 0
-	DropdownSelect.Size = UDim2.new(0, 200,0, 0)
+	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
 	DropdownSelect.ClipsDescendants = true
 	DropdownSelect.Visible = false
 
@@ -810,7 +810,7 @@ do
 			s = Enum.EasingStyle.Exponential, 
 			d = "Out", 
 			g = {
-				Size = UDim2.new(0, 200, 0, finalHeight),
+				Size = UDim2.new(0, 150, 0, finalHeight),
 				Position = UDim2.new(0, targetX, 0, targetY)
 			}
 		}):Play()
