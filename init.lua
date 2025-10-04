@@ -800,7 +800,7 @@ do
 		local windowRight = windowFrame.AbsolutePosition.X + windowFrame.AbsoluteSize.X
 		local windowTop = windowFrame.AbsolutePosition.Y
 		
-		local targetX = windowRight - 210
+		local targetX = windowRight - 160
 		local targetY = windowTop + 50
 		local finalHeight = windowFrame.AbsoluteSize.Y - 60
 		
@@ -823,7 +823,7 @@ do
 		if not isopen then return end
 		
 		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
-		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 200,0, 0)}})
+		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
 		gf:Play()
 		gf.Completed:Connect(function()
 			DropdownSelect.Visible = false
