@@ -1257,6 +1257,7 @@ function Library:Window(p)
 	UIListLayout_7.Parent = Td_1
 	UIListLayout_7.Padding = UDim.new(0,8)
 	UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout_7.VerticalAlignment = Enum.VerticalAlignment.Center
 
@@ -1295,7 +1296,7 @@ function Library:Window(p)
 	Desc_1.TextColor3 = Color3.fromRGB(255,255,255)
 	Desc_1.TextSize = 10
 	Desc_1.TextTransparency = 0.5
-	Desc_1.TextXAlignment = Enum.TextXAlignment.Left
+	Desc_1.TextXAlignment = Enum.TextXAlignment.Center
 	Desc_1.Visible = false
 
 	addToTheme('Text & Icon', Desc_1)
@@ -1319,7 +1320,7 @@ function Library:Window(p)
 	Title_2.Text = Title
 	Title_2.TextColor3 = Color3.fromRGB(255,255,255)
 	Title_2.TextSize = 12
-	Title_2.TextXAlignment = Enum.TextXAlignment.Left
+	Title_2.TextXAlignment = Enum.TextXAlignment.Center
 
 	addToTheme('Text & Icon', Title_2)
 
