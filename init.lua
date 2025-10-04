@@ -532,412 +532,461 @@ do
 		return Background, f
 	end
 	function addDropdownSelect(p, p2, Multi, Callback, Value, List)
-		local F = Instance.new("Frame")
-		local UIListLayout_1 = Instance.new("UIListLayout")
-		local UIPadding_1 = Instance.new("UIPadding")
-		local DropdownValue = Instance.new("Frame")
-		local UICorner_1 = Instance.new("UICorner")
-		local UIStroke_1 = Instance.new("UIStroke")
-		local TextLabelValue_1 = Instance.new("TextLabel")
-		local UIPadding_2 = Instance.new("UIPadding")
-		local ImageLabel_1 = Instance.new("ImageLabel")
+	local F = Instance.new("Frame")
+	local UIListLayout_1 = Instance.new("UIListLayout")
+	local UIPadding_1 = Instance.new("UIPadding")
+	local DropdownValue = Instance.new("Frame")
+	local UICorner_1 = Instance.new("UICorner")
+	local UIStroke_1 = Instance.new("UIStroke")
+	local TextLabelValue_1 = Instance.new("TextLabel")
+	local UIPadding_2 = Instance.new("UIPadding")
+	local ImageLabel_1 = Instance.new("ImageLabel")
 
-		F.Name = "F"
-		F.Parent = p
-		F.AnchorPoint = Vector2.new(1, 0.5)
-		F.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		F.BackgroundTransparency = 1
-		F.BorderColor3 = Color3.fromRGB(0,0,0)
-		F.BorderSizePixel = 0
-		F.Position = UDim2.new(1, 0,0.5, 0)
-		F.Size = UDim2.new(0, 120,0.800000012, 0)
+	F.Name = "F"
+	F.Parent = p
+	F.AnchorPoint = Vector2.new(1, 0.5)
+	F.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	F.BackgroundTransparency = 1
+	F.BorderColor3 = Color3.fromRGB(0,0,0)
+	F.BorderSizePixel = 0
+	F.Position = UDim2.new(1, 0,0.5, 0)
+	F.Size = UDim2.new(0, 120,0.800000012, 0)
 
-		UIListLayout_1.Parent = F
-		UIListLayout_1.Padding = UDim.new(0,15)
-		UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
-		UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
-		UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
+	UIListLayout_1.Parent = F
+	UIListLayout_1.Padding = UDim.new(0,15)
+	UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
 
-		UIPadding_1.Parent = F
-		UIPadding_1.PaddingRight = UDim.new(0,13)
+	UIPadding_1.Parent = F
+	UIPadding_1.PaddingRight = UDim.new(0,13)
 
-		DropdownValue.Parent = F
-		DropdownValue.BackgroundColor3 = Color3.fromRGB(24,24,31)
-		DropdownValue.BorderColor3 = Color3.fromRGB(0,0,0)
-		DropdownValue.BorderSizePixel = 0
-		DropdownValue.Size = UDim2.new(0, 100,0, 20)
+	DropdownValue.Parent = F
+	DropdownValue.BackgroundColor3 = Color3.fromRGB(24,24,31)
+	DropdownValue.BorderColor3 = Color3.fromRGB(0,0,0)
+	DropdownValue.BorderSizePixel = 0
+	DropdownValue.Size = UDim2.new(0, 100,0, 20)
 
-		addToTheme('Function.Dropdown.Value Background', DropdownValue)
+	addToTheme('Function.Dropdown.Value Background', DropdownValue)
 
-		UICorner_1.Parent = DropdownValue
-		UICorner_1.CornerRadius = UDim.new(0,4)
+	UICorner_1.Parent = DropdownValue
+	UICorner_1.CornerRadius = UDim.new(0,4)
 
-		UIStroke_1.Parent = DropdownValue
-		UIStroke_1.Color = Color3.fromRGB(255,255,255)
-		UIStroke_1.Thickness = 1
-		UIStroke_1.Transparency = 0.95
+	UIStroke_1.Parent = DropdownValue
+	UIStroke_1.Color = Color3.fromRGB(255,255,255)
+	UIStroke_1.Thickness = 1
+	UIStroke_1.Transparency = 0.95
 
-		addToTheme('Function.Dropdown.Value Stroke', UIStroke_1)
+	addToTheme('Function.Dropdown.Value Stroke', UIStroke_1)
 
-		TextLabelValue_1.Parent = DropdownValue
-		TextLabelValue_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		TextLabelValue_1.BackgroundTransparency = 1
-		TextLabelValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		TextLabelValue_1.BorderSizePixel = 0
-		TextLabelValue_1.Size = UDim2.new(0.8, 0,1, 0)
-		TextLabelValue_1.Font = Enum.Font.GothamBold
-		TextLabelValue_1.RichText = true
-		TextLabelValue_1.Text = "--"
-		TextLabelValue_1.TextColor3 = Color3.fromRGB(255,255,255)
-		TextLabelValue_1.TextSize = 10
-		TextLabelValue_1.TextTransparency = 0.3
-		TextLabelValue_1.TextXAlignment = Enum.TextXAlignment.Left
-		TextLabelValue_1.TextTruncate = Enum.TextTruncate.AtEnd
+	TextLabelValue_1.Parent = DropdownValue
+	TextLabelValue_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	TextLabelValue_1.BackgroundTransparency = 1
+	TextLabelValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	TextLabelValue_1.BorderSizePixel = 0
+	TextLabelValue_1.Size = UDim2.new(0.8, 0,1, 0)
+	TextLabelValue_1.Font = Enum.Font.GothamBold
+	TextLabelValue_1.RichText = true
+	TextLabelValue_1.Text = "--"
+	TextLabelValue_1.TextColor3 = Color3.fromRGB(255,255,255)
+	TextLabelValue_1.TextSize = 10
+	TextLabelValue_1.TextTransparency = 0.3
+	TextLabelValue_1.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabelValue_1.TextTruncate = Enum.TextTruncate.AtEnd
 
-		addToTheme('Text & Icon', TextLabelValue_1)
+	addToTheme('Text & Icon', TextLabelValue_1)
 
-		UIPadding_2.Parent = DropdownValue
-		UIPadding_2.PaddingLeft = UDim.new(0,5)
-		UIPadding_2.PaddingRight = UDim.new(0,5)
+	UIPadding_2.Parent = DropdownValue
+	UIPadding_2.PaddingLeft = UDim.new(0,5)
+	UIPadding_2.PaddingRight = UDim.new(0,5)
 
-		ImageLabel_1.Parent = DropdownValue
-		ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
-		ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		ImageLabel_1.BackgroundTransparency = 1
-		ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		ImageLabel_1.BorderSizePixel = 0
-		ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
-		ImageLabel_1.Size = UDim2.new(0, 20,0, 20)
-		ImageLabel_1.Image = "rbxassetid://14937709869"
-		ImageLabel_1.ImageTransparency = 0.3
+	ImageLabel_1.Parent = DropdownValue
+	ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
+	ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	ImageLabel_1.BackgroundTransparency = 1
+	ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	ImageLabel_1.BorderSizePixel = 0
+	ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
+	ImageLabel_1.Size = UDim2.new(0, 20,0, 20)
+	ImageLabel_1.Image = "rbxassetid://14937709869"
+	ImageLabel_1.ImageTransparency = 0.3
 
-		addToTheme('Text & Icon', ImageLabel_1)
+	addToTheme('Text & Icon', ImageLabel_1)
 
-		local DropdownSelect = Instance.new("Frame")
-		local UICorner_1 = Instance.new("UICorner")
-		local UIStrokeDropdown_1 = Instance.new("UIStroke")
-		local UIPadding_1 = Instance.new("UIPadding")
-		local Search_1 = Instance.new("Frame")
-		local UICorner_2 = Instance.new("UICorner")
-		local TextBox_1 = Instance.new("TextBox")
-		local Frame_1 = Instance.new("Frame")
-		local Frame_2 = Instance.new("Frame")
-		local Frame_3 = Instance.new("Frame")
-		local UICorner_3 = Instance.new("UICorner")
-		local ScrollingFrame_1 = Instance.new("ScrollingFrame")
-		local UIListLayout_1 = Instance.new("UIListLayout")
-		local UIPadding_2 = Instance.new("UIPadding")
-		local UIPadding_3 = Instance.new("UIPadding")
-		local UIPadding_4 = Instance.new("UIPadding")
+	local DropdownSelect = Instance.new("Frame")
+	local UICorner_1 = Instance.new("UICorner")
+	local UIStrokeDropdown_1 = Instance.new("UIStroke")
+	local UIPadding_1 = Instance.new("UIPadding")
+	local Search_1 = Instance.new("Frame")
+	local UICorner_2 = Instance.new("UICorner")
+	local TextBox_1 = Instance.new("TextBox")
+	local Frame_1 = Instance.new("Frame")
+	local Frame_2 = Instance.new("Frame")
+	local Frame_3 = Instance.new("Frame")
+	local UICorner_3 = Instance.new("UICorner")
+	local ScrollingFrame_1 = Instance.new("ScrollingFrame")
+	local UIListLayout_1 = Instance.new("UIListLayout")
+	local UIPadding_2 = Instance.new("UIPadding")
+	local UIPadding_3 = Instance.new("UIPadding")
+	local UIPadding_4 = Instance.new("UIPadding")
 
-		DropdownSelect.Parent = ScreenGui
-DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
-DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
-DropdownSelect.BorderSizePixel = 0
-DropdownSelect.Size = UDim2.new(0, 200,0, 0) -- UBAH INI
-DropdownSelect.ClipsDescendants = true
+	DropdownSelect.Parent = ScreenGui
+	DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
+	DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
+	DropdownSelect.BorderSizePixel = 0
+	DropdownSelect.Size = UDim2.new(0, 200,0, 0)
+	DropdownSelect.ClipsDescendants = true
+	DropdownSelect.Visible = false
 
-		addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
+	addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
 
-		DropdownSelect.Position = UDim2.new(0, DropdownValue.AbsolutePosition.X - DropdownSelect.Parent.AbsolutePosition.X + DropdownValue.Size.X.Offset - 119, 0, DropdownValue.AbsolutePosition.Y - DropdownSelect.Parent.AbsolutePosition.Y + DropdownValue.Size.Y.Offset - 25)
+	UICorner_1.Parent = DropdownSelect
+	UICorner_1.CornerRadius = UDim.new(0,4)
 
-		UICorner_1.Parent = DropdownSelect
-		UICorner_1.CornerRadius = UDim.new(0,4)
+	UIStrokeDropdown_1.Parent = DropdownSelect
+	UIStrokeDropdown_1.Color = Color3.fromRGB(255,255,255)
+	UIStrokeDropdown_1.Thickness = 1
+	UIStrokeDropdown_1.Transparency = 1
 
-		UIStrokeDropdown_1.Parent = DropdownSelect
-		UIStrokeDropdown_1.Color = Color3.fromRGB(255,255,255)
-		UIStrokeDropdown_1.Thickness = 1
-		UIStrokeDropdown_1.Transparency = 1
+	UIPadding_1.Parent = DropdownSelect
+	UIPadding_1.PaddingBottom = UDim.new(0,5)
+	UIPadding_1.PaddingLeft = UDim.new(0,5)
+	UIPadding_1.PaddingRight = UDim.new(0,5)
+	UIPadding_1.PaddingTop = UDim.new(0,5)
 
-		UIPadding_1.Parent = DropdownSelect
-		UIPadding_1.PaddingBottom = UDim.new(0,5)
-		UIPadding_1.PaddingLeft = UDim.new(0,5)
-		UIPadding_1.PaddingRight = UDim.new(0,5)
-		UIPadding_1.PaddingTop = UDim.new(0,5)
+	Search_1.Name = "Search"
+	Search_1.Parent = DropdownSelect
+	Search_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Search_1.BackgroundTransparency = 0.949999988079071
+	Search_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	Search_1.BorderSizePixel = 0
+	Search_1.Size = UDim2.new(1, 0,0, 20)
 
-		Search_1.Name = "Search"
-		Search_1.Parent = DropdownSelect
-		Search_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Search_1.BackgroundTransparency = 0.949999988079071
-		Search_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Search_1.BorderSizePixel = 0
-		Search_1.Size = UDim2.new(1, 0,0, 20)
+	addToTheme('Function.Dropdown.Dropdown Select.Search', Search_1)
 
-		addToTheme('Function.Dropdown.Dropdown Select.Search', Search_1)
+	UICorner_2.Parent = Search_1
+	UICorner_2.CornerRadius = UDim.new(0,4)
 
-		UICorner_2.Parent = Search_1
-		UICorner_2.CornerRadius = UDim.new(0,4)
+	TextBox_1.Parent = Search_1
+	TextBox_1.Active = true
+	TextBox_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	TextBox_1.BackgroundTransparency = 1
+	TextBox_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	TextBox_1.BorderSizePixel = 0
+	TextBox_1.CursorPosition = -1
+	TextBox_1.Size = UDim2.new(1, 0,1, 0)
+	TextBox_1.Font = Enum.Font.Gotham
+	TextBox_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
+	TextBox_1.PlaceholderText = "Search . . ."
+	TextBox_1.Text = ""
+	TextBox_1.TextColor3 = Color3.fromRGB(255,255,255)
+	TextBox_1.TextSize = 11
 
-		TextBox_1.Parent = Search_1
-		TextBox_1.Active = true
-		TextBox_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		TextBox_1.BackgroundTransparency = 1
-		TextBox_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		TextBox_1.BorderSizePixel = 0
-		TextBox_1.CursorPosition = -1
-		TextBox_1.Size = UDim2.new(1, 0,1, 0)
-		TextBox_1.Font = Enum.Font.Gotham
-		TextBox_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
-		TextBox_1.PlaceholderText = "Search . . ."
-		TextBox_1.Text = ""
-		TextBox_1.TextColor3 = Color3.fromRGB(255,255,255)
-		TextBox_1.TextSize = 11
+	addToTheme('Text & Icon', Search_1)
+	addToTheme('Text & Icon', TextBox_1)
 
-		addToTheme('Text & Icon', Search_1)
+	Frame_1.Parent = Search_1
+	Frame_1.AnchorPoint = Vector2.new(0, 1)
+	Frame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Frame_1.BackgroundTransparency = 0.8999999761581421
+	Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	Frame_1.BorderSizePixel = 0
+	Frame_1.Position = UDim2.new(0, 0,1, 0)
+	Frame_1.Size = UDim2.new(1, 0,0, 2)
 
-		addToTheme('Text & Icon', TextBox_1)
+	Frame_2.Parent = DropdownSelect
+	Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Frame_2.BackgroundTransparency = 1
+	Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
+	Frame_2.BorderSizePixel = 0
+	Frame_2.Size = UDim2.new(1, 0,1, 0)
 
-		Frame_1.Parent = Search_1
-		Frame_1.AnchorPoint = Vector2.new(0, 1)
-		Frame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Frame_1.BackgroundTransparency = 0.8999999761581421
-		Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Frame_1.BorderSizePixel = 0
-		Frame_1.Position = UDim2.new(0, 0,1, 0)
-		Frame_1.Size = UDim2.new(1, 0,0, 2)
+	Frame_3.Parent = Frame_2
+	Frame_3.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Frame_3.BackgroundTransparency = 0.949999988079071
+	Frame_3.BorderColor3 = Color3.fromRGB(0,0,0)
+	Frame_3.BorderSizePixel = 0
+	Frame_3.Size = UDim2.new(1, 0,1, 0)
 
-		Frame_2.Parent = DropdownSelect
-		Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Frame_2.BackgroundTransparency = 1
-		Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
-		Frame_2.BorderSizePixel = 0
-		Frame_2.Size = UDim2.new(1, 0,1, 0)
+	UICorner_3.Parent = Frame_3
+	UICorner_3.CornerRadius = UDim.new(0,4)
 
-		Frame_3.Parent = Frame_2
-		Frame_3.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Frame_3.BackgroundTransparency = 0.949999988079071
-		Frame_3.BorderColor3 = Color3.fromRGB(0,0,0)
-		Frame_3.BorderSizePixel = 0
-		Frame_3.Size = UDim2.new(1, 0,1, 0)
+	ScrollingFrame_1.Name = "ScrollingFrame"
+	ScrollingFrame_1.Parent = Frame_3
+	ScrollingFrame_1.Active = true
+	ScrollingFrame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	ScrollingFrame_1.BackgroundTransparency = 1
+	ScrollingFrame_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	ScrollingFrame_1.BorderSizePixel = 0
+	ScrollingFrame_1.Size = UDim2.new(1, 0,1, 0)
+	ScrollingFrame_1.ClipsDescendants = true
+	ScrollingFrame_1.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	ScrollingFrame_1.BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png"
+	ScrollingFrame_1.CanvasPosition = Vector2.new(0, 0)
+	ScrollingFrame_1.ElasticBehavior = Enum.ElasticBehavior.WhenScrollable
+	ScrollingFrame_1.HorizontalScrollBarInset = Enum.ScrollBarInset.None
+	ScrollingFrame_1.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
+	ScrollingFrame_1.ScrollBarImageColor3 = Color3.fromRGB(107,84,255)
+	ScrollingFrame_1.ScrollBarImageTransparency = 0
+	ScrollingFrame_1.ScrollBarThickness = 1
+	ScrollingFrame_1.ScrollingDirection = Enum.ScrollingDirection.XY
+	ScrollingFrame_1.TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png"
+	ScrollingFrame_1.VerticalScrollBarInset = Enum.ScrollBarInset.None
+	ScrollingFrame_1.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
 
-		UICorner_3.Parent = Frame_3
-		UICorner_3.CornerRadius = UDim.new(0,4)
+	UIListLayout_1.Parent = ScrollingFrame_1
+	UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_1.Padding = UDim.new(0, 3)
 
-		ScrollingFrame_1.Name = "ScrollingFrame"
-		ScrollingFrame_1.Parent = Frame_3
-		ScrollingFrame_1.Active = true
-		ScrollingFrame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		ScrollingFrame_1.BackgroundTransparency = 1
-		ScrollingFrame_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		ScrollingFrame_1.BorderSizePixel = 0
-		ScrollingFrame_1.Size = UDim2.new(1, 0,1, 0)
-		ScrollingFrame_1.ClipsDescendants = true
-		ScrollingFrame_1.AutomaticCanvasSize = Enum.AutomaticSize.Y
-		ScrollingFrame_1.BottomImage = "rbxasset://textures/ui/Scroll/scroll-bottom.png"
-		ScrollingFrame_1.CanvasPosition = Vector2.new(0, 0)
-		ScrollingFrame_1.ElasticBehavior = Enum.ElasticBehavior.WhenScrollable
-		ScrollingFrame_1.HorizontalScrollBarInset = Enum.ScrollBarInset.None
-		ScrollingFrame_1.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-		ScrollingFrame_1.ScrollBarImageColor3 = Color3.fromRGB(107,84,255)
-		ScrollingFrame_1.ScrollBarImageTransparency = 0
-		ScrollingFrame_1.ScrollBarThickness = 1
-		ScrollingFrame_1.ScrollingDirection = Enum.ScrollingDirection.XY
-		ScrollingFrame_1.TopImage = "rbxasset://textures/ui/Scroll/scroll-top.png"
-		ScrollingFrame_1.VerticalScrollBarInset = Enum.ScrollBarInset.None
-		ScrollingFrame_1.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
+	UIPadding_2.Parent = ScrollingFrame_1
+	UIPadding_2.PaddingRight = UDim.new(0,5)
 
-		UIListLayout_1.Parent = ScrollingFrame_1
-		UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout_1.Padding = UDim.new(0, 3)
+	UIPadding_3.Parent = Frame_3
+	UIPadding_3.PaddingBottom = UDim.new(0,5)
+	UIPadding_3.PaddingLeft = UDim.new(0,5)
+	UIPadding_3.PaddingRight = UDim.new(0,3)
+	UIPadding_3.PaddingTop = UDim.new(0,5)
 
-		UIPadding_2.Parent = ScrollingFrame_1
-		UIPadding_2.PaddingRight = UDim.new(0,5)
+	UIPadding_4.Parent = Frame_2
+	UIPadding_4.PaddingTop = UDim.new(0,25)
 
-		UIPadding_3.Parent = Frame_3
-		UIPadding_3.PaddingBottom = UDim.new(0,5)
-		UIPadding_3.PaddingLeft = UDim.new(0,5)
-		UIPadding_3.PaddingRight = UDim.new(0,3)
-		UIPadding_3.PaddingTop = UDim.new(0,5)
+	local Click = click(p2)
+	local isopen = false
 
-		UIPadding_4.Parent = Frame_2
-		UIPadding_4.PaddingTop = UDim.new(0,25)
-
-		local Click = click(p2)
-
-		local isopen = false
-
-		local function updateDropdownSize()
-    if not isopen then return end
-    -- Tidak perlu resize, sudah fixed ke viewport height
-end
-
-		TextBox_1.Changed:Connect(function()
-			local SearchT = string.lower(TextBox_1.Text)
-			for i, v in pairs(ScrollingFrame_1:GetChildren()) do
-				if v:IsA("Frame") then
-					if SearchT ~= "" and v:FindFirstChild("TextLabel") then
-						if string.find(string.lower(v.TextLabel.Text), SearchT) then
-							v.Visible = true
-						else
-							v.Visible = false
-						end
-					else
-						v.Visible = true
-					end
-				end
+	-- OPTIMASI: Cache window reference di awal
+	local windowFrame = nil
+	do
+		local current = p2
+		local depth = 0
+		while current and depth < 20 do
+			if current.Name == "Shadow" and current:IsA("ImageLabel") then
+				windowFrame = current
+				break
 			end
-			updateDropdownSize()
-		end)
-
-		-- Di dalam fungsi addDropdownSelect, cari bagian positioning dan ganti dengan:
-
-local function open()
-    if isopen then
-        return
-    end
-    DropdownSelect.Visible = true
-    
-    -- Fixed di kanan layar, ignore button position
-    local viewportSize = workspace.CurrentCamera.ViewportSize
-    local targetX = viewportSize.X - 220 -- 200 (width) + 20 (margin dari edge)
-    local targetY = 10 -- margin dari atas
-    local finalHeight = viewportSize.Y - 20 -- full height minus margin atas bawah
-    
-    tw({
-        v = DropdownSelect, 
-        t = 0.15, 
-        s = Enum.EasingStyle.Exponential, 
-        d = "Out", 
-        g = {
-            Size = UDim2.new(0, 200, 0, finalHeight),
-            Position = UDim2.new(0, targetX, 0, targetY)
-        }
-    }):Play()
-    
-    tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 0.95}}):Play()
-    isopen = true
-end
-
-		local function close()
-			if not isopen then
-				return
-			end
-			tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
-			local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
-			gf:Play()
-			gf.Completed:Connect(function()
-				DropdownSelect.Visible = false
-				isopen = false
-			end)
+			current = current.Parent
+			depth = depth + 1
 		end
+	end
 
-		U.InputBegan:Connect(function(A)
-			if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-				local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
-				if game:GetService "Players".LocalPlayer:GetMouse().X < B.X or game:GetService "Players".LocalPlayer:GetMouse().X > B.X + C.X or game:GetService "Players".LocalPlayer:GetMouse().Y < (B.Y - 20 - 1) or game:GetService "Players".LocalPlayer:GetMouse().Y > B.Y + C.Y then
-					close()
+	TextBox_1.Changed:Connect(function()
+		local SearchT = string.lower(TextBox_1.Text)
+		for i, v in pairs(ScrollingFrame_1:GetChildren()) do
+			if v:IsA("Frame") then
+				if SearchT ~= "" and v:FindFirstChild("TextLabel") then
+					if string.find(string.lower(v.TextLabel.Text), SearchT) then
+						v.Visible = true
+					else
+						v.Visible = false
+					end
+				else
+					v.Visible = true
 				end
 			end
-		end)
+		end
+	end)
 
-		Click.MouseButton1Click:Connect(function()
-			if not isopen then
-				open()
-			else
+	local function open()
+		if isopen then return end
+		
+		if not windowFrame then 
+			warn("[Dropdown] Window frame tidak ditemukan!")
+			return 
+		end
+		
+		DropdownSelect.Visible = true
+		
+		-- Position di sisi kanan window
+		local windowRight = windowFrame.AbsolutePosition.X + windowFrame.AbsoluteSize.X
+		local windowTop = windowFrame.AbsolutePosition.Y
+		
+		local targetX = windowRight + 10
+		local targetY = windowTop + 50
+		local finalHeight = windowFrame.AbsoluteSize.Y - 60
+		
+		tw({
+			v = DropdownSelect, 
+			t = 0.15, 
+			s = Enum.EasingStyle.Exponential, 
+			d = "Out", 
+			g = {
+				Size = UDim2.new(0, 200, 0, finalHeight),
+				Position = UDim2.new(0, targetX, 0, targetY)
+			}
+		}):Play()
+		
+		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 0.95}}):Play()
+		isopen = true
+	end
+
+	local function close()
+		if not isopen then return end
+		
+		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
+		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 200,0, 0)}})
+		gf:Play()
+		gf.Completed:Connect(function()
+			DropdownSelect.Visible = false
+			isopen = false
+		end)
+	end
+
+	U.InputBegan:Connect(function(A)
+		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
+			local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
+			if game:GetService "Players".LocalPlayer:GetMouse().X < B.X or game:GetService "Players".LocalPlayer:GetMouse().X > B.X + C.X or game:GetService "Players".LocalPlayer:GetMouse().Y < (B.Y - 20 - 1) or game:GetService "Players".LocalPlayer:GetMouse().Y > B.Y + C.Y then
 				close()
 			end
-		end)
+		end
+	end)
 
-		local itemslist = {}
-		local selectedValues = {}
-		local selectedItem
+	Click.MouseButton1Click:Connect(function()
+		if not isopen then
+			open()
+		else
+			close()
+		end
+	end)
 
-		function itemslist:Clear(a)
-			local function shouldClear(v)
-				if a == nil then
-					return true
-				elseif type(a) == "string" then
-					return v:FindFirstChild("TextLabel") and v.TextLabel.Text == a
-				elseif type(a) == "table" then
-					for _, name in ipairs(a) do
-						if v:FindFirstChild("TextLabel") and v.TextLabel.Text == name then
-							return true
-						end
+	local itemslist = {}
+	local selectedValues = {}
+	local selectedItem
+
+	function itemslist:Clear(a)
+		local function shouldClear(v)
+			if a == nil then
+				return true
+			elseif type(a) == "string" then
+				return v:FindFirstChild("TextLabel") and v.TextLabel.Text == a
+			elseif type(a) == "table" then
+				for _, name in ipairs(a) do
+					if v:FindFirstChild("TextLabel") and v.TextLabel.Text == name then
+						return true
 					end
 				end
+			end
+			return false
+		end
+
+		if Multi then
+			selectedValues = {}
+			TextLabelValue_1.Text = "--"
+			pcall(Callback ,selectedValues)
+		end
+
+		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+			if v:IsA("Frame") and shouldClear(v) then
+				if selectedItem and v:FindFirstChild("TextLabel") and v.TextLabel.Text == selectedItem then
+					selectedItem = nil
+					TextLabelValue_1.Text = "--"
+					pcall(Callback, TextLabelValue_1.Text)
+				end
+				v:Destroy()
+			end
+		end
+
+		if selectedItem == a or TextLabelValue_1.Text == a then
+			selectedItem = nil
+			TextLabelValue_1.Text = "--"
+		end
+
+		if a == nil then
+			selectedItem = nil
+			TextLabelValue_1.Text = "--"
+		end
+
+		Value = nil
+	end
+
+	function itemslist:Add(text)
+		local Item_1 = Instance.new("Frame")
+		local TextLabel_1 = Instance.new("TextLabel")
+
+		Item_1.Name = "Item"
+		Item_1.Parent = ScrollingFrame_1
+		Item_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		Item_1.BackgroundTransparency = 0.95
+		Item_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Item_1.BorderSizePixel = 0
+		Item_1.Size = UDim2.new(1, 0,0, 18)
+
+		TextLabel_1.Parent = Item_1
+		TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		TextLabel_1.BackgroundTransparency = 1
+		TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		TextLabel_1.BorderSizePixel = 0
+		TextLabel_1.Size = UDim2.new(1, 0,1, 0)
+		TextLabel_1.Font = Enum.Font.GothamBold
+		TextLabel_1.Text = text
+		TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
+		TextLabel_1.TextSize = 12
+		TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
+		TextLabel_1.TextTransparency = 0.8
+
+		addToTheme('Function.Dropdown.Dropdown Select.Item Background', Item_1)
+		addToTheme('Text & Icon', TextLabel_1)
+
+		Instance.new("UICorner", Item_1).CornerRadius = UDim.new(0, 4)
+		Instance.new("UIPadding", Item_1).PaddingLeft = UDim.new(0, 5)
+
+		local ClickItem = click(Item_1)
+		local function unselect()
+			tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
+		end
+		local function hasselect()
+			tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0}}):Play()
+		end
+
+		ClickItem.MouseButton1Click:Connect(function()
+			if Multi then
+				if selectedValues[text] then
+					selectedValues[text] = nil
+					unselect()
+				else
+					selectedValues[text] = true
+					hasselect()
+				end
+				local selectedList = {}
+				for i, v in pairs(selectedValues) do
+					table.insert(selectedList, i)
+				end
+				if #selectedList > 0 then
+					TextLabelValue_1.Text = table.concat(selectedList, ", ")
+				else
+					TextLabelValue_1.Text = "--"
+				end
+				pcall(Callback, selectedList)
+			else
+				for i,v in pairs(ScrollingFrame_1:GetChildren()) do
+					if v:IsA("Frame") then
+						tw({v = v.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
+					end
+				end
+				hasselect()
+				Value = text
+				TextLabelValue_1.Text = text
+				pcall(Callback, TextLabelValue_1.Text)
+			end
+		end)
+
+		local function isValueInTable(val, tbl)
+			if type(tbl) ~= "table" then
 				return false
 			end
 
-			if Multi then
-				selectedValues = {}
-				TextLabelValue_1.Text = "--"
-				pcall(Callback ,selectedValues)
-			end
-
-			for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-				if v:IsA("Frame") and shouldClear(v) then
-					if selectedItem and v:FindFirstChild("TextLabel") and v.TextLabel.Text == selectedItem then
-						selectedItem = nil
-						TextLabelValue_1.Text = "--"
-						pcall(Callback, TextLabelValue_1.Text)
-					end
-					v:Destroy()
+			for _, v in pairs(tbl) do
+				if v == val then
+					return true
 				end
 			end
-
-			if selectedItem == a or TextLabelValue_1.Text == a then
-				selectedItem = nil
-				TextLabelValue_1.Text = "--"
-			end
-
-			if a == nil then
-				selectedItem = nil
-				TextLabelValue_1.Text = "--"
-			end
-
-			Value = nil
+			return false
 		end
 
-		function itemslist:Add(text)
-
-			local Item_1 = Instance.new("Frame")
-			local TextLabel_1 = Instance.new("TextLabel")
-
-			Item_1.Name = "Item"
-			Item_1.Parent = ScrollingFrame_1
-			Item_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			Item_1.BackgroundTransparency = 0.95
-			Item_1.BorderColor3 = Color3.fromRGB(0,0,0)
-			Item_1.BorderSizePixel = 0
-			Item_1.Size = UDim2.new(1, 0,0, 18)
-
-			TextLabel_1.Parent = Item_1
-			TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			TextLabel_1.BackgroundTransparency = 1
-			TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-			TextLabel_1.BorderSizePixel = 0
-			TextLabel_1.Size = UDim2.new(1, 0,1, 0)
-			TextLabel_1.Font = Enum.Font.GothamBold
-			TextLabel_1.Text = text
-			TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
-			TextLabel_1.TextSize = 12
-			TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
-			TextLabel_1.TextTransparency = 0.8
-
-			addToTheme('Function.Dropdown.Dropdown Select.Item Background', Item_1)
-			addToTheme('Text & Icon', TextLabel_1)
-
-			Instance.new("UICorner", Item_1).CornerRadius = UDim.new(0, 4)
-			Instance.new("UIPadding", Item_1).PaddingLeft = UDim.new(0, 5)
-
-			local ClickItem = click(Item_1)
-			local function unselect()
-				tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
-			end
-			local function hasselect()
-				tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0}}):Play()
-			end
-
-			ClickItem.MouseButton1Click:Connect(function()
-				if Multi then
-					if selectedValues[text] then
-						selectedValues[text] = nil
-						unselect()
-					else
-						selectedValues[text] = true
-						hasselect()
-					end
+		delay(0,function()
+			if Multi then
+				if isValueInTable(text, Value) then
+					hasselect()
+					selectedValues[text] = true
 					local selectedList = {}
 					for i, v in pairs(selectedValues) do
 						table.insert(selectedList, i)
@@ -947,99 +996,57 @@ end
 					else
 						TextLabelValue_1.Text = "--"
 					end
-					pcall(Callback, selectedList)
-				else
-					for i,v in pairs(ScrollingFrame_1:GetChildren()) do
-						if v:IsA("Frame") then
-							tw({v = v.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
-						end
-					end
+					pcall(Callback,selectedList)
+				end
+			else
+				if text == Value then
 					hasselect()
 					Value = text
 					TextLabelValue_1.Text = text
-					pcall(Callback, TextLabelValue_1.Text)
+					pcall(Callback,TextLabelValue_1.Text)
 				end
-			end)
-
-			local function isValueInTable(val, tbl)
-				if type(tbl) ~= "table" then
-					return false
-				end
-
-				for _, v in pairs(tbl) do
-					if v == val then
-						return true
-					end
-				end
-				return false
 			end
-
-			delay(0,function()
-				if Multi then
-					if isValueInTable(text, Value) then
-						hasselect()
-						selectedValues[text] = true
-						local selectedList = {}
-						for i, v in pairs(selectedValues) do
-							table.insert(selectedList, i)
-						end
-						if #selectedList > 0 then
-							TextLabelValue_1.Text = table.concat(selectedList, ", ")
-						else
-							TextLabelValue_1.Text = "--"
-						end
-						pcall(Callback,selectedList)
-					end
-				else
-					if text == Value then
-						hasselect()
-						Value = text
-						TextLabelValue_1.Text = text
-						pcall(Callback,TextLabelValue_1.Text)
-					end
-				end
-			end)
-		end
-
-		function itemslist:SetValue(value)
-			if Multi then
-				selectedValues = {}
-				selectedValues[value] = true
-				TextLabelValue_1.Text = value
-				for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-					if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-						if v.TextLabel.Text == value then
-							tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
-						else
-							tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
-						end
-					end
-				end
-				pcall(Callback, selectedValues)
-			else
-				Value = value
-				TextLabelValue_1.Text = value
-				for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-					if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-						if v.TextLabel.Text == value then
-							tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
-						else
-							tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
-						end
-					end
-				end
-				pcall(Callback, value)
-			end
-		end
-
-		for i, v in ipairs(List) do
-			itemslist:Add(v, i)
-		end
-
-		changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
-
-		return itemslist
+		end)
 	end
+
+	function itemslist:SetValue(value)
+		if Multi then
+			selectedValues = {}
+			selectedValues[value] = true
+			TextLabelValue_1.Text = value
+			for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+				if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
+					if v.TextLabel.Text == value then
+						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+					else
+						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+					end
+				end
+			end
+			pcall(Callback, selectedValues)
+		else
+			Value = value
+			TextLabelValue_1.Text = value
+			for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+				if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
+					if v.TextLabel.Text == value then
+						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+					else
+						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+					end
+				end
+			end
+			pcall(Callback, value)
+		end
+	end
+
+	for i, v in ipairs(List) do
+		itemslist:Add(v, i)
+	end
+
+	changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
+
+	return itemslist
 end
 
 function Library:Window(p)
