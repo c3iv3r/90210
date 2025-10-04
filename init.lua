@@ -4551,7 +4551,7 @@ function Library:Window(p)
 			})
 		end
 	
-		local ThemeDrop = addDropdownSelect(DropdownValue_1, DropdownValue_1, ]]false, CallTheme, Theme, themes.index)
+		local ThemeDrop = addDropdownSelect(DropdownValue_1, DropdownValue_1, false, CallTheme, Theme, themes.index)
 
 		Close_1.MouseButton1Click:Connect(function()
 			Tabs:Dialog({
