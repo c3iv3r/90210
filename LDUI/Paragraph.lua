@@ -4665,3 +4665,7 @@ ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
     return CreateDialog(Window, config)
 end
 
+    return WindowMethods
+end
+
+return Library
