@@ -1048,6 +1048,7 @@ do
 
 	return itemslist
 end
+end
 
 function Library:Window(p)
 
