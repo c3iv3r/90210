@@ -1161,8 +1161,7 @@ function Library:Window(p)
 	DropdownValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownValue_1.BorderSizePixel = 0
 	DropdownValue_1.Position = UDim2.new(1, 0,0.5, 0)
-	DropdownValue_1.Size = UDim2.new(0, 50,0, 20)
-	DropdownValue_1.LayoutOrder = 2
+	DropdownValue_1.Size = UDim2.new(0, 20, 0, 20)
 	DropdownValue_1.Transparency = 1
 
 	Td_1.Name = "Td"
