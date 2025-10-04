@@ -800,7 +800,7 @@ do
 		local windowRight = windowFrame.AbsolutePosition.X + windowFrame.AbsoluteSize.X
 		local windowTop = windowFrame.AbsolutePosition.Y
 		
-		local targetX = windowRight - 10
+		local targetX = windowRight - 100
 		local targetY = windowTop + 50
 		local finalHeight = windowFrame.AbsoluteSize.Y - 60
 		
