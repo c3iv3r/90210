@@ -4141,7 +4141,7 @@ ProcessIcon(WindowData.Icon, TopIcon, UDim2.new(0, 25, 0, 25))
     -- Create Tabs (Content Area)
     local Tabs = Instance.new("Frame")
     Tabs.BorderSizePixel = 0
-    Tabs.BackgroundColor3 = CurrentTheme.TabContentBackground
+    Tabs.BackgroundColor3 = CurrentTheme.WindowBorder
     Tabs.Size = UDim2.new(1, -120, 1, -70)
     Tabs.Position = UDim2.new(0, 120, 0, 35)
     Tabs.BorderColor3 = CurrentTheme.ElementStroke
@@ -4509,12 +4509,12 @@ local TabButtonAspect = Instance.new("UIAspectRatioConstraint")
 TabButtonAspect.Parent = TabButtonIcon
 
 -- Apply icon
-ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 20, 0, 20))
+ProcessIcon(TabConfig.Icon, TabButtonIcon, UDim2.new(0, 16, 0, 16))
 
         local TabButtonLabel = Instance.new("TextLabel")
         TabButtonLabel.TextWrapped = true
         TabButtonLabel.BorderSizePixel = 0
-        TabButtonLabel.TextSize = 12
+        TabButtonLabel.TextSize = 8
         TabButtonLabel.TextXAlignment = Enum.TextXAlignment.Left
         TabButtonLabel.TextTransparency = 0.5
         TabButtonLabel.TextScaled = true
