@@ -4023,7 +4023,7 @@ function Library:Window(p)
 		Description_1.Text = tostring(Desc)
 		Description_1.TextColor3 = themes[IsTheme]['Text & Icon']
 		Description_1.TextSize = 10
-		Description_1.TextTransparency = 0.5
+		Description_1.TextTransparency = 0
 		Description_1.TextWrapped = true
 		Description_1.RichText = true
 		Description_1.TextXAlignment = Enum.TextXAlignment.Left
@@ -4034,7 +4034,7 @@ function Library:Window(p)
 
 		Frame_2.Parent = Text_1
 		Frame_2.BackgroundColor3 = themes[IsTheme]['Text & Icon']
-		Frame_2.BackgroundTransparency = 0.9
+		Frame_2.BackgroundTransparency = 0
 		Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
 		Frame_2.BorderSizePixel = 0
 		Frame_2.LayoutOrder = 1
@@ -4551,7 +4551,7 @@ function Library:Window(p)
 			})
 		end
 	
-		--local ThemeDrop = addDropdownSelect(DropdownValue_1, DropdownValue_1, false, CallTheme, Theme, themes.index)
+		local ThemeDrop = addDropdownSelect(--[[DropdownValue_1, DropdownValue_1, ]]false, CallTheme, Theme, themes.index)
 
 		Close_1.MouseButton1Click:Connect(function()
 			Tabs:Dialog({
