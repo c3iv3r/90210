@@ -2718,15 +2718,15 @@ local function CreateGlobalDropdownSystem()
     OverlayCorner.CornerRadius = UDim.new(0, 10)
     OverlayCorner.Parent = DarkOverlay
 
-    -- Popup (lebih ramping, tidak keluar window)
+    -- Popup
     DropdownPopup = Instance.new("Frame")
     DropdownPopup.Visible = false
     DropdownPopup.BorderSizePixel = 0
     DropdownPopup.BackgroundColor3 = CurrentTheme.TabContentBackground
     DropdownPopup.AnchorPoint = Vector2.new(1, 0)
     DropdownPopup.ClipsDescendants = true
-    DropdownPopup.Size = UDim2.new(0, 140, 1, -70)  -- fixed 280px width
-    DropdownPopup.Position = UDim2.new(1, 0, 0, 35)  -- start offscreen (1 + 280px offset)
+    DropdownPopup.Size = UDim2.new(0, 140, 1, -70)
+    DropdownPopup.Position = UDim2.new(1, -10, 0, 35)  -- Posisi final
     DropdownPopup.BorderColor3 = CurrentTheme.ElementStroke
     DropdownPopup.Name = "DropdownSelection"
     DropdownPopup.ZIndex = 51
@@ -2742,59 +2742,28 @@ local function CreateGlobalDropdownSystem()
     PopupStroke.Color = CurrentTheme.ElementStroke
     PopupStroke.Parent = DropdownPopup
 
-    -- Header (lebih compact)
+    -- Header (TANPA CLOSE BUTTON, hanya search)
     local PopupHeader = Instance.new("Frame")
     PopupHeader.BorderSizePixel = 0
     PopupHeader.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    PopupHeader.Size = UDim2.new(1, 0, 0, 45)  -- 45px instead of 50px
+    PopupHeader.Size = UDim2.new(1, 0, 0, 40)  -- Lebih kecil
     PopupHeader.Position = UDim2.new(0, 0, 0, 0)
     PopupHeader.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupHeader.Name = "TopBar"
     PopupHeader.BackgroundTransparency = 1
     PopupHeader.Parent = DropdownPopup
 
-    -- Close button (kiri)
-    local CloseButton = Instance.new("ImageButton")
-    CloseButton.BorderSizePixel = 0
-    CloseButton.BackgroundTransparency = 1
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.ImageColor3 = Color3.fromRGB(197, 204, 219)
-    CloseButton.ZIndex = 52
-    CloseButton.AnchorPoint = Vector2.new(0, 0.5)
-    CloseButton.Image = "rbxassetid://132453323679056"
-    CloseButton.Size = UDim2.new(0, 20, 0, 20)
-    CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    CloseButton.Name = "Close"
-    CloseButton.Position = UDim2.new(0, 10, 0.5, 0)
-    CloseButton.Parent = PopupHeader
+    local HeaderPadding = Instance.new("UIPadding")
+    HeaderPadding.PaddingTop = UDim.new(0, 8)
+    HeaderPadding.PaddingRight = UDim.new(0, 10)
+    HeaderPadding.PaddingLeft = UDim.new(0, 10)
+    HeaderPadding.PaddingBottom = UDim.new(0, 8)
+    HeaderPadding.Parent = PopupHeader
 
-    -- Title (setelah close)
-    local PopupTitle = Instance.new("TextLabel")
-    PopupTitle.TextWrapped = true
-    PopupTitle.Interactable = false
-    PopupTitle.ZIndex = 0
-    PopupTitle.BorderSizePixel = 0
-    PopupTitle.TextSize = 12
-    PopupTitle.TextXAlignment = Enum.TextXAlignment.Left
-    PopupTitle.TextScaled = false
-    PopupTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    PopupTitle.Font = Enum.Font.GothamBold
-    PopupTitle.TextColor3 = Color3.fromRGB(197, 204, 219)
-    PopupTitle.BackgroundTransparency = 1
-    PopupTitle.AnchorPoint = Vector2.new(0, 0.5)
-    PopupTitle.Size = UDim2.new(0, 100, 0, 16)
-    PopupTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    PopupTitle.Text = "Dropdown"
-    PopupTitle.Name = "Title"
-    PopupTitle.Position = UDim2.new(0, 35, 0.5, 0)
-    PopupTitle.Parent = PopupHeader
-
-    -- Search box (kanan, lebih kecil)
+    -- Search box (full width)
     local SearchFrame = Instance.new("Frame")
     SearchFrame.BorderSizePixel = 0
-    SearchFrame.AnchorPoint = Vector2.new(1, 0.5)
-    SearchFrame.Size = UDim2.new(0, 100, 0, 22)  -- fixed 100px width, 22px height
-    SearchFrame.Position = UDim2.new(1, -10, 0.5, 0)
+    SearchFrame.Size = UDim2.new(1, 0, 1, 0)
     SearchFrame.Name = "BoxFrame"
     SearchFrame.BackgroundTransparency = 1
     SearchFrame.Parent = PopupHeader
@@ -2842,7 +2811,7 @@ local function CreateGlobalDropdownSystem()
     SearchBox.Font = Enum.Font.GothamBold
     SearchBox.ClipsDescendants = true
     SearchBox.PlaceholderText = "Search..."
-    SearchBox.Size = UDim2.new(1, -20, 1, 0)
+    SearchBox.Size = UDim2.new(1, -28, 1, 0)
     SearchBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
     SearchBox.Text = ""
     SearchBox.BackgroundTransparency = 1
@@ -2862,9 +2831,9 @@ local function CreateGlobalDropdownSystem()
     SearchIcon.ImageColor3 = Color3.fromRGB(197, 204, 219)
     SearchIcon.AnchorPoint = Vector2.new(1, 0.5)
     SearchIcon.Image = "rbxassetid://86928976705683"
-    SearchIcon.Size = UDim2.new(0, 12, 0, 12)
+    SearchIcon.Size = UDim2.new(0, 14, 0, 14)
     SearchIcon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    SearchIcon.Position = UDim2.new(1, -4, 0.5, 0)
+    SearchIcon.Position = UDim2.new(1, -6, 0.5, 0)
     SearchIcon.Parent = SearchContainer
 
     -- Dropdowns folder
@@ -2890,9 +2859,9 @@ local function CreateGlobalDropdownSystem()
     PopupList.Selectable = false
     PopupList.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
     PopupList.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    PopupList.Size = UDim2.new(1, 0, 1, -45)  -- adjust for smaller header
+    PopupList.Size = UDim2.new(1, 0, 1, -40)  -- Adjust for smaller header
     PopupList.ScrollBarImageColor3 = Color3.fromRGB(99, 106, 122)
-    PopupList.Position = UDim2.new(0, 0, 0, 45)
+    PopupList.Position = UDim2.new(0, 0, 0, 40)
     PopupList.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupList.ScrollBarThickness = 5
     PopupList.BackgroundTransparency = 1
@@ -2912,16 +2881,16 @@ local function CreateGlobalDropdownSystem()
     PopupListSearch.Selectable = false
     PopupListSearch.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
     PopupListSearch.AutomaticCanvasSize = Enum.AutomaticSize.Y
-    PopupListSearch.Size = UDim2.new(1, 0, 1, -45)
+    PopupListSearch.Size = UDim2.new(1, 0, 1, -40)
     PopupListSearch.ScrollBarImageColor3 = Color3.fromRGB(99, 106, 122)
-    PopupListSearch.Position = UDim2.new(0, 0, 0, 45)
+    PopupListSearch.Position = UDim2.new(0, 0, 0, 40)
     PopupListSearch.BorderColor3 = Color3.fromRGB(0, 0, 0)
     PopupListSearch.ScrollBarThickness = 5
     PopupListSearch.BackgroundTransparency = 1
     PopupListSearch.Parent = DropdownContainer
 
     local ListLayout = Instance.new("UIListLayout")
-    ListLayout.Padding = UDim.new(0, 4)  -- reduced from 15
+    ListLayout.Padding = UDim.new(0, 4)
     ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     ListLayout.Parent = PopupList
 
@@ -2933,15 +2902,15 @@ local function CreateGlobalDropdownSystem()
     ListPadding.Parent = PopupList
 
     local SearchListLayout = Instance.new("UIListLayout")
-    SearchListLayout.Padding = UDim.new(0, 8)
+    SearchListLayout.Padding = UDim.new(0, 4)
     SearchListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     SearchListLayout.Parent = PopupListSearch
 
     local SearchListPadding = Instance.new("UIPadding")
-    SearchListPadding.PaddingTop = UDim.new(0, 8)
-    SearchListPadding.PaddingRight = UDim.new(0, 8)
-    SearchListPadding.PaddingLeft = UDim.new(0, 8)
-    SearchListPadding.PaddingBottom = UDim.new(0, 8)
+    SearchListPadding.PaddingTop = UDim.new(0, 6)
+    SearchListPadding.PaddingRight = UDim.new(0, 6)
+    SearchListPadding.PaddingLeft = UDim.new(0, 6)
+    SearchListPadding.PaddingBottom = UDim.new(0, 6)
     SearchListPadding.Parent = PopupListSearch
 
     local function SetPopupZIndex()
@@ -2954,10 +2923,6 @@ local function CreateGlobalDropdownSystem()
     SetPopupZIndex()
 
     DarkOverlay.MouseButton1Click:Connect(function()
-        CloseDropdown()
-    end)
-    
-    CloseButton.MouseButton1Click:Connect(function()
         CloseDropdown()
     end)
 
@@ -2985,7 +2950,6 @@ local function CreateGlobalDropdownSystem()
     GlobalDropdownSystem = {
         Popup = DropdownPopup,
         Overlay = DarkOverlay,
-        Title = PopupTitle,
         SearchBox = SearchBox,
         CurrentDropdown = nil
     }
@@ -3024,9 +2988,9 @@ end
     ItemLayout.Parent = ItemFrame
 
     local ItemPadding = Instance.new("UIPadding")
-    ItemPadding.PaddingTop = UDim.new(0, 6)
+    ItemPadding.PaddingTop = UDim.new(0, 8)
     ItemPadding.PaddingRight = UDim.new(0, 0)
-    ItemPadding.PaddingLeft = UDim.new(0, 20)  -- Beri space untuk bar
+    ItemPadding.PaddingLeft = UDim.new(0, 15)  -- Beri space untuk bar
     ItemPadding.PaddingBottom = UDim.new(0, 0)
     ItemPadding.Parent = ItemFrame
 
@@ -3234,7 +3198,6 @@ end
     end
 
     GlobalDropdownSystem.CurrentDropdown = DropdownData.Title
-    GlobalDropdownSystem.Title.Text = DropdownData.Title
     GlobalDropdownSystem.SearchBox.Text = ""
     
     PopupList.Visible = true
@@ -3242,15 +3205,15 @@ end
 
     RefreshDropdownItems()
     
-    -- Simple fade in
+    -- Simple fade in (NO POSITION ANIMATION)
     GlobalDropdownSystem.Overlay.BackgroundTransparency = 1
     GlobalDropdownSystem.Overlay.Visible = true
     GlobalDropdownSystem.Popup.BackgroundTransparency = 1
-    GlobalDropdownSystem.Popup.Position = UDim2.new(1, -10, 0, 35)
     GlobalDropdownSystem.Popup.Visible = true
     
-    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, {Duration = 0.15})
-    CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 0}, {Duration = 0.15})
+    -- Single smooth tween
+    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 0.6}, {Duration = 0.2})
+    CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 0}, {Duration = 0.2})
     
     IsDropdownOpen = true
 end
@@ -3258,11 +3221,11 @@ end
 function CloseDropdown()
     if not GlobalDropdownSystem then return end
     
-    -- Simple fade out
-    CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, {Duration = 0.15})
-    local closeTween = CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 1}, {Duration = 0.15})
+    -- Simple fade out (NO POSITION ANIMATION)
+    local overlayTween = CreateTween(GlobalDropdownSystem.Overlay, {BackgroundTransparency = 1}, {Duration = 0.15})
+    CreateTween(GlobalDropdownSystem.Popup, {BackgroundTransparency = 1}, {Duration = 0.15})
     
-    closeTween.Completed:Wait()
+    overlayTween.Completed:Wait()
     GlobalDropdownSystem.Overlay.Visible = false
     GlobalDropdownSystem.Popup.Visible = false
     
