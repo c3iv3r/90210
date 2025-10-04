@@ -2727,7 +2727,7 @@ local function CreateDropdown(parent, config)
         ItemBarCorner.Parent = ItemBar
 
         local ItemFrameCorner = Instance.new("UICorner")
-        ItemFrameCorner.CornerRadius = UDim2.new(0, 6)
+        ItemFrameCorner.CornerRadius = UDim.new(0, 6)
         ItemFrameCorner.Parent = ItemFrame
 
         -- OPTIMIZED: Update visual with instant option
