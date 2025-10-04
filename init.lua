@@ -1060,8 +1060,8 @@ function Library:Window(p)
 	local Size = p.Config.Size or UDim2.new(0, 530,0, 400)
 
 	local R, HAA = false, false
-	local HasChangeTheme = p.Theme
-	local IsTheme = p.Theme
+	local HasChangeTheme = Theme
+	local IsTheme = Theme
 
 	local Shadow_1 = Instance.new("ImageLabel")
 	local UIPadding_1 = Instance.new("UIPadding")
@@ -4626,6 +4626,7 @@ function Library:Window(p)
 				}
 			})
 		end
+		CallTheme(IsTheme)
 		--[[local ThemeDrop = addDropdownSelect(DropdownValue_1, DropdownValue_1, false, CallTheme, Theme, themes.index)]]
 
 		Close_1.MouseButton1Click:Connect(function()
