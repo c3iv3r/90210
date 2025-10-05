@@ -4598,49 +4598,61 @@ return New
 		lak(Topbar_1, Shadow_1)
 
 		local isopen = false
-		local firsttime = false
-		local oSize
-		local function closeui()
-			isopen = not isopen
-			if isopen then
-				oSize = Background_1.Size
-				local close = tw({
-					v = Background_1,
-					t = 0.15,
-					s = Enum.EasingStyle.Linear,
-					d = "InOut",
-					g = {
-						GroupTransparency = 1,
-						Size = oSize - UDim2.fromOffset(5, 5)
-					}
-				})
-				close:Play()
-				close.Completed:Wait()
-				Shadow_1.Visible = false
-			else
-				Shadow_1.Visible = true  
-				local open = tw({
-					v = Background_1,
-					t = 0.15,
-					s = Enum.EasingStyle.Linear,
-					d = "InOut",
-					g = {
-						GroupTransparency = 0,
-						Size = oSize
-					}
-				})
-				open:Play()
-			end
+local firsttime = false
+local oSize
+local CloseUIButton  -- Tambahkan variable ini
 
-			if not firsttime then
-				firsttime = true
-				Tabs:Notify({
-					Title = 'Noctis',
-					Desc = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
-					Time = 10
-				})
-			end
-		end
+local function closeui()
+    isopen = not isopen
+    if isopen then
+        oSize = Background_1.Size
+        local close = tw({
+            v = Background_1,
+            t = 0.15,
+            s = Enum.EasingStyle.Linear,
+            d = "InOut",
+            g = {
+                GroupTransparency = 1,
+                Size = oSize - UDim2.fromOffset(5, 5)
+            }
+        })
+        close:Play()
+        close.Completed:Wait()
+        Shadow_1.Visible = false
+        
+        -- TAMBAHAN: Show CloseUI button saat window minimize
+        if CloseUIButton then
+            CloseUIButton.Visible = true
+        end
+    else
+        Shadow_1.Visible = true  
+        local open = tw({
+            v = Background_1,
+            t = 0.15,
+            s = Enum.EasingStyle.Linear,
+            d = "InOut",
+            g = {
+                GroupTransparency = 0,
+                Size = oSize
+            }
+        })
+        open:Play()
+        
+        -- TAMBAHAN: Hide CloseUI button saat window open
+        if CloseUIButton then
+            CloseUIButton.Visible = false
+        end
+    end
+
+    if not firsttime then
+        firsttime = true
+        Tabs:Notify({
+            Title = 'Noctis',
+            Desc = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
+            Time = 10
+        })
+    end
+end
 
 		ChSize_1.MouseButton1Click:Connect(closeui)
 
@@ -4766,14 +4778,14 @@ return New
     CloseUIShadow.Parent = ScreenGui
     CloseUIShadow.BackgroundColor3 = Color3.fromRGB(163,162,165)
     CloseUIShadow.BackgroundTransparency = 1
-    CloseUIShadow.Position = UDim2.new(0, 0,0.200000003, 0)
+    CloseUIShadow.Position = UDim2.new(0, 0, 0.2, 0)
     CloseUIShadow.Size = UDim2.new(0, 50, 0, 50)
     CloseUIShadow.Image = "rbxassetid://1316045217"
     CloseUIShadow.ImageColor3 = Color3.fromRGB(24,24,31)
     CloseUIShadow.ImageTransparency = 0.5
     CloseUIShadow.ScaleType = Enum.ScaleType.Slice
     CloseUIShadow.SliceCenter = Rect.new(10, 10, 118, 118)
-    CloseUIShadow.Visible = false  -- Start hidden karena window open
+    CloseUIShadow.Visible = false  -- Start hidden
 
     addToTheme('Shadow', CloseUIShadow)
 
@@ -4790,8 +4802,8 @@ return New
     BackgroundCloseUI_1.BackgroundColor3 = Color3.fromRGB(29,28,38)
     BackgroundCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
     BackgroundCloseUI_1.BorderSizePixel = 0
-    BackgroundCloseUI_1.Position = UDim2.new(0.5, 0,0.5, 0)
-    BackgroundCloseUI_1.Size = UDim2.new(1, 0,1, 0)
+    BackgroundCloseUI_1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    BackgroundCloseUI_1.Size = UDim2.new(1, 0, 1, 0)
     BackgroundCloseUI_1.ClipsDescendants = true
 
     addToTheme('Background', BackgroundCloseUI_1)
@@ -4804,11 +4816,11 @@ return New
     FrameCloseUI_1.Parent = BackgroundCloseUI_1
     FrameCloseUI_1.AnchorPoint = Vector2.new(0, 1)
     FrameCloseUI_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    FrameCloseUI_1.BackgroundTransparency = 0.8999999761581421
+    FrameCloseUI_1.BackgroundTransparency = 0.9
     FrameCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
     FrameCloseUI_1.BorderSizePixel = 0
-    FrameCloseUI_1.Position = UDim2.new(0, 0,1, 0)
-    FrameCloseUI_1.Size = UDim2.new(1, 0,0, 4)
+    FrameCloseUI_1.Position = UDim2.new(0, 0, 1, 0)
+    FrameCloseUI_1.Size = UDim2.new(1, 0, 0, 4)
 
     Icon_1.Name = "Icon"
     Icon_1.Parent = BackgroundCloseUI_1
@@ -4819,15 +4831,19 @@ return New
     Icon_1.BorderSizePixel = 0
     Icon_1.Position = UDim2.new(0.5, 0, 0.5, 0)
     Icon_1.Size = UDim2.new(0, 30, 0, 30)
-    Icon_1.Image = CloseUI.Icon or "rbxassetid://13857987062"
+    Icon_1.Image = CloseUI.Icon or "rbxassetid://123156553209294"
     Icon_1.ImageTransparency = 0.3
 
     addToTheme('Text & Icon', Icon_1)
+
+    -- PENTING: Assign ke variable global
+    CloseUIButton = CloseUIShadow
 
     local Click = click(CloseUIShadow)
     lak(Click, CloseUIShadow)
     
     Click.MouseButton1Click:Connect(function()
+        -- Animasi icon
         tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
             g = {Size = UDim2.new(0, 25, 0, 25), ImageTransparency = 0}
         }):Play()
@@ -4838,64 +4854,10 @@ return New
             g = {Size = UDim2.new(0, 30, 0, 30), ImageTransparency = 0.3}
         }):Play()
         
-        pcall(closeui)
-    end)
-    
-    -- Modifikasi closeui function (tambahkan logic untuk toggle CloseUIShadow)
-    local originalCloseUI = closeui
-    closeui = function()
-        isopen = not isopen
-        if isopen then
-            -- Window sedang di-minimize
-            oSize = Background_1.Size
-            local close = tw({
-                v = Background_1,
-                t = 0.15,
-                s = Enum.EasingStyle.Linear,
-                d = "InOut",
-                g = {
-                    GroupTransparency = 1,
-                    Size = oSize - UDim2.fromOffset(5, 5)
-                }
-            })
-            close:Play()
-            close.Completed:Wait()
-            Shadow_1.Visible = false
-            
-            -- SHOW CloseUIButton saat window minimize
-            if CloseUI.Enabled then
-                CloseUIShadow.Visible = true
-            end
-        else
-            -- Window sedang di-open/show
-            Shadow_1.Visible = true  
-            local open = tw({
-                v = Background_1,
-                t = 0.15,
-                s = Enum.EasingStyle.Linear,
-                d = "InOut",
-                g = {
-                    GroupTransparency = 0,
-                    Size = oSize
-                }
-            })
-            open:Play()
-            
-            -- HIDE CloseUIButton saat window open
-            CloseUIShadow.Visible = false
-        end
-
-        if not firsttime then
-            firsttime = true
-            Tabs:Notify({
-                Title = 'Noctis',
-                Desc = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
-                Time = 10
-            })
-        end
-    end
+        closeui()
+      end)
+   end
 end
-	end
 
 	return Tabs
 end
