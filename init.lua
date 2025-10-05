@@ -1615,204 +1615,160 @@ function Library:Window(p)
 
 		local Func = {}
 
-		function Func:Section(p)
-    local Title = p.Title or 'null'
-    local Opened = p.Opened == nil and true or p.Opened
-    
-    local RealBackground = Instance.new("Frame")
-    local Section = Instance.new("Frame")
-    local Header = Instance.new("TextButton")
-    local Arrow = Instance.new("ImageLabel")
-    local UIPadding_1 = Instance.new("UIPadding")
-    local Container = Instance.new("Frame")
-    local UIListLayout_Container = Instance.new("UIListLayout")
-    
-    RealBackground.Name = "Real Background"
-    RealBackground.Parent = ScrollingFrame_1
-    RealBackground.BackgroundTransparency = 1
-    RealBackground.Size = UDim2.new(1, 0, 0, 25)
-    RealBackground.ClipsDescendants = true
-    
-    Section.Name = "Background"
-    Section.Parent = RealBackground
-    Section.BackgroundTransparency = 1
-    Section.Size = UDim2.new(1, 0, 1, 0)
-    
-    Header.Name = "Header"
-    Header.Parent = Section
-    Header.BackgroundTransparency = 1
-    Header.Size = UDim2.new(1, 0, 0, 20)
-    Header.Font = Enum.Font.GothamBold
-    Header.Text = ""
-    Header.TextSize = 12
-    
-    local SectionText = Instance.new("TextLabel")
-    SectionText.Parent = Header
-    SectionText.BackgroundTransparency = 1
-    SectionText.Size = UDim2.new(1, -25, 1, 0)
-    SectionText.Font = Enum.Font.GothamBold
-    SectionText.Text = Title
-    SectionText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SectionText.TextSize = 12
-    SectionText.TextXAlignment = Enum.TextXAlignment.Left
-    
-    addToTheme('Text & Icon', SectionText)
-    
-    Arrow.Name = "Arrow"
-    Arrow.Parent = Header
-    Arrow.AnchorPoint = Vector2.new(1, 0.5)
-    Arrow.BackgroundTransparency = 1
-    Arrow.Position = UDim2.new(1, 0, 0.5, 0)
-    Arrow.Size = UDim2.new(0, 16, 0, 16)
-    Arrow.Image = "rbxassetid://14937709869"
-    Arrow.ImageTransparency = 0.3
-    Arrow.Rotation = Opened and 0 or 180
-    
-    addToTheme('Text & Icon', Arrow)
-    
-    UIPadding_1.Parent = Header
-    UIPadding_1.PaddingLeft = UDim.new(0, 5)
-    UIPadding_1.PaddingRight = UDim.new(0, 5)
-    
-    Container.Name = "Container"
-    Container.Parent = Section
-    Container.BackgroundTransparency = 1
-    Container.Position = UDim2.new(0, 0, 0, 25)
-    Container.Size = UDim2.new(1, 0, 1, -25)
-    Container.Visible = Opened
-    Container.ClipsDescendants = true
-    
-    UIListLayout_Container.Parent = Container
-    UIListLayout_Container.Padding = UDim.new(0, 5)
-    UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
-    
-    local function updateSize()
-        task.defer(function()
-            local contentSize = UIListLayout_Container.AbsoluteContentSize.Y
-            local newHeight = Opened and (contentSize + 30) or 25
-            RealBackground.Size = UDim2.new(1, 0, 0, newHeight)
-        end)
-    end
-    
-    local function toggle()
-        Opened = not Opened
-        Container.Visible = Opened
-        tw({v = Arrow, t = 0.15, s = Enum.EasingStyle.Quad, d = "Out", 
-            g = {Rotation = Opened and 0 or 180}}):Play()
-        updateSize()
-    end
-    
-    Header.MouseButton1Click:Connect(toggle)
-    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
-    
-    delay(0.1, updateSize)
-    
-    local SectionFunc = {}
-    
-    function SectionFunc:SetTitle(t)
-        SectionText.Text = t
-    end
-    
-    function SectionFunc:Toggle(p)
-        return Func:Toggle(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Label(p)
-        return Func:Label(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Button(p)
-        return Func:Button(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Slider(p)
-        return Func:Slider(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Dropdown(p)
-        return Func:Dropdown(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Keybind(p)
-        return Func:Keybind(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:ColorPicker(p)
-        return Func:ColorPicker(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    function SectionFunc:Textbox(p)
-        return Func:Textbox(setmetatable({}, {
-            __index = function(_, k) 
-                return p[k] 
-            end
-        }))
-    end
-    
-    -- Override parent agar element masuk ke Container
-    local originalFuncs = {}
-for funcName in pairs(SectionFunc) do
-    if funcName ~= "SetTitle" then
-        originalFuncs[funcName] = Func[funcName]
-        
-        SectionFunc[funcName] = function(self, ...)
-            local args = {...}
-            
-            -- Backup ScrollingFrame_1
-            local oldScrollFrame = ScrollingFrame_1
-            
-            -- Redirect ke Container
-            ScrollingFrame_1 = Container
-            
-            -- Panggil function asli
-            local result = originalFuncs[funcName](Func, ...)
-            
-            -- Restore ScrollingFrame_1
-            ScrollingFrame_1 = oldScrollFrame
-            
-            return result
-        end
-    end
-end
+		-- Tambahkan fungsi ini di dalam Func:Section(p)
+function Func:Section(p)
+	local Title = p.Title or 'null'
+	local Open = p.Open == nil and true or p.Open -- Default open
+	
+	local RealBackground = Instance.new("Frame")
+	local Section = Instance.new("Frame")
+	local SectionButton = Instance.new("TextButton")
+	local Section_1 = Instance.new("TextLabel")
+	local Arrow = Instance.new("ImageLabel")
+	local UIPadding_1 = Instance.new("UIPadding")
+	local Container = Instance.new("Frame")
+	local UIListLayout_Container = Instance.new("UIListLayout")
 
-return SectionFunc
+	RealBackground.Name = "Real Background"
+	RealBackground.Parent = ScrollingFrame_1
+	RealBackground.BackgroundTransparency = 1
+	RealBackground.BorderColor3 = Color3.fromRGB(0,0,0)
+	RealBackground.BorderSizePixel = 0
+	RealBackground.Size = UDim2.new(1, 0,0, 20)
+	RealBackground.ClipsDescendants = true
 
-			local New = {}
+	Section.Name = "Background"
+	Section.Parent = RealBackground
+	Section.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Section.BackgroundTransparency = 1
+	Section.BorderColor3 = Color3.fromRGB(0,0,0)
+	Section.BorderSizePixel = 0
+	Section.Size = UDim2.new(1, 0,0, 20)
 
-			function New:SetTitle(t)
-				Section_1.Text = t
+	SectionButton.Name = "SectionButton"
+	SectionButton.Parent = Section
+	SectionButton.BackgroundTransparency = 1
+	SectionButton.Size = UDim2.new(1, 0, 1, 0)
+	SectionButton.Text = ""
+	SectionButton.ZIndex = 2
+
+	Section_1.Name = "Section"
+	Section_1.Parent = Section
+	Section_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Section_1.BackgroundTransparency = 1
+	Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	Section_1.BorderSizePixel = 0
+	Section_1.Size = UDim2.new(1, 0,0, 20)
+	Section_1.Font = Enum.Font.GothamBold
+	Section_1.Text = Title
+	Section_1.TextColor3 = Color3.fromRGB(255,255,255)
+	Section_1.TextSize = 12
+	Section_1.TextXAlignment = Enum.TextXAlignment.Left
+
+	addToTheme('Text & Icon', Section_1)
+
+	Arrow.Name = "Arrow"
+	Arrow.Parent = Section
+	Arrow.AnchorPoint = Vector2.new(1, 0.5)
+	Arrow.BackgroundTransparency = 1
+	Arrow.Position = UDim2.new(1, -5, 0.5, 0)
+	Arrow.Size = UDim2.new(0, 14, 0, 14)
+	Arrow.Image = "rbxassetid://14937709869"
+	Arrow.ImageTransparency = 0.3
+	Arrow.Rotation = Open and 0 or -90
+
+	addToTheme('Text & Icon', Arrow)
+
+	UIPadding_1.Parent = Section
+	UIPadding_1.PaddingLeft = UDim.new(0,5)
+	UIPadding_1.PaddingRight = UDim.new(0,25)
+
+	-- Container untuk element di dalam section
+	Container.Name = "Container"
+	Container.Parent = RealBackground
+	Container.BackgroundTransparency = 1
+	Container.Position = UDim2.new(0, 0, 0, 25)
+	Container.Size = UDim2.new(1, 0, 1, -25)
+	Container.Visible = Open
+	Container.ClipsDescendants = true
+
+	UIListLayout_Container.Parent = Container
+	UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_Container.Padding = UDim.new(0, 5)
+
+	local isOpen = Open
+
+	local function updateSize()
+		task.defer(function()
+			local contentHeight = 20
+			if isOpen then
+				contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
 			end
+			RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+		end)
+	end
 
-			return New
+	UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+
+	SectionButton.MouseButton1Click:Connect(function()
+		isOpen = not isOpen
+		
+		tw({
+			v = Arrow, 
+			t = 0.2, 
+			s = Enum.EasingStyle.Quad, 
+			d = "Out", 
+			g = {Rotation = isOpen and 0 or -90}
+		}):Play()
+		
+		if isOpen then
+			Container.Visible = true
+			updateSize()
+		else
+			local closeTween = tw({
+				v = Container,
+				t = 0.2,
+				s = Enum.EasingStyle.Quad,
+				d = "Out",
+				g = {Size = UDim2.new(1, 0, 0, 0)}
+			})
+			closeTween:Play()
+			closeTween.Completed:Wait()
+			Container.Visible = false
+			updateSize()
 		end
+	end)
+
+	delay(0.1, updateSize)
+
+	local New = {}
+
+	function New:SetTitle(t)
+		Section_1.Text = t
+	end
+
+	function New:SetOpen(state)
+		if state ~= isOpen then
+			SectionButton:Fire("MouseButton1Click")
+		end
+	end
+
+	-- Fungsi untuk menambahkan element ke dalam section
+	function New:Element(elementType, config)
+		-- Ganti parent dari ScrollingFrame_1 ke Container
+		local originalParent = ScrollingFrame_1
+		ScrollingFrame_1 = Container
+		
+		local element = Func[elementType](Func, config)
+		
+		ScrollingFrame_1 = originalParent
+		
+		updateSize()
+		return element
+	end
+
+	return New
+end
 
 		function Func:Toggle(p)
 			local Value = p.Value or false
