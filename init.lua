@@ -1615,239 +1615,6 @@ function Library:Window(p)
 
 		local Func = {}
 
-		function Func:Section(p)
-	local Title = p.Title or 'null'
-	local Open = p.Open == nil and true or p.Open
-	
-	local RealBackground = Instance.new("Frame")
-	local Section = Instance.new("Frame")
-	local SectionButton = Instance.new("TextButton")
-	local Section_1 = Instance.new("TextLabel")
-	local Arrow = Instance.new("ImageLabel")
-	local UIPadding_1 = Instance.new("UIPadding")
-	local Container = Instance.new("Frame")
-	local UIListLayout_Container = Instance.new("UIListLayout")
-
-	RealBackground.Name = "Real Background"
-	RealBackground.Parent = ScrollingFrame_1
-	RealBackground.BackgroundTransparency = 1
-	RealBackground.BorderColor3 = Color3.fromRGB(0,0,0)
-	RealBackground.BorderSizePixel = 0
-	RealBackground.Size = UDim2.new(1, 0,0, 20)
-	RealBackground.ClipsDescendants = true
-
-	Section.Name = "Background"
-	Section.Parent = RealBackground
-	Section.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	Section.BackgroundTransparency = 1
-	Section.BorderColor3 = Color3.fromRGB(0,0,0)
-	Section.BorderSizePixel = 0
-	Section.Size = UDim2.new(1, 0,0, 20)
-
-	SectionButton.Name = "SectionButton"
-	SectionButton.Parent = Section
-	SectionButton.BackgroundTransparency = 1
-	SectionButton.Size = UDim2.new(1, 0, 1, 0)
-	SectionButton.Text = ""
-	SectionButton.ZIndex = 2
-
-	Section_1.Name = "Section"
-	Section_1.Parent = Section
-	Section_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	Section_1.BackgroundTransparency = 1
-	Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
-	Section_1.BorderSizePixel = 0
-	Section_1.Size = UDim2.new(1, 0,0, 20)
-	Section_1.Font = Enum.Font.GothamBold
-	Section_1.Text = Title
-	Section_1.TextColor3 = Color3.fromRGB(255,255,255)
-	Section_1.TextSize = 12
-	Section_1.TextXAlignment = Enum.TextXAlignment.Left
-
-	addToTheme('Text & Icon', Section_1)
-
-	Arrow.Name = "Arrow"
-	Arrow.Parent = Section
-	Arrow.AnchorPoint = Vector2.new(1, 0.5)
-	Arrow.BackgroundTransparency = 1
-	Arrow.Position = UDim2.new(1, -5, 0.5, 0)
-	Arrow.Size = UDim2.new(0, 14, 0, 14)
-	Arrow.Image = "rbxassetid://14937709869"
-	Arrow.ImageTransparency = 0.3
-	Arrow.Rotation = Open and 0 or -90
-
-	addToTheme('Text & Icon', Arrow)
-
-	UIPadding_1.Parent = Section
-	UIPadding_1.PaddingLeft = UDim.new(0,5)
-	UIPadding_1.PaddingRight = UDim.new(0,25)
-
-	Container.Name = "Container"
-	Container.Parent = RealBackground
-	Container.BackgroundTransparency = 1
-	Container.Position = UDim2.new(0, 0, 0, 25)
-	Container.Size = UDim2.new(1, 0, 1, -25)
-	Container.Visible = Open
-	Container.ClipsDescendants = false  -- PERUBAHAN: Set false agar elemen tidak terpotong
-
-	UIListLayout_Container.Parent = Container
-	UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout_Container.Padding = UDim.new(0, 5)
-
-	local isOpen = Open
-
-	local function updateSize()
-		task.defer(function()
-			local contentHeight = 20
-			if isOpen then
-				contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
-			end
-			RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
-		end)
-	end
-
-	UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
-
-	SectionButton.MouseButton1Click:Connect(function()
-		isOpen = not isOpen
-		
-		-- Animate arrow
-		tw({
-			v = Arrow, 
-			t = 0.2, 
-			s = Enum.EasingStyle.Quad, 
-			d = "Out", 
-			g = {Rotation = isOpen and 0 or -90}
-		}):Play()
-		
-		if isOpen then
-			-- Buka section
-			Container.Visible = true
-			Container.Size = UDim2.new(1, 0, 1, -25)
-			for i, v in pairs(Container:GetChildren()) do
-			if v:IsA('Frame') and v:FindFirstChild('Background') then
-				v.Background.Position = UDim2.new(0, 0, 0, 0)
-				v.Background.AnchorPoint = Vector2.new(1, 0)
-				
-				task.spawn(function()
-					task.wait(i * 0.05) -- Delay bertahap untuk setiap elemen
-					tw({
-						v = v.Background,
-						t = 0.3,
-						s = Enum.EasingStyle.Exponential,
-						d = "InOut",
-						g = {AnchorPoint = Vector2.new(0, 0)}
-					}):Play()
-				end)
-			end
-						end
-			updateSize()
-		else
-			-- Tutup section
-			updateSize()
-			task.wait(0.05) -- Delay kecil untuk smooth transition
-			Container.Visible = false
-		end
-	end)
-
-	delay(0.1, updateSize)
-
-	local New = {}
-
-function New:SetTitle(t)
-	Section_1.Text = t
-end
-
-function New:SetOpen(state)
-	if state ~= isOpen then
-		SectionButton.MouseButton1Click:Fire()
-	end
-end
-
--- Tambahkan method untuk setiap tipe elemen
-function New:Toggle(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Toggle(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Button(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Button(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Slider(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Slider(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Dropdown(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Dropdown(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Label(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Label(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Code(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Code(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Keybind(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Keybind(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:ColorPicker(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:ColorPicker(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Textbox(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Textbox(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-return New
-
 		function Func:Toggle(p)
 			local Value = p.Value or false
 			local Image = p.Image or ''
@@ -4067,7 +3834,240 @@ return New
 			UICorner_1.Parent = ImageLogo
 			UICorner_1.CornerRadius = UDim.new(0,3)
 		end
+    
+    function Func:Section(p)
+	local Title = p.Title or 'null'
+	local Open = p.Open == nil and true or p.Open
+	
+	local RealBackground = Instance.new("Frame")
+	local Section = Instance.new("Frame")
+	local SectionButton = Instance.new("TextButton")
+	local Section_1 = Instance.new("TextLabel")
+	local Arrow = Instance.new("ImageLabel")
+	local UIPadding_1 = Instance.new("UIPadding")
+	local Container = Instance.new("Frame")
+	local UIListLayout_Container = Instance.new("UIListLayout")
 
+	RealBackground.Name = "Real Background"
+	RealBackground.Parent = ScrollingFrame_1
+	RealBackground.BackgroundTransparency = 1
+	RealBackground.BorderColor3 = Color3.fromRGB(0,0,0)
+	RealBackground.BorderSizePixel = 0
+	RealBackground.Size = UDim2.new(1, 0,0, 20)
+	RealBackground.ClipsDescendants = true
+
+	Section.Name = "Background"
+	Section.Parent = RealBackground
+	Section.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Section.BackgroundTransparency = 1
+	Section.BorderColor3 = Color3.fromRGB(0,0,0)
+	Section.BorderSizePixel = 0
+	Section.Size = UDim2.new(1, 0,0, 20)
+
+	SectionButton.Name = "SectionButton"
+	SectionButton.Parent = Section
+	SectionButton.BackgroundTransparency = 1
+	SectionButton.Size = UDim2.new(1, 0, 1, 0)
+	SectionButton.Text = ""
+	SectionButton.ZIndex = 2
+
+	Section_1.Name = "Section"
+	Section_1.Parent = Section
+	Section_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Section_1.BackgroundTransparency = 1
+	Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	Section_1.BorderSizePixel = 0
+	Section_1.Size = UDim2.new(1, 0,0, 20)
+	Section_1.Font = Enum.Font.GothamBold
+	Section_1.Text = Title
+	Section_1.TextColor3 = Color3.fromRGB(255,255,255)
+	Section_1.TextSize = 12
+	Section_1.TextXAlignment = Enum.TextXAlignment.Left
+
+	addToTheme('Text & Icon', Section_1)
+
+	Arrow.Name = "Arrow"
+	Arrow.Parent = Section
+	Arrow.AnchorPoint = Vector2.new(1, 0.5)
+	Arrow.BackgroundTransparency = 1
+	Arrow.Position = UDim2.new(1, -5, 0.5, 0)
+	Arrow.Size = UDim2.new(0, 14, 0, 14)
+	Arrow.Image = "rbxassetid://14937709869"
+	Arrow.ImageTransparency = 0.3
+	Arrow.Rotation = Open and 0 or -90
+
+	addToTheme('Text & Icon', Arrow)
+
+	UIPadding_1.Parent = Section
+	UIPadding_1.PaddingLeft = UDim.new(0,5)
+	UIPadding_1.PaddingRight = UDim.new(0,25)
+
+	Container.Name = "Container"
+	Container.Parent = RealBackground
+	Container.BackgroundTransparency = 1
+	Container.Position = UDim2.new(0, 0, 0, 25)
+	Container.Size = UDim2.new(1, 0, 1, -25)
+	Container.Visible = Open
+	Container.ClipsDescendants = false  -- PERUBAHAN: Set false agar elemen tidak terpotong
+
+	UIListLayout_Container.Parent = Container
+	UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_Container.Padding = UDim.new(0, 5)
+
+	local isOpen = Open
+
+	local function updateSize()
+		task.defer(function()
+			local contentHeight = 20
+			if isOpen then
+				contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
+			end
+			RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+		end)
+	end
+
+	UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+
+	SectionButton.MouseButton1Click:Connect(function()
+		isOpen = not isOpen
+		
+		-- Animate arrow
+		tw({
+			v = Arrow, 
+			t = 0.2, 
+			s = Enum.EasingStyle.Quad, 
+			d = "Out", 
+			g = {Rotation = isOpen and 0 or -90}
+		}):Play()
+		
+		if isOpen then
+			-- Buka section
+			Container.Visible = true
+			Container.Size = UDim2.new(1, 0, 1, -25)
+			for i, v in pairs(Container:GetChildren()) do
+			if v:IsA('Frame') and v:FindFirstChild('Background') then
+				v.Background.Position = UDim2.new(0, 0, 0, 0)
+				v.Background.AnchorPoint = Vector2.new(1, 0)
+				
+				task.spawn(function()
+					task.wait(i * 0.05) -- Delay bertahap untuk setiap elemen
+					tw({
+						v = v.Background,
+						t = 0.3,
+						s = Enum.EasingStyle.Exponential,
+						d = "InOut",
+						g = {AnchorPoint = Vector2.new(0, 0)}
+					}):Play()
+				end)
+			end
+						end
+			updateSize()
+		else
+			-- Tutup section
+			updateSize()
+			task.wait(0.05) -- Delay kecil untuk smooth transition
+			Container.Visible = false
+		end
+	end)
+
+	delay(0.1, updateSize)
+
+	local New = {}
+
+function New:SetTitle(t)
+	Section_1.Text = t
+end
+
+function New:SetOpen(state)
+	if state ~= isOpen then
+		SectionButton.MouseButton1Click:Fire()
+	end
+end
+
+-- Tambahkan method untuk setiap tipe elemen
+function New:Toggle(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Toggle(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Button(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Button(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Slider(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Slider(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Dropdown(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Dropdown(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Label(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Label(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Code(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Code(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Keybind(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Keybind(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:ColorPicker(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:ColorPicker(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Textbox(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Textbox(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+return New
+    
 		return Func
 	end
 
