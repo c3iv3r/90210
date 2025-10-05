@@ -1615,10 +1615,9 @@ function Library:Window(p)
 
 		local Func = {}
 
-		-- Tambahkan fungsi ini di dalam Func:Section(p)
-function Func:Section(p)
+		function Func:Section(p)
 	local Title = p.Title or 'null'
-	local Open = p.Open == nil and true or p.Open -- Default open
+	local Open = p.Open == nil and true or p.Open
 	
 	local RealBackground = Instance.new("Frame")
 	local Section = Instance.new("Frame")
@@ -1683,14 +1682,13 @@ function Func:Section(p)
 	UIPadding_1.PaddingLeft = UDim.new(0,5)
 	UIPadding_1.PaddingRight = UDim.new(0,25)
 
-	-- Container untuk element di dalam section
 	Container.Name = "Container"
 	Container.Parent = RealBackground
 	Container.BackgroundTransparency = 1
 	Container.Position = UDim2.new(0, 0, 0, 25)
 	Container.Size = UDim2.new(1, 0, 1, -25)
 	Container.Visible = Open
-	Container.ClipsDescendants = true
+	Container.ClipsDescendants = false  -- PERUBAHAN: Set false agar elemen tidak terpotong
 
 	UIListLayout_Container.Parent = Container
 	UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
@@ -1713,6 +1711,7 @@ function Func:Section(p)
 	SectionButton.MouseButton1Click:Connect(function()
 		isOpen = not isOpen
 		
+		-- Animate arrow
 		tw({
 			v = Arrow, 
 			t = 0.2, 
@@ -1722,20 +1721,15 @@ function Func:Section(p)
 		}):Play()
 		
 		if isOpen then
+			-- Buka section
 			Container.Visible = true
+			Container.Size = UDim2.new(1, 0, 1, -25) -- PERBAIKAN: Restore size
 			updateSize()
 		else
-			local closeTween = tw({
-				v = Container,
-				t = 0.2,
-				s = Enum.EasingStyle.Quad,
-				d = "Out",
-				g = {Size = UDim2.new(1, 0, 0, 0)}
-			})
-			closeTween:Play()
-			closeTween.Completed:Wait()
-			Container.Visible = false
+			-- Tutup section
 			updateSize()
+			task.wait(0.05) -- Delay kecil untuk smooth transition
+			Container.Visible = false
 		end
 	end)
 
@@ -1749,13 +1743,11 @@ function Func:Section(p)
 
 	function New:SetOpen(state)
 		if state ~= isOpen then
-			SectionButton:Fire("MouseButton1Click")
+			SectionButton.MouseButton1Click:Fire()
 		end
 	end
 
-	-- Fungsi untuk menambahkan element ke dalam section
 	function New:Element(elementType, config)
-		-- Ganti parent dari ScrollingFrame_1 ke Container
 		local originalParent = ScrollingFrame_1
 		ScrollingFrame_1 = Container
 		
@@ -1763,7 +1755,7 @@ function Func:Section(p)
 		
 		ScrollingFrame_1 = originalParent
 		
-		updateSize()
+		task.defer(updateSize) -- Update size setelah element ditambahkan
 		return element
 	end
 
