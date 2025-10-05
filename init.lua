@@ -4777,7 +4777,7 @@ end
     Icon_1.Position = UDim2.new(0, 10, 0.2, 0)  -- Position dari kiri atas
     Icon_1.Size = UDim2.new(0, 40, 0, 40)  -- Ukuran icon
     Icon_1.Image = CloseUI.Icon or "rbxassetid://13857987062"
-    Icon_1.ImageTransparency = 0.3
+    Icon_1.ImageTransparency = 0
     Icon_1.Visible = false  -- Start hidden
     Icon_1.ZIndex = 10  -- Ensure di atas elemen lain
 
