@@ -4767,96 +4767,57 @@ end
 
 		do
     local CloseUI = p.CloseUIButton
-    local CloseUIShadow = Instance.new("ImageLabel")
-    local UIPaddingCloseUI_1 = Instance.new("UIPadding")
-    local BackgroundCloseUI_1 = Instance.new("Frame")
-    local UICornerCloseUI_1 = Instance.new("UICorner")
-    local FrameCloseUI_1 = Instance.new("Frame")
-    local Icon_1 = Instance.new("ImageLabel")
+    local Icon_1 = Instance.new("ImageButton")  -- Langsung ImageButton, bukan ImageLabel
 
-    CloseUIShadow.Name = "CloseUIShadow"
-    CloseUIShadow.Parent = ScreenGui
-    CloseUIShadow.BackgroundColor3 = Color3.fromRGB(163,162,165)
-    CloseUIShadow.BackgroundTransparency = 1
-    CloseUIShadow.Position = UDim2.new(0, 0, 0.2, 0)
-    CloseUIShadow.Size = UDim2.new(0, 50, 0, 50)
-    CloseUIShadow.Image = "rbxassetid://1316045217"
-    CloseUIShadow.ImageColor3 = Color3.fromRGB(24,24,31)
-    CloseUIShadow.ImageTransparency = 0.5
-    CloseUIShadow.ScaleType = Enum.ScaleType.Slice
-    CloseUIShadow.SliceCenter = Rect.new(10, 10, 118, 118)
-    CloseUIShadow.Visible = false  -- Start hidden
-
-    addToTheme('Shadow', CloseUIShadow)
-
-    UIPaddingCloseUI_1.Name = "UIPaddingCloseUI"
-    UIPaddingCloseUI_1.Parent = CloseUIShadow
-    UIPaddingCloseUI_1.PaddingBottom = UDim.new(0,5)
-    UIPaddingCloseUI_1.PaddingLeft = UDim.new(0,5)
-    UIPaddingCloseUI_1.PaddingRight = UDim.new(0,5)
-    UIPaddingCloseUI_1.PaddingTop = UDim.new(0,5)
-
-    BackgroundCloseUI_1.Name = "BackgroundCloseUI"
-    BackgroundCloseUI_1.Parent = CloseUIShadow
-    BackgroundCloseUI_1.AnchorPoint = Vector2.new(0.5, 0.5)
-    BackgroundCloseUI_1.BackgroundColor3 = Color3.fromRGB(29,28,38)
-    BackgroundCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
-    BackgroundCloseUI_1.BorderSizePixel = 0
-    BackgroundCloseUI_1.Position = UDim2.new(0.5, 0, 0.5, 0)
-    BackgroundCloseUI_1.Size = UDim2.new(1, 0, 1, 0)
-    BackgroundCloseUI_1.ClipsDescendants = true
-
-    addToTheme('Background', BackgroundCloseUI_1)
-
-    UICornerCloseUI_1.Name = "UICornerCloseUI"
-    UICornerCloseUI_1.Parent = BackgroundCloseUI_1
-    UICornerCloseUI_1.CornerRadius = UDim.new(0, 6)
-
-    FrameCloseUI_1.Name = "FrameCloseUI"
-    FrameCloseUI_1.Parent = BackgroundCloseUI_1
-    FrameCloseUI_1.AnchorPoint = Vector2.new(0, 1)
-    FrameCloseUI_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    FrameCloseUI_1.BackgroundTransparency = 0.9
-    FrameCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
-    FrameCloseUI_1.BorderSizePixel = 0
-    FrameCloseUI_1.Position = UDim2.new(0, 0, 1, 0)
-    FrameCloseUI_1.Size = UDim2.new(1, 0, 0, 4)
-
-    Icon_1.Name = "Icon"
-    Icon_1.Parent = BackgroundCloseUI_1
-    Icon_1.AnchorPoint = Vector2.new(0.5, 0.5)
-    Icon_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    Icon_1.BackgroundTransparency = 1
-    Icon_1.BorderColor3 = Color3.fromRGB(0,0,0)
+    Icon_1.Name = "CloseUIIcon"
+    Icon_1.Parent = ScreenGui
+    Icon_1.AnchorPoint = Vector2.new(0, 0)
+    Icon_1.BackgroundTransparency = 1  -- Transparent background
     Icon_1.BorderSizePixel = 0
-    Icon_1.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Icon_1.Size = UDim2.new(0, 30, 0, 30)
-    Icon_1.Image = CloseUI.Icon or "rbxassetid://123156553209294"
+    Icon_1.Position = UDim2.new(0, 10, 0.2, 0)  -- Position dari kiri atas
+    Icon_1.Size = UDim2.new(0, 40, 0, 40)  -- Ukuran icon
+    Icon_1.Image = CloseUI.Icon or "rbxassetid://13857987062"
     Icon_1.ImageTransparency = 0.3
+    Icon_1.Visible = false  -- Start hidden
+    Icon_1.ZIndex = 10  -- Ensure di atas elemen lain
 
     addToTheme('Text & Icon', Icon_1)
 
     -- PENTING: Assign ke variable global
-    CloseUIButton = CloseUIShadow
+    CloseUIButton = Icon_1
 
-    local Click = click(CloseUIShadow)
-    lak(Click, CloseUIShadow)
-    
-    Click.MouseButton1Click:Connect(function()
-        -- Animasi icon
-        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-            g = {Size = UDim2.new(0, 25, 0, 25), ImageTransparency = 0}
+    -- Hover effect
+    Icon_1.MouseEnter:Connect(function()
+        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Quad, d = "Out", 
+            g = {ImageTransparency = 0, Size = UDim2.new(0, 45, 0, 45)}
+        }):Play()
+    end)
+
+    Icon_1.MouseLeave:Connect(function()
+        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Quad, d = "Out", 
+            g = {ImageTransparency = 0.3, Size = UDim2.new(0, 40, 0, 40)}
+        }):Play()
+    end)
+
+    -- Click event
+    Icon_1.MouseButton1Click:Connect(function()
+        -- Click animation
+        tw({v = Icon_1, t = 0.1, s = Enum.EasingStyle.Back, d = "Out", 
+            g = {Size = UDim2.new(0, 35, 0, 35)}
         }):Play()
         
         task.wait(0.06)
         
-        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-            g = {Size = UDim2.new(0, 30, 0, 30), ImageTransparency = 0.3}
+        tw({v = Icon_1, t = 0.1, s = Enum.EasingStyle.Back, d = "Out", 
+            g = {Size = UDim2.new(0, 40, 0, 40)}
         }):Play()
         
         closeui()
-      end)
-   end
+    end)
+
+    -- Draggable (opsional, kalau mau icon bisa di-drag)
+    lak(Icon_1, Icon_1)
+  end
 end
 
 	return Tabs
