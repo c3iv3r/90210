@@ -4754,34 +4754,27 @@ return New
 		end)
 
 		do
-    local CloseUI = p.CloseUIButton or {Enabled = false}
-    
-    if not CloseUI.Enabled then
-        return -- Skip jika tidak diaktifkan
-    end
-    
+    local CloseUI = p.CloseUIButton
     local CloseUIShadow = Instance.new("ImageLabel")
     local UIPaddingCloseUI_1 = Instance.new("UIPadding")
     local BackgroundCloseUI_1 = Instance.new("Frame")
     local UICornerCloseUI_1 = Instance.new("UICorner")
     local FrameCloseUI_1 = Instance.new("Frame")
-    local IconButton = Instance.new("ImageLabel")
+    local Icon_1 = Instance.new("ImageLabel")
 
     CloseUIShadow.Name = "CloseUIShadow"
     CloseUIShadow.Parent = ScreenGui
     CloseUIShadow.BackgroundColor3 = Color3.fromRGB(163,162,165)
     CloseUIShadow.BackgroundTransparency = 1
-    CloseUIShadow.AnchorPoint = Vector2.new(0, 0.5)
-    CloseUIShadow.Position = UDim2.new(0, 10, 0.5, 0) -- Posisi di kiri tengah layar
+    CloseUIShadow.Position = UDim2.new(0, 0,0.200000003, 0)
     CloseUIShadow.Size = UDim2.new(0, 50, 0, 50)
     CloseUIShadow.Image = "rbxassetid://1316045217"
     CloseUIShadow.ImageColor3 = Color3.fromRGB(24,24,31)
     CloseUIShadow.ImageTransparency = 0.5
     CloseUIShadow.ScaleType = Enum.ScaleType.Slice
     CloseUIShadow.SliceCenter = Rect.new(10, 10, 118, 118)
-    CloseUIShadow.Visible = false -- Hidden saat UI terbuka pertama kali
-    CloseUIShadow.ZIndex = 999 -- Pastikan di atas elemen lain
-    
+    CloseUIShadow.Visible = false  -- Start hidden karena window open
+
     addToTheme('Shadow', CloseUIShadow)
 
     UIPaddingCloseUI_1.Name = "UIPaddingCloseUI"
@@ -4797,15 +4790,15 @@ return New
     BackgroundCloseUI_1.BackgroundColor3 = Color3.fromRGB(29,28,38)
     BackgroundCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
     BackgroundCloseUI_1.BorderSizePixel = 0
-    BackgroundCloseUI_1.Position = UDim2.new(0.5, 0, 0.5, 0)
-    BackgroundCloseUI_1.Size = UDim2.new(1, 0, 1, 0)
+    BackgroundCloseUI_1.Position = UDim2.new(0.5, 0,0.5, 0)
+    BackgroundCloseUI_1.Size = UDim2.new(1, 0,1, 0)
     BackgroundCloseUI_1.ClipsDescendants = true
 
     addToTheme('Background', BackgroundCloseUI_1)
 
     UICornerCloseUI_1.Name = "UICornerCloseUI"
     UICornerCloseUI_1.Parent = BackgroundCloseUI_1
-    UICornerCloseUI_1.CornerRadius = UDim.new(0, 8)
+    UICornerCloseUI_1.CornerRadius = UDim.new(0, 6)
 
     FrameCloseUI_1.Name = "FrameCloseUI"
     FrameCloseUI_1.Parent = BackgroundCloseUI_1
@@ -4814,52 +4807,46 @@ return New
     FrameCloseUI_1.BackgroundTransparency = 0.8999999761581421
     FrameCloseUI_1.BorderColor3 = Color3.fromRGB(0,0,0)
     FrameCloseUI_1.BorderSizePixel = 0
-    FrameCloseUI_1.Position = UDim2.new(0, 0, 1, 0)
-    FrameCloseUI_1.Size = UDim2.new(1, 0, 0, 4)
+    FrameCloseUI_1.Position = UDim2.new(0, 0,1, 0)
+    FrameCloseUI_1.Size = UDim2.new(1, 0,0, 4)
 
-    IconButton.Name = "IconButton"
-    IconButton.Parent = BackgroundCloseUI_1
-    IconButton.AnchorPoint = Vector2.new(0.5, 0.5)
-    IconButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    IconButton.BackgroundTransparency = 1
-    IconButton.BorderColor3 = Color3.fromRGB(0,0,0)
-    IconButton.BorderSizePixel = 0
-    IconButton.Position = UDim2.new(0.5, 0, 0.5, 0)
-    IconButton.Size = UDim2.new(0, 30, 0, 30)
-    IconButton.Image = CloseUI.Icon or "rbxassetid://123156553209294"
-    IconButton.ImageTransparency = 0.3
+    Icon_1.Name = "Icon"
+    Icon_1.Parent = BackgroundCloseUI_1
+    Icon_1.AnchorPoint = Vector2.new(0.5, 0.5)
+    Icon_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    Icon_1.BackgroundTransparency = 1
+    Icon_1.BorderColor3 = Color3.fromRGB(0,0,0)
+    Icon_1.BorderSizePixel = 0
+    Icon_1.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Icon_1.Size = UDim2.new(0, 30, 0, 30)
+    Icon_1.Image = CloseUI.Icon or "rbxassetid://13857987062"
+    Icon_1.ImageTransparency = 0.3
 
-    addToTheme('Text & Icon', IconButton)
+    addToTheme('Text & Icon', Icon_1)
 
-    -- Tambahkan draggable untuk button
-    lak(BackgroundCloseUI_1, CloseUIShadow)
-
-    local Click = click(BackgroundCloseUI_1)
+    local Click = click(CloseUIShadow)
+    lak(Click, CloseUIShadow)
     
     Click.MouseButton1Click:Connect(function()
-        -- Animation effect
-        tw({v = IconButton, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-            g = {ImageTransparency = 0.7, Size = UDim2.new(0, 25, 0, 25)}}):Play()
-        tw({v = BackgroundCloseUI_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-            g = {Size = UDim2.new(0.9, 0, 0.9, 0)}}):Play()
+        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
+            g = {Size = UDim2.new(0, 25, 0, 25), ImageTransparency = 0}
+        }):Play()
         
-        delay(.06, function()
-            tw({v = IconButton, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-                g = {ImageTransparency = 0.3, Size = UDim2.new(0, 30, 0, 30)}}):Play()
-            tw({v = BackgroundCloseUI_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
-                g = {Size = UDim2.new(1, 0, 1, 0)}}):Play()
-        end)
+        task.wait(0.06)
         
-        closeui()
+        tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Back, d = "Out", 
+            g = {Size = UDim2.new(0, 30, 0, 30), ImageTransparency = 0.3}
+        }):Play()
+        
+        pcall(closeui)
     end)
     
-    -- Update closeui function untuk toggle visibility
+    -- Modifikasi closeui function (tambahkan logic untuk toggle CloseUIShadow)
     local originalCloseUI = closeui
     closeui = function()
         isopen = not isopen
-        
         if isopen then
-            -- Window akan ditutup
+            -- Window sedang di-minimize
             oSize = Background_1.Size
             local close = tw({
                 v = Background_1,
@@ -4872,17 +4859,16 @@ return New
                 }
             })
             close:Play()
-            close.Completed:Connect(function()
-                Shadow_1.Visible = false
-                -- Show CloseButtonUI
-                CloseUIShadow.Visible = true
-            end)
-        else
-            -- Window akan dibuka
-            Shadow_1.Visible = true
-            -- Hide CloseButtonUI
-            CloseUIShadow.Visible = false
+            close.Completed:Wait()
+            Shadow_1.Visible = false
             
+            -- SHOW CloseUIButton saat window minimize
+            if CloseUI.Enabled then
+                CloseUIShadow.Visible = true
+            end
+        else
+            -- Window sedang di-open/show
+            Shadow_1.Visible = true  
             local open = tw({
                 v = Background_1,
                 t = 0.15,
@@ -4894,6 +4880,9 @@ return New
                 }
             })
             open:Play()
+            
+            -- HIDE CloseUIButton saat window open
+            CloseUIShadow.Visible = false
         end
 
         if not firsttime then
@@ -4906,7 +4895,7 @@ return New
         end
     end
 end
-end
+	end
 
 	return Tabs
 end
