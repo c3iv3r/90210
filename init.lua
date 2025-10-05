@@ -1723,7 +1723,24 @@ function Library:Window(p)
 		if isOpen then
 			-- Buka section
 			Container.Visible = true
-			Container.Size = UDim2.new(1, 0, 1, -25) -- PERBAIKAN: Restore size
+			Container.Size = UDim2.new(1, 0, 1, -25)
+			for i, v in pairs(Container:GetChildren()) do
+			if v:IsA('Frame') and v:FindFirstChild('Background') then
+				v.Background.Position = UDim2.new(0, 0, 0, 0)
+				v.Background.AnchorPoint = Vector2.new(1, 0)
+				
+				task.spawn(function()
+					task.wait(i * 0.05) -- Delay bertahap untuk setiap elemen
+					tw({
+						v = v.Background,
+						t = 0.3,
+						s = Enum.EasingStyle.Exponential,
+						d = "InOut",
+						g = {AnchorPoint = Vector2.new(0, 0)}
+					}):Play()
+				end)
+			end
+						end
 			updateSize()
 		else
 			-- Tutup section
