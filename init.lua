@@ -1754,30 +1754,99 @@ function Library:Window(p)
 
 	local New = {}
 
-	function New:SetTitle(t)
-		Section_1.Text = t
-	end
-
-	function New:SetOpen(state)
-		if state ~= isOpen then
-			SectionButton.MouseButton1Click:Fire()
-		end
-	end
-
-	function New:Element(elementType, config)
-		local originalParent = ScrollingFrame_1
-		ScrollingFrame_1 = Container
-		
-		local element = Func[elementType](Func, config)
-		
-		ScrollingFrame_1 = originalParent
-		
-		task.defer(updateSize) -- Update size setelah element ditambahkan
-		return element
-	end
-
-	return New
+function New:SetTitle(t)
+	Section_1.Text = t
 end
+
+function New:SetOpen(state)
+	if state ~= isOpen then
+		SectionButton.MouseButton1Click:Fire()
+	end
+end
+
+-- Tambahkan method untuk setiap tipe elemen
+function New:Toggle(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Toggle(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Button(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Button(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Slider(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Slider(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Dropdown(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Dropdown(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Label(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Label(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Code(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Code(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Keybind(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Keybind(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:ColorPicker(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:ColorPicker(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+function New:Textbox(config)
+	local originalParent = ScrollingFrame_1
+	ScrollingFrame_1 = Container
+	local element = Func:Textbox(config)
+	ScrollingFrame_1 = originalParent
+	task.defer(updateSize)
+	return element
+end
+
+return New
 
 		function Func:Toggle(p)
 			local Value = p.Value or false
