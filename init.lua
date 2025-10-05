@@ -4067,6 +4067,7 @@ function New:Textbox(config)
 end
 
 return New
+		end
     
 		return Func
 	end
