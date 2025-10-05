@@ -4795,7 +4795,7 @@ end
 
     Icon_1.MouseLeave:Connect(function()
         tw({v = Icon_1, t = 0.15, s = Enum.EasingStyle.Quad, d = "Out", 
-            g = {ImageTransparency = 0.3, Size = UDim2.new(0, 40, 0, 40)}
+            g = {ImageTransparency = 0, Size = UDim2.new(0, 40, 0, 40)}
         }):Play()
     end)
 
