@@ -4143,7 +4143,7 @@ return New
 	function Tabs:Notify(p)
 		local Title = p.Title or 'null'
 		local Content = p.Content or ''
-		local Time = p.Time or 5
+		local Duration = p.Duration or 5
 
 		local Shadow = Instance.new("ImageLabel")
 		local UIPadding_1 = Instance.new("UIPadding")
@@ -4314,8 +4314,8 @@ return New
 		}):Play()
 
 		task.spawn(function()
-			for i = Time, 1, -1 do
-				tw({v = Frame_1, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", g = {Size = UDim2.new(i / Time, 0,0, 4)}}):Play()
+			for i = Duration, 1, -1 do
+				tw({v = Frame_1, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", g = {Size = UDim2.new(i / Duration, 0,0, 4)}}):Play()
 				task.wait(1)
 			end
 			local f = tw({
@@ -4693,8 +4693,8 @@ local function closeui()
         firsttime = true
         Tabs:Notify({
             Title = 'Noctis',
-            Desc = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
-            Time = 10
+            Content = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
+            Duration = 10
         })
     end
 end
