@@ -25,7 +25,7 @@ local themes = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
 			},
 			['Dropdown'] = {
-				['Background'] = Color3.fromRGB(25, 25, 25),
+				['Background'] = Color3.fromRGB(18, 18, 18),
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Dropdown Select'] = {
@@ -600,7 +600,7 @@ do
 	TextBox_1.BorderSizePixel = 0
 	TextBox_1.CursorPosition = -1
 	TextBox_1.Size = UDim2.new(1, 0,1, 0)
-	TextBox_1.Font = Enum.Font.Gotham
+	TextBox_1.Font = Enum.Font.GothamBold
 	TextBox_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
 	TextBox_1.PlaceholderText = "Search . . ."
 	TextBox_1.Text = ""
@@ -832,7 +832,7 @@ do
 		Item_1.BackgroundTransparency = 1
 		Item_1.BorderColor3 = Color3.fromRGB(0,0,0)
 		Item_1.BorderSizePixel = 0
-		Item_1.Size = UDim2.new(1, 0,0, 22)
+		Item_1.Size = UDim2.new(1, 0,0, 25)
 
 		TextLabel_1.Parent = Item_1
 		TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
