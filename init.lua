@@ -1160,7 +1160,7 @@ ThemeContainer_1.Parent = Topbar_1
 ThemeContainer_1.BackgroundTransparency = 1
 ThemeContainer_1.BorderSizePixel = 0
 ThemeContainer_1.Size = UDim2.new(0, 100, 1, 0)  -- Width 100, full height
-ThemeContainer_1.Position = UDim2.new(0, 120, 0, 0)  -- 10px dari kiri
+ThemeContainer_1.Position = UDim2.new(0, 80, 0, 0)  -- 10px dari kiri
 ThemeContainer_1.ZIndex = 2
 
 local ThemeContainerPadding = Instance.new("UIPadding")
