@@ -25,13 +25,13 @@ local themes = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
 			},
 			['Dropdown'] = {
-				['Background'] = Color3.fromRGB(18, 18, 18),
+				['Background'] = Color3.fromRGB(25, 25, 25),
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Dropdown Select'] = {
-					['Background'] = Color3.fromRGB(18, 18, 18),
-					['Search'] = Color3.fromRGB(18, 18, 18),
-					['Item Background'] = Color3.fromRGB(18, 18, 18),
+					['Background'] = Color3.fromRGB(0, 0, 0),
+					['Search'] = Color3.fromRGB(0, 0, 0),
+					['Item Background'] = Color3.fromRGB(0, 0, 0),
 				}
 			},
 			['Slider'] = {
