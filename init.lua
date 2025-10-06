@@ -1535,23 +1535,20 @@ function Library:Window(p)
 		local function chg()
     for i, v in pairs(self.List) do
         v.Page.Visible = false
-        -- Reset semua elemen (termasuk yang di dalam section)
         for i, v in pairs(ScrollingFrame_1:GetChildren()) do
             if v:IsA('Frame') then
                 if v:FindFirstChild('Background') then
-                    -- Elemen biasa
                     v.Background.Position = UDim2.new(0, 0, 0, 0)
                     v.Background.AnchorPoint = Vector2.new(1, 0)
                 elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
-                    -- Section
                     local section = v:FindFirstChild('Background')
                     if section then
                         section.Position = UDim2.new(0, 0, 0, 0)
                         section.AnchorPoint = Vector2.new(1, 0)
                     end
-                    -- Reset elemen di dalam section
                     local container = v:FindFirstChild('Container')
-                    if container then
+                    -- CHECK FLAG BUKAN VISIBLE
+                    if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
                         for _, child in pairs(container:GetChildren()) do
                             if child:IsA('Frame') and child:FindFirstChild('Background') then
                                 child.Background.Position = UDim2.new(0, 0, 0, 0)
@@ -1563,12 +1560,10 @@ function Library:Window(p)
             end
         end
         
-        -- Animasi slide in bertahap
         task.spawn(function()
             for i, v in pairs(ScrollingFrame_1:GetChildren()) do
                 if v:IsA('Frame') then
                     if v:FindFirstChild('Background') then
-                        -- Animasi elemen biasa
                         tw({
                             v = v.Background,
                             t = 0.3,
@@ -1577,7 +1572,6 @@ function Library:Window(p)
                             g = {AnchorPoint = Vector2.new(0, 0)}
                         }):Play()
                     elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
-                        -- Animasi section
                         local section = v:FindFirstChild('Background')
                         if section then
                             tw({
@@ -1589,13 +1583,13 @@ function Library:Window(p)
                             }):Play()
                         end
                         
-                        -- Animasi elemen di dalam section (jika section terbuka)
                         local container = v:FindFirstChild('Container')
-                        if container and container.Visible then
+                        -- CHECK FLAG
+                        if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
                             task.spawn(function()
                                 for idx, child in pairs(container:GetChildren()) do
                                     if child:IsA('Frame') and child:FindFirstChild('Background') then
-                                        task.wait(idx * 0.03) -- Delay lebih kecil untuk smooth
+                                        task.wait(idx * 0.03)
                                         tw({
                                             v = child.Background,
                                             t = 0.3,
@@ -1608,13 +1602,14 @@ function Library:Window(p)
                             end)
                         end
                     end
-                    task.wait(0.05) -- Delay antar elemen utama
+                    task.wait(0.05)
                 end
             end
         end)
         InPage_1.Visible = true
     end
-			for i, v in pairs(TabList_1:GetChildren()) do
+    
+    for i, v in pairs(TabList_1:GetChildren()) do
         if v:IsA('Frame') and v.Name ~= 'Line' then
             tw({v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {TextTransparency = 0.7}}):Play()
             tw({v = v.Func.ImageLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {ImageTransparency = 0.7}}):Play()
@@ -3869,124 +3864,128 @@ end
 		end
     
     function Func:Section(p)
-	local Title = p.Title or 'null'
-	local Open = p.Open == nil and true or p.Open
-	
-	local RealBackground = Instance.new("Frame")
-	local Section = Instance.new("Frame")
-	local SectionButton = Instance.new("TextButton")
-	local Section_1 = Instance.new("TextLabel")
-	local Arrow = Instance.new("ImageLabel")
-	local UIPadding_1 = Instance.new("UIPadding")
-	local Container = Instance.new("Frame")
-	local UIListLayout_Container = Instance.new("UIListLayout")
-
-	RealBackground.Name = "Real Background"
-	RealBackground.Parent = ScrollingFrame_1
-	RealBackground.BackgroundTransparency = 1
-	RealBackground.BorderColor3 = Color3.fromRGB(0,0,0)
-	RealBackground.BorderSizePixel = 0
-	RealBackground.Size = UDim2.new(1, 0,0, 20)
-	RealBackground.ClipsDescendants = true
-
-	Section.Name = "Background"
-	Section.Parent = RealBackground
-	Section.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	Section.BackgroundTransparency = 1
-	Section.BorderColor3 = Color3.fromRGB(0,0,0)
-	Section.BorderSizePixel = 0
-	Section.Size = UDim2.new(1, 0,0, 20)
-
-	SectionButton.Name = "SectionButton"
-	SectionButton.Parent = Section
-	SectionButton.BackgroundTransparency = 1
-	SectionButton.Size = UDim2.new(1, 0, 1, 0)
-	SectionButton.Text = ""
-	SectionButton.ZIndex = 2
-
-	Section_1.Name = "Section"
-	Section_1.Parent = Section
-	Section_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	Section_1.BackgroundTransparency = 1
-	Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
-	Section_1.BorderSizePixel = 0
-	Section_1.Size = UDim2.new(1, 0,0, 20)
-	Section_1.Font = Enum.Font.GothamBold
-	Section_1.Text = Title
-	Section_1.TextColor3 = Color3.fromRGB(255,255,255)
-	Section_1.TextSize = 12
-	Section_1.TextXAlignment = Enum.TextXAlignment.Left
-
-	addToTheme('Text & Icon', Section_1)
-
-	Arrow.Name = "Arrow"
-	Arrow.Parent = Section
-	Arrow.AnchorPoint = Vector2.new(1, 0.5)
-	Arrow.BackgroundTransparency = 1
-	Arrow.Position = UDim2.new(1, -5, 0.5, 0)
-	Arrow.Size = UDim2.new(0, 14, 0, 14)
-	Arrow.Image = "rbxassetid://14937709869"
-	Arrow.ImageTransparency = 0.3
-	Arrow.Rotation = Open and 0 or -90
-
-	addToTheme('Text & Icon', Arrow)
-
-	UIPadding_1.Parent = Section
-	UIPadding_1.PaddingLeft = UDim.new(0,5)
-	UIPadding_1.PaddingRight = UDim.new(0,25)
-
-	Container.Name = "Container"
-	Container.Parent = RealBackground
-	Container.BackgroundTransparency = 1
-	Container.Position = UDim2.new(0, 0, 0, 25)
-	Container.Size = UDim2.new(1, 0, 1, -25)
-	Container.Visible = Open
-	Container.ClipsDescendants = false  -- PERUBAHAN: Set false agar elemen tidak terpotong
-
-	UIListLayout_Container.Parent = Container
-	UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout_Container.Padding = UDim.new(0, 5)
-
-	local isOpen = Open
-
-	local function updateSize()
-		task.defer(function()
-			local contentHeight = 20
-			if isOpen then
-				contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
-			end
-			RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
-		end)
-	end
-
-	UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
-
-	SectionButton.MouseButton1Click:Connect(function()
-    isOpen = not isOpen
+    local Title = p.Title or 'null'
+    local Open = p.Open == nil and true or p.Open
     
-    -- Animate arrow
-    tw({
-        v = Arrow, 
-        t = 0.2, 
-        s = Enum.EasingStyle.Quad, 
-        d = "Out", 
-        g = {Rotation = isOpen and 0 or -90}
-    }):Play()
+    local RealBackground = Instance.new("Frame")
+    local Section = Instance.new("Frame")
+    local SectionButton = Instance.new("TextButton")
+    local Section_1 = Instance.new("TextLabel")
+    local Arrow = Instance.new("ImageLabel")
+    local UIPadding_1 = Instance.new("UIPadding")
+    local Container = Instance.new("Frame")
+    local UIListLayout_Container = Instance.new("UIListLayout")
+
+    RealBackground.Name = "Real Background"
+    RealBackground.Parent = ScrollingFrame_1
+    RealBackground.BackgroundTransparency = 1
+    RealBackground.BorderColor3 = Color3.fromRGB(0,0,0)
+    RealBackground.BorderSizePixel = 0
+    RealBackground.Size = UDim2.new(1, 0,0, 20)
+    RealBackground.ClipsDescendants = true
+
+    Section.Name = "Background"
+    Section.Parent = RealBackground
+    Section.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    Section.BackgroundTransparency = 1
+    Section.BorderColor3 = Color3.fromRGB(0,0,0)
+    Section.BorderSizePixel = 0
+    Section.Size = UDim2.new(1, 0,0, 20)
+
+    SectionButton.Name = "SectionButton"
+    SectionButton.Parent = Section
+    SectionButton.BackgroundTransparency = 1
+    SectionButton.Size = UDim2.new(1, 0, 1, 0)
+    SectionButton.Text = ""
+    SectionButton.ZIndex = 2
+
+    Section_1.Name = "Section"
+    Section_1.Parent = Section
+    Section_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    Section_1.BackgroundTransparency = 1
+    Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
+    Section_1.BorderSizePixel = 0
+    Section_1.Size = UDim2.new(1, 0,0, 20)
+    Section_1.Font = Enum.Font.GothamBold
+    Section_1.Text = Title
+    Section_1.TextColor3 = Color3.fromRGB(255,255,255)
+    Section_1.TextSize = 12
+    Section_1.TextXAlignment = Enum.TextXAlignment.Left
+
+    addToTheme('Text & Icon', Section_1)
+
+    Arrow.Name = "Arrow"
+    Arrow.Parent = Section
+    Arrow.AnchorPoint = Vector2.new(1, 0.5)
+    Arrow.BackgroundTransparency = 1
+    Arrow.Position = UDim2.new(1, -5, 0.5, 0)
+    Arrow.Size = UDim2.new(0, 14, 0, 14)
+    Arrow.Image = "rbxassetid://14937709869"
+    Arrow.ImageTransparency = 0.3
+    Arrow.Rotation = Open and 0 or -90
+
+    addToTheme('Text & Icon', Arrow)
+
+    UIPadding_1.Parent = Section
+    UIPadding_1.PaddingLeft = UDim.new(0,5)
+    UIPadding_1.PaddingRight = UDim.new(0,25)
+
+    Container.Name = "Container"
+    Container.Parent = RealBackground
+    Container.BackgroundTransparency = 1
+    Container.Position = UDim2.new(0, 0, 0, 25)
+    Container.Size = UDim2.new(1, 0, 1, -25)
+    Container.Visible = Open
+    Container.ClipsDescendants = false
     
-    if isOpen then
-        -- Buka section tanpa animasi slide
-        Container.Visible = true
-        Container.Size = UDim2.new(1, 0, 1, -25)
-        updateSize()
-    else
-        -- Tutup section
-        updateSize()
-        task.wait(0.05)
-        Container.Visible = false
+    -- TAMBAHKAN: Flag untuk track state section
+    local SectionState = Instance.new("BoolValue")
+    SectionState.Name = "IsOpen"
+    SectionState.Value = Open
+    SectionState.Parent = Container
+
+    UIListLayout_Container.Parent = Container
+    UIListLayout_Container.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout_Container.Padding = UDim.new(0, 5)
+
+    local isOpen = Open
+
+    local function updateSize()
+        task.defer(function()
+            local contentHeight = 20
+            if isOpen then
+                contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
+            end
+            RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+        end)
     end
-end)
 
-	delay(0.1, updateSize)
+    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+
+    SectionButton.MouseButton1Click:Connect(function()
+        isOpen = not isOpen
+        SectionState.Value = isOpen -- Update flag
+        
+        tw({
+            v = Arrow, 
+            t = 0.2, 
+            s = Enum.EasingStyle.Quad, 
+            d = "Out", 
+            g = {Rotation = isOpen and 0 or -90}
+        }):Play()
+        
+        if isOpen then
+            Container.Visible = true
+            Container.Size = UDim2.new(1, 0, 1, -25)
+            updateSize()
+        else
+            updateSize()
+            task.wait(0.05)
+            Container.Visible = false
+        end
+    end)
+
+    delay(0.1, updateSize)
 
 	local New = {}
 
