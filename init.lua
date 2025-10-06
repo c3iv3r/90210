@@ -967,7 +967,7 @@ do
 	for i, v in ipairs(Values) do
 		itemslist:Add(v, i)
 	end
-
+ 
 	changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
 
 	return itemslist
@@ -1155,25 +1155,25 @@ function Library:Window(p)
 	ChSize_1.ImageTransparency = 0.5
 
 	local ThemeContainer_1 = Instance.new("Frame")
-ThemeContainer_1.Name = "ThemeContainer"
-ThemeContainer_1.Parent = Topbar_1
-ThemeContainer_1.BackgroundTransparency = 1
-ThemeContainer_1.BorderSizePixel = 0
-ThemeContainer_1.Size = UDim2.new(0, 100, 1, 0)  -- Width 100, full height
-ThemeContainer_1.Position = UDim2.new(0, 80, 0, 0)  -- 10px dari kiri
-ThemeContainer_1.ZIndex = 2
+    ThemeContainer_1.Name = "ThemeContainer"
+    ThemeContainer_1.Parent = Topbar_1
+    ThemeContainer_1.BackgroundTransparency = 1
+    ThemeContainer_1.BorderSizePixel = 0
+    ThemeContainer_1.Size = UDim2.new(0, 100, 1, 0)  -- Width 100, full height
+    ThemeContainer_1.Position = UDim2.new(0, 80, 0, 0)  -- 10px dari kiri
+    ThemeContainer_1.ZIndex = 2
 
-local ThemeContainerPadding = Instance.new("UIPadding")
-ThemeContainerPadding.Parent = ThemeContainer_1
-ThemeContainerPadding.PaddingTop = UDim.new(0, 5)
-ThemeContainerPadding.PaddingBottom = UDim.new(0, 5)
+    local ThemeContainerPadding = Instance.new("UIPadding")
+    ThemeContainerPadding.Parent = ThemeContainer_1
+    ThemeContainerPadding.PaddingTop = UDim.new(0, 5)
+    ThemeContainerPadding.PaddingBottom = UDim.new(0, 5)
 
-local ThemeContainerLayout = Instance.new("UIListLayout")
-ThemeContainerLayout.Parent = ThemeContainer_1
-ThemeContainerLayout.FillDirection = Enum.FillDirection.Horizontal
-ThemeContainerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-ThemeContainerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-ThemeContainerLayout.Padding = UDim.new(0, 5)
+    local ThemeContainerLayout = Instance.new("UIListLayout")
+    ThemeContainerLayout.Parent = ThemeContainer_1
+    ThemeContainerLayout.FillDirection = Enum.FillDirection.Horizontal
+    ThemeContainerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+    ThemeContainerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    ThemeContainerLayout.Padding = UDim.new(0, 5)
 
 	DropdownValue_1.Name = "DropdownValue"
 	DropdownValue_1.Parent = ThemeContainer_1
@@ -4117,237 +4117,6 @@ return New
 		return Func
 	end
 
-	local Notification = Instance.new("Frame")
-	local UIPaddingUIListLayoutNotification_1 = Instance.new("UIPadding")
-	local UIListLayoutNotification_1 = Instance.new("UIListLayout")
-
-	Notification.Name = "Notification"
-	Notification.Parent = ScreenGui
-	Notification.AnchorPoint = Vector2.new(1, 1)
-	Notification.BackgroundColor3 = Color3.fromRGB(255,255,255)
-	Notification.BackgroundTransparency = 1
-	Notification.BorderColor3 = Color3.fromRGB(0,0,0)
-	Notification.BorderSizePixel = 0
-	Notification.Position = UDim2.new(1, 0,1, 0)
-	Notification.Size = UDim2.new(0, 100,0, 100)
-
-	UIPaddingUIListLayoutNotification_1.Parent = Notification
-	UIPaddingUIListLayoutNotification_1.PaddingBottom = UDim.new(0,20)
-	UIPaddingUIListLayoutNotification_1.PaddingRight = UDim.new(0,5)
-
-	UIListLayoutNotification_1.Parent = Notification
-	UIListLayoutNotification_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
-	UIListLayoutNotification_1.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayoutNotification_1.VerticalAlignment = Enum.VerticalAlignment.Bottom
-
-	function Tabs:Notify(p)
-		local Title = p.Title or 'null'
-		local Content = p.Content or ''
-		local Duration = p.Duration or 5
-
-		local Shadow = Instance.new("ImageLabel")
-		local UIPadding_1 = Instance.new("UIPadding")
-		local Background_1 = Instance.new("CanvasGroup")
-		local UICorner_1 = Instance.new("UICorner")
-		local Frame_1 = Instance.new("Frame")
-		local Text_1 = Instance.new("Frame")
-		local UIPadding_2 = Instance.new("UIPadding")
-		local Title_1 = Instance.new("TextLabel")
-		local UIListLayout_1 = Instance.new("UIListLayout")
-		local Description_1 = Instance.new("TextLabel")
-		local Frame_2 = Instance.new("Frame")
-
-		Shadow.Name = "Shadow"
-		Shadow.Parent = Notification
-		Shadow.BackgroundColor3 = Color3.fromRGB(163,162,165)
-		Shadow.BackgroundTransparency = 1
-		Shadow.Size = UDim2.new(0, 180,0, 0)
-		Shadow.Image = "rbxassetid://1316045217"
-		Shadow.ImageColor3 = themes[IsTheme].Shadow
-		Shadow.ImageTransparency = 0.5
-		Shadow.ScaleType = Enum.ScaleType.Slice
-		Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
-
-		addToTheme('Shadow', Shadow)
-
-		UIPadding_1.Parent = Shadow
-		UIPadding_1.PaddingBottom = UDim.new(0,5)
-		UIPadding_1.PaddingLeft = UDim.new(0,5)
-		UIPadding_1.PaddingRight = UDim.new(0,5)
-		UIPadding_1.PaddingTop = UDim.new(0,5)
-
-		Background_1.Name = "Background"
-		Background_1.Parent = Shadow
-		Background_1.AnchorPoint = Vector2.new(0.5, 0.5)
-		Background_1.BackgroundColor3 = themes[IsTheme].Background
-		Background_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Background_1.BorderSizePixel = 0
-		Background_1.Position = UDim2.new(0.5, 0,0.5, 0)
-		Background_1.Size = UDim2.new(1, 0,1, 0)
-		Background_1.ClipsDescendants = true
-		Background_1.GroupTransparency = 1
-
-		addToTheme('Background', Background_1)
-
-		UICorner_1.Parent = Background_1
-		UICorner_1.CornerRadius = UDim.new(0,6)
-
-		Frame_1.Parent = Background_1
-		Frame_1.AnchorPoint = Vector2.new(0, 1)
-		Frame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Frame_1.BackgroundTransparency = 0.8999999761581421
-		Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Frame_1.BorderSizePixel = 0
-		Frame_1.Position = UDim2.new(0, 0,1, 0)
-		Frame_1.Size = UDim2.new(1, 0,0, 4)
-
-		Text_1.Name = "Text"
-		Text_1.Parent = Background_1
-		Text_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Text_1.BackgroundTransparency = 1
-		Text_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Text_1.BorderSizePixel = 0
-		Text_1.Size = UDim2.new(1, 0,1, 0)
-
-		UIPadding_2.Parent = Text_1
-		UIPadding_2.PaddingBottom = UDim.new(0,5)
-		UIPadding_2.PaddingLeft = UDim.new(0,5)
-		UIPadding_2.PaddingRight = UDim.new(0,5)
-		UIPadding_2.PaddingTop = UDim.new(0,5)
-
-		Title_1.Name = "Title"
-		Title_1.Parent = Text_1
-		Title_1.AutomaticSize = Enum.AutomaticSize.Y
-		Title_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Title_1.BackgroundTransparency = 1
-		Title_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Title_1.BorderSizePixel = 0
-		Title_1.Size = UDim2.new(1, 0,0, 0)
-		Title_1.Font = Enum.Font.GothamBold
-		Title_1.Text = tostring(Title)
-		Title_1.TextColor3 = themes[IsTheme]['Text & Icon']
-		Title_1.TextSize = 12
-		Title_1.TextWrapped = true
-		Title_1.RichText = true
-		Title_1.TextXAlignment = Enum.TextXAlignment.Left
-		Title_1.TextYAlignment = Enum.TextYAlignment.Top
-
-		addToTheme('Text & Icon', Title_1)
-
-		UIListLayout_1.Parent = Text_1
-		UIListLayout_1.Padding = UDim.new(0,3)
-		UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
-
-		Description_1.Name = "Description"
-		Description_1.Parent = Text_1
-		Description_1.AutomaticSize = Enum.AutomaticSize.Y
-		Description_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Description_1.BackgroundTransparency = 1
-		Description_1.BorderColor3 = Color3.fromRGB(0,0,0)
-		Description_1.BorderSizePixel = 0
-		Description_1.LayoutOrder = 2
-		Description_1.Size = UDim2.new(1, 0,0, 0)
-		Description_1.Font = Enum.Font.GothamBold
-		Description_1.Text = tostring(Content)
-		Description_1.TextColor3 = themes[IsTheme]['Text & Icon']
-		Description_1.TextSize = 10
-		Description_1.TextTransparency = 0
-		Description_1.TextWrapped = true
-		Description_1.RichText = true
-		Description_1.TextXAlignment = Enum.TextXAlignment.Left
-		Description_1.TextYAlignment = Enum.TextYAlignment.Top
-		Description_1.Visible = false
-
-		addToTheme('Text & Icon', Description_1)
-
-		Frame_2.Parent = Text_1
-		Frame_2.BackgroundColor3 = themes[IsTheme]['Text & Icon']
-		Frame_2.BackgroundTransparency = 0
-		Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
-		Frame_2.BorderSizePixel = 0
-		Frame_2.LayoutOrder = 1
-		Frame_2.Size = UDim2.new(1, 0,0, 1)
-		Frame_2.Visible = false
-
-		addToTheme('Text & Icon', Frame_2)
-
-		Background_1.Size = UDim2.new(1, 0,1, 0) - UDim2.fromOffset(5, 5)
-
-		if Content and Content ~= '' then
-			Description_1.Visible = true
-			Frame_2.Visible = true
-		end
-
-		local function updateSize()
-			task.defer(function()
-				local newSize = UIListLayout_1.AbsoluteContentSize.Y + 28
-				if Shadow.Size.Y.Offset ~= newSize then
-					Shadow.Size = UDim2.new(0, 180, 0, newSize)
-				end
-			end)
-		end
-
-		delay(.1, updateSize)
-
-		UIListLayout_1:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
-
-		local g = tw({
-			v = Shadow,
-			t = 0.15,
-			s = Enum.EasingStyle.Exponential,
-			d = "InOut",
-			g = {
-				Size = UDim2.new(0, 180,0, 55)
-			}
-		})
-		g:Play()
-		g.Completed:Wait()
-		tw({
-			v = Background_1,
-			t = 0.15,
-			s = Enum.EasingStyle.Linear,
-			d = "InOut",
-			g = {
-				Size = UDim2.new(1, 0,1, 0),
-				GroupTransparency = 0.3
-			}
-		}):Play()
-
-		task.spawn(function()
-			for i = Duration, 1, -1 do
-				tw({v = Frame_1, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", g = {Size = UDim2.new(i / Duration, 0,0, 4)}}):Play()
-				task.wait(1)
-			end
-			local f = tw({
-				v = Background_1,
-				t = 0.15,
-				s = Enum.EasingStyle.Linear,
-				d = "InOut",
-				g = {
-					Size = UDim2.new(1, 0,1, 0) - UDim2.fromOffset(5, 5),
-					GroupTransparency = 1
-				}
-			})
-			f:Play()
-			f.Completed:Connect(function()
-				Shadow.ImageTransparency = 1
-				local g = tw({
-					v = Shadow,
-					t = 0.15,
-					s = Enum.EasingStyle.Exponential,
-					d = "InOut",
-					g = {
-						Size = UDim2.new(0, 180,0, 0)
-					}
-				})
-				g:Play()
-				g.Completed:Connect(function()
-					Shadow:Destroy()
-				end)
-			end)
-		end)
-	end
-
 	function Tabs:Dialog(p)
 		if Shadow_1:FindFirstChild('Dialog') then
 			return
@@ -4691,7 +4460,7 @@ local function closeui()
 
     if not firsttime then
         firsttime = true
-        Tabs:Notify({
+        Library:Notify({
             Title = 'Noctis',
             Content = 'Press the <font color="#FF77A5" size="14">('..tostring(Keybind):gsub("Enum.KeyCode.", "")..')</font> button to hide and show the UI',
             Duration = 10
@@ -4867,5 +4636,252 @@ end
 
 	return Tabs
 end
+
+
+	local Notification = Instance.new("Frame")
+	local UIPaddingUIListLayoutNotification_1 = Instance.new("UIPadding")
+	local UIListLayoutNotification_1 = Instance.new("UIListLayout")
+
+	Notification.Name = "Notification"
+	Notification.Parent = ScreenGui
+	Notification.AnchorPoint = Vector2.new(1, 1)
+	Notification.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Notification.BackgroundTransparency = 1
+	Notification.BorderColor3 = Color3.fromRGB(0,0,0)
+	Notification.BorderSizePixel = 0
+	Notification.Position = UDim2.new(1, 0,1, 0)
+	Notification.Size = UDim2.new(0, 100,0, 100)
+
+	UIPaddingUIListLayoutNotification_1.Parent = Notification
+	UIPaddingUIListLayoutNotification_1.PaddingBottom = UDim.new(0,20)
+	UIPaddingUIListLayoutNotification_1.PaddingRight = UDim.new(0,5)
+
+	UIListLayoutNotification_1.Parent = Notification
+	UIListLayoutNotification_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	UIListLayoutNotification_1.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayoutNotification_1.VerticalAlignment = Enum.VerticalAlignment.Bottom
+
+	function Library:Notify(p)
+	local Title = p.Title or 'null'
+	local Desc = p.Desc or ''
+	local Time = p.Time or 5
+	local Theme = p.Theme or 'Dark'  -- Theme default atau bisa di-pass dari parameter
+
+	local Notification = ScreenGui:FindFirstChild("Notification")
+	if not Notification then
+		Notification = Instance.new("Frame")
+		Notification.Name = "Notification"
+		Notification.Parent = ScreenGui
+		Notification.AnchorPoint = Vector2.new(1, 1)
+		Notification.BackgroundTransparency = 1
+		Notification.Position = UDim2.new(1, 0, 1, 0)
+		Notification.Size = UDim2.new(0, 100, 0, 100)
+		
+		local UIPadding = Instance.new("UIPadding")
+		UIPadding.Parent = Notification
+		UIPadding.PaddingBottom = UDim.new(0, 20)
+		UIPadding.PaddingRight = UDim.new(0, 5)
+		
+		local UIListLayout = Instance.new("UIListLayout")
+		UIListLayout.Parent = Notification
+		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+	end
+
+
+		local Shadow = Instance.new("ImageLabel")
+		local UIPadding_1 = Instance.new("UIPadding")
+		local Background_1 = Instance.new("CanvasGroup")
+		local UICorner_1 = Instance.new("UICorner")
+		local Frame_1 = Instance.new("Frame")
+		local Text_1 = Instance.new("Frame")
+		local UIPadding_2 = Instance.new("UIPadding")
+		local Title_1 = Instance.new("TextLabel")
+		local UIListLayout_1 = Instance.new("UIListLayout")
+		local Description_1 = Instance.new("TextLabel")
+		local Frame_2 = Instance.new("Frame")
+
+		Shadow.Name = "Shadow"
+		Shadow.Parent = Notification
+		Shadow.BackgroundColor3 = Color3.fromRGB(163,162,165)
+		Shadow.BackgroundTransparency = 1
+		Shadow.Size = UDim2.new(0, 180,0, 0)
+		Shadow.Image = "rbxassetid://1316045217"
+		Shadow.ImageColor3 = themes[Theme].Shadow
+		Shadow.ImageTransparency = 0.5
+		Shadow.ScaleType = Enum.ScaleType.Slice
+		Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+
+		UIPadding_1.Parent = Shadow
+		UIPadding_1.PaddingBottom = UDim.new(0,5)
+		UIPadding_1.PaddingLeft = UDim.new(0,5)
+		UIPadding_1.PaddingRight = UDim.new(0,5)
+		UIPadding_1.PaddingTop = UDim.new(0,5)
+
+		Background_1.Name = "Background"
+		Background_1.Parent = Shadow
+		Background_1.AnchorPoint = Vector2.new(0.5, 0.5)
+		Background_1.BackgroundColor3 = themes[Theme].Background
+		Background_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Background_1.BorderSizePixel = 0
+		Background_1.Position = UDim2.new(0.5, 0,0.5, 0)
+		Background_1.Size = UDim2.new(1, 0,1, 0)
+		Background_1.ClipsDescendants = true
+		Background_1.GroupTransparency = 1
+
+		UICorner_1.Parent = Background_1
+		UICorner_1.CornerRadius = UDim.new(0,6)
+
+		Frame_1.Parent = Background_1
+		Frame_1.AnchorPoint = Vector2.new(0, 1)
+		Frame_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		Frame_1.BackgroundTransparency = 0.8999999761581421
+		Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Frame_1.BorderSizePixel = 0
+		Frame_1.Position = UDim2.new(0, 0,1, 0)
+		Frame_1.Size = UDim2.new(1, 0,0, 4)
+
+		Text_1.Name = "Text"
+		Text_1.Parent = Background_1
+		Text_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		Text_1.BackgroundTransparency = 1
+		Text_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Text_1.BorderSizePixel = 0
+		Text_1.Size = UDim2.new(1, 0,1, 0)
+
+		UIPadding_2.Parent = Text_1
+		UIPadding_2.PaddingBottom = UDim.new(0,5)
+		UIPadding_2.PaddingLeft = UDim.new(0,5)
+		UIPadding_2.PaddingRight = UDim.new(0,5)
+		UIPadding_2.PaddingTop = UDim.new(0,5)
+
+		Title_1.Name = "Title"
+		Title_1.Parent = Text_1
+		Title_1.AutomaticSize = Enum.AutomaticSize.Y
+		Title_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		Title_1.BackgroundTransparency = 1
+		Title_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Title_1.BorderSizePixel = 0
+		Title_1.Size = UDim2.new(1, 0,0, 0)
+		Title_1.Font = Enum.Font.GothamBold
+		Title_1.Text = tostring(Title)
+		Title_1.TextColor3 = themes[Theme]['Text & Icon']
+		Title_1.TextSize = 12
+		Title_1.TextWrapped = true
+		Title_1.RichText = true
+		Title_1.TextXAlignment = Enum.TextXAlignment.Left
+		Title_1.TextYAlignment = Enum.TextYAlignment.Top
+
+		UIListLayout_1.Parent = Text_1
+		UIListLayout_1.Padding = UDim.new(0,3)
+		UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
+
+		Description_1.Name = "Description"
+		Description_1.Parent = Text_1
+		Description_1.AutomaticSize = Enum.AutomaticSize.Y
+		Description_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+		Description_1.BackgroundTransparency = 1
+		Description_1.BorderColor3 = Color3.fromRGB(0,0,0)
+		Description_1.BorderSizePixel = 0
+		Description_1.LayoutOrder = 2
+		Description_1.Size = UDim2.new(1, 0,0, 0)
+		Description_1.Font = Enum.Font.GothamBold
+		Description_1.Text = tostring(Content)
+		Description_1.TextColor3 = themes[Theme]['Text & Icon']
+		Description_1.TextSize = 10
+		Description_1.TextTransparency = 0
+		Description_1.TextWrapped = true
+		Description_1.RichText = true
+		Description_1.TextXAlignment = Enum.TextXAlignment.Left
+		Description_1.TextYAlignment = Enum.TextYAlignment.Top
+		Description_1.Visible = false
+
+		Frame_2.Parent = Text_1
+		Frame_2.BackgroundColor3 = themes[Theme]['Text & Icon']
+		Frame_2.BackgroundTransparency = 0
+		Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
+		Frame_2.BorderSizePixel = 0
+		Frame_2.LayoutOrder = 1
+		Frame_2.Size = UDim2.new(1, 0,0, 1)
+		Frame_2.Visible = false
+
+		Background_1.Size = UDim2.new(1, 0,1, 0) - UDim2.fromOffset(5, 5)
+
+		if Content and Content ~= '' then
+			Description_1.Visible = true
+			Frame_2.Visible = true
+		end
+
+		local function updateSize()
+			task.defer(function()
+				local newSize = UIListLayout_1.AbsoluteContentSize.Y + 28
+				if Shadow.Size.Y.Offset ~= newSize then
+					Shadow.Size = UDim2.new(0, 180, 0, newSize)
+				end
+			end)
+		end
+
+		delay(.1, updateSize)
+
+		UIListLayout_1:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+
+		local g = tw({
+			v = Shadow,
+			t = 0.15,
+			s = Enum.EasingStyle.Exponential,
+			d = "InOut",
+			g = {
+				Size = UDim2.new(0, 180,0, 55)
+			}
+		})
+		g:Play()
+		g.Completed:Wait()
+		tw({
+			v = Background_1,
+			t = 0.15,
+			s = Enum.EasingStyle.Linear,
+			d = "InOut",
+			g = {
+				Size = UDim2.new(1, 0,1, 0),
+				GroupTransparency = 0.3
+			}
+		}):Play()
+
+		task.spawn(function()
+			for i = Duration, 1, -1 do
+				tw({v = Frame_1, t = 0.15, s = Enum.EasingStyle.Exponential, d = "Out", g = {Size = UDim2.new(i / Duration, 0,0, 4)}}):Play()
+				task.wait(1)
+			end
+			local f = tw({
+				v = Background_1,
+				t = 0.15,
+				s = Enum.EasingStyle.Linear,
+				d = "InOut",
+				g = {
+					Size = UDim2.new(1, 0,1, 0) - UDim2.fromOffset(5, 5),
+					GroupTransparency = 1
+				}
+			})
+			f:Play()
+			f.Completed:Connect(function()
+				Shadow.ImageTransparency = 1
+				local g = tw({
+					v = Shadow,
+					t = 0.15,
+					s = Enum.EasingStyle.Exponential,
+					d = "InOut",
+					g = {
+						Size = UDim2.new(0, 180,0, 0)
+					}
+				})
+				g:Play()
+				g.Completed:Connect(function()
+					Shadow:Destroy()
+				end)
+			end)
+		end)
+	end
+
 
 return Library
