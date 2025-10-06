@@ -29,9 +29,9 @@ local themes = {
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Dropdown Select'] = {
-					['Background'] = Color3.fromRGB(0, 0, 0),
-					['Search'] = Color3.fromRGB(0, 0, 0),
-					['Item Background'] = Color3.fromRGB(0, 0, 0),
+					['Background'] = Color3.fromRGB(15, 15, 15),
+					['Search'] = Color3.fromRGB(15, 15, 15),
+					['Item Background'] = Color3.fromRGB(15, 15, 15),
 				}
 			},
 			['Slider'] = {
@@ -1154,15 +1154,36 @@ function Library:Window(p)
 	ChSize_1.Image = "rbxassetid://15082210525"
 	ChSize_1.ImageTransparency = 0.5
 
+	local ThemeContainer_1 = Instance.new("Frame")
+ThemeContainer_1.Name = "ThemeContainer"
+ThemeContainer_1.Parent = Topbar_1
+ThemeContainer_1.BackgroundTransparency = 1
+ThemeContainer_1.BorderSizePixel = 0
+ThemeContainer_1.Size = UDim2.new(0, 100, 1, 0)  -- Width 100, full height
+ThemeContainer_1.Position = UDim2.new(0, 10, 0, 0)  -- 10px dari kiri
+ThemeContainer_1.ZIndex = 2
+
+local ThemeContainerPadding = Instance.new("UIPadding")
+ThemeContainerPadding.Parent = ThemeContainer_1
+ThemeContainerPadding.PaddingTop = UDim.new(0, 5)
+ThemeContainerPadding.PaddingBottom = UDim.new(0, 5)
+
+local ThemeContainerLayout = Instance.new("UIListLayout")
+ThemeContainerLayout.Parent = ThemeContainer_1
+ThemeContainerLayout.FillDirection = Enum.FillDirection.Horizontal
+ThemeContainerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+ThemeContainerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+ThemeContainerLayout.Padding = UDim.new(0, 5)
+
 	DropdownValue_1.Name = "DropdownValue"
-	DropdownValue_1.Parent = Ct_1
+	DropdownValue_1.Parent = ThemeContainer_1
 	DropdownValue_1.AnchorPoint = Vector2.new(0, 0.5)
 	DropdownValue_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
 	DropdownValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownValue_1.BorderSizePixel = 0
 	DropdownValue_1.Position = UDim2.new(0, 0,0.5, 0)
-	DropdownValue_1.Size = UDim2.new(0, 15, 0, 15)
-	DropdownValue_1.Transparency = 1
+	DropdownValue_1.Size = UDim2.new(0, 80, 0, 20)
+	DropdownValue_1.Transparency = 0
 
 	Td_1.Name = "Td"
 	Td_1.Parent = Topbar_1
