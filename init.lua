@@ -3742,165 +3742,153 @@ end
 		end
 
 		function Func:Textbox(p)
-    local Title = p.Title
-    local Desc = p.Desc or ''
-    local Image = p.Image or ''
-    local Value = p.Value or ''
-    local Placeholder = p.Placeholder or 'Paste Your Text'
-    local ClearText = p.ClearText or p.ClearTextOnFocus or false
-    local Callback = p.Callback or function() end
+			local Title = p.Title
+			local Desc = p.Desc or ''
+			local Image = p.Image or ''
+			local Value = p.Value or ''
+			local Placeholder = p.Placeholder or 'Paste Your Text'
+			local ClearText = p.ClearText or p.ClearTextOnFocus or false
+			local Callback = p.Callback or function() end
 
-    local Textbox, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Textbox')
+			local Textbox, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Textbox')
 
-    Config:SetTextTransparencyTitle(0)
-    Config:SetSizeT(145)
+			Config:SetTextTransparencyTitle(0)
+			Config:SetSizeT(145)
 
-    local F = Instance.new("Frame")
-    local UIListLayout_1 = Instance.new("UIListLayout")
-    local UIPadding_1 = Instance.new("UIPadding")
-    local Frame_1 = Instance.new("Frame")
-    local UICorner_1 = Instance.new("UICorner")
-    local UIStroke_1 = Instance.new("UIStroke")
-    local UIPadding_2 = Instance.new("UIPadding")
-    local ImageLabel_1 = Instance.new("ImageLabel")
-    local TextLabel_1 = Instance.new("TextBox")
-    local Frame_2 = Instance.new("Frame")
+			local F = Instance.new("Frame")
+			local UIListLayout_1 = Instance.new("UIListLayout")
+			local UIPadding_1 = Instance.new("UIPadding")
+			local Frame_1 = Instance.new("Frame")
+			local UICorner_1 = Instance.new("UICorner")
+			local UIStroke_1 = Instance.new("UIStroke")
+			local UIPadding_2 = Instance.new("UIPadding")
+			local ImageLabel_1 = Instance.new("ImageLabel")
+			local TextLabel_1 = Instance.new("TextBox")
+			local Frame_2 = Instance.new("Frame")
 
-    F.Name = "F"
-    F.Parent = Textbox
-    F.AnchorPoint = Vector2.new(1, 0.5)
-    F.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    F.BackgroundTransparency = 1
-    F.BorderColor3 = Color3.fromRGB(0,0,0)
-    F.BorderSizePixel = 0
-    F.Position = UDim2.new(1, 0,0.5, 0)
-    F.Size = UDim2.new(0, 150,0.8, 0)
+			F.Name = "F"
+			F.Parent = Textbox
+			F.AnchorPoint = Vector2.new(1, 0.5)
+			F.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			F.BackgroundTransparency = 1
+			F.BorderColor3 = Color3.fromRGB(0,0,0)
+			F.BorderSizePixel = 0
+			F.Position = UDim2.new(1, 0,0.5, 0)
+			F.Size = UDim2.new(0, 150,0.800000012, 0)
 
-    UIListLayout_1.Parent = F
-    UIListLayout_1.Padding = UDim.new(0,15)
-    UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
-    UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
-    UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
+			UIListLayout_1.Parent = F
+			UIListLayout_1.Padding = UDim.new(0,15)
+			UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
+			UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
+			UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
 
-    UIPadding_1.Parent = F
-    UIPadding_1.PaddingRight = UDim.new(0,13)
+			UIPadding_1.Parent = F
+			UIPadding_1.PaddingRight = UDim.new(0,13)
 
-    Frame_1.Parent = F
-    Frame_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
-    Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
-    Frame_1.BorderSizePixel = 0
-    Frame_1.Size = UDim2.new(0, 130,0, 25)
+			Frame_1.Parent = F
+			Frame_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
+			Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
+			Frame_1.BorderSizePixel = 0
+			Frame_1.Size = UDim2.new(0, 130,0, 25)
 
-    addToTheme('Function.Textbox.Value Background', Frame_1)
+			addToTheme('Function.Textbox.Value Background', Frame_1)
 
-    UICorner_1.Parent = Frame_1
-    UICorner_1.CornerRadius = UDim.new(0,4)
+			UICorner_1.Parent = Frame_1
+			UICorner_1.CornerRadius = UDim.new(0,4)
 
-    UIStroke_1.Parent = Frame_1
-    UIStroke_1.Color = Color3.fromRGB(255,255,255)
-    UIStroke_1.Thickness = 1
-    UIStroke_1.Transparency = 0.95
+			UIStroke_1.Parent = Frame_1
+			UIStroke_1.Color = Color3.fromRGB(255,255,255)
+			UIStroke_1.Thickness = 1
+			UIStroke_1.Transparency = 0.95
 
-    addToTheme('Function.Textbox.Value Stroke', UIStroke_1)
+			addToTheme('Function.Textbox.Value Stroke', UIStroke_1)
 
-    UIPadding_2.Parent = Frame_1
-    UIPadding_2.PaddingLeft = UDim.new(0,5)
-    UIPadding_2.PaddingRight = UDim.new(0,5)
+			UIPadding_2.Parent = Frame_1
+			UIPadding_2.PaddingLeft = UDim.new(0,5)
+			UIPadding_2.PaddingRight = UDim.new(0,5)
 
-    ImageLabel_1.Parent = Frame_1
-    ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
-    ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    ImageLabel_1.BackgroundTransparency = 1
-    ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-    ImageLabel_1.BorderSizePixel = 0
-    ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
-    ImageLabel_1.Size = UDim2.new(0, 15,0, 15)
-    ImageLabel_1.Image = "rbxassetid://13868675087"
-    ImageLabel_1.ImageTransparency = 0.30000001192092896
+			ImageLabel_1.Parent = Frame_1
+			ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
+			ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			ImageLabel_1.BackgroundTransparency = 1
+			ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+			ImageLabel_1.BorderSizePixel = 0
+			ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
+			ImageLabel_1.Size = UDim2.new(0, 15,0, 15)
+			ImageLabel_1.Image = "rbxassetid://13868675087"
+			ImageLabel_1.ImageTransparency = 0.30000001192092896
 
-    addToTheme('Text & Value', ImageLabel_1)
+			addToTheme('Text & Value', ImageLabel_1)
 
-    TextLabel_1.Name = "TextLabel"
-    TextLabel_1.Parent = Frame_1
-    TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    TextLabel_1.BackgroundTransparency = 1
-    TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-    TextLabel_1.BorderSizePixel = 0
-    TextLabel_1.Size = UDim2.new(0.800000012, 0,1, 0)
-    TextLabel_1.Font = Enum.Font.GothamBold
-    TextLabel_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
-    TextLabel_1.PlaceholderText = Placeholder
-    TextLabel_1.RichText = true
-    TextLabel_1.Text = Value
-    TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
-    TextLabel_1.TextSize = 10
-    TextLabel_1.TextTransparency = 0.30000001192092896
-    TextLabel_1.TextWrapped = true
-    TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
-    TextLabel_1.ClearTextOnFocus = not ClearText
+			TextLabel_1.Name = "TextLabel"
+			TextLabel_1.Parent = Frame_1
+			TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			TextLabel_1.BackgroundTransparency = 1
+			TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+			TextLabel_1.BorderSizePixel = 0
+			TextLabel_1.Size = UDim2.new(0.800000012, 0,1, 0)
+			TextLabel_1.Font = Enum.Font.GothamBold
+			TextLabel_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
+			TextLabel_1.PlaceholderText = Placeholder
+			TextLabel_1.RichText = true
+			TextLabel_1.Text = Value
+			TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
+			TextLabel_1.TextSize = 10
+			TextLabel_1.TextTransparency = 0.30000001192092896
+			TextLabel_1.TextWrapped = true
+			TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
+			TextLabel_1.ClearTextOnFocus = not ClearText
 
-    addToTheme('Text & Value', TextLabel_1)
+			addToTheme('Text & Value', TextLabel_1)
 
-    Frame_2.Parent = Frame_1
-    Frame_2.AnchorPoint = Vector2.new(0.5, 1)
-    Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
-    Frame_2.BackgroundTransparency = 0.949999988079071
-    Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
-    Frame_2.BorderSizePixel = 0
-    Frame_2.Position = UDim2.new(0.5, 0,1, 0)
-    Frame_2.Size = UDim2.new(1.05, 0,0, 2)
+			Frame_2.Parent = Frame_1
+			Frame_2.AnchorPoint = Vector2.new(0.5, 1)
+			Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			Frame_2.BackgroundTransparency = 0.949999988079071
+			Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
+			Frame_2.BorderSizePixel = 0
+			Frame_2.Position = UDim2.new(0.5, 0,1, 0)
+			Frame_2.Size = UDim2.new(1.05, 0,0, 2)
 
-    -- PERBAIKAN: Update Value saat text berubah
-    TextLabel_1:GetPropertyChangedSignal("Text"):Connect(function()
-        Value = TextLabel_1.Text
-        pcall(Callback, TextLabel_1.Text)
-    end)
+			local function o()
+				if #TextLabel_1.Text > 0 then
+					pcall(Callback, TextLabel_1.Text)
+				end
+			end
 
-    local function o()
-        if #TextLabel_1.Text > 0 then
-            Value = TextLabel_1.Text
-            pcall(Callback, TextLabel_1.Text)
-        end
-    end
+			TextLabel_1.FocusLost:Connect(o)
 
-    TextLabel_1.FocusLost:Connect(o)
+			delay(0, o)
 
-    delay(0, o)
+			local New = {}
 
-    local New = {}
-    
-    -- PENTING: Expose Value sebagai property yang bisa diakses
-    New.Value = Value
+			function New:SetTitle(t)
+				Config:SetTitle(t)
+			end
 
-    function New:SetTitle(t)
-        Config:SetTitle(t)
-    end
+			function New:SetDesc(t)
+				Config:SetDesc(t)
+			end
 
-    function New:SetDesc(t)
-        Config:SetDesc(t)
-    end
+			function New:SetVisible(t)
+				Textbox.Visible = t
+			end
 
-    function New:SetVisible(t)
-        Textbox.Visible = t
-    end
+			function New:SetValue(t)
+				TextLabel_1.Text = t
+			end
 
-    function New:SetValue(t)
-        TextLabel_1.Text = t
-        Value = t
-        New.Value = t  -- Update property
-    end
+			function New:SetClearTextOnFocus(t)
+				TextLabel_1.ClearTextOnFocus = not t
+			end
 
-    function New:SetClearTextOnFocus(t)
-        TextLabel_1.ClearTextOnFocus = not t
-    end
+			function New:SetPlaceholderText(t)
+				TextLabel_1.PlaceholderText = t
+			end
 
-    function New:SetPlaceholderText(t)
-        TextLabel_1.PlaceholderText = t
-    end
-
-    return New
-end
+			return New
+		end
 
 		function Func:Image()
 			local ImageLogo = Instance.new("ImageLabel")
