@@ -1547,12 +1547,15 @@ function Library:Window(p)
                         section.AnchorPoint = Vector2.new(1, 0)
                     end
                     local container = v:FindFirstChild('Container')
-                    -- CHECK FLAG BUKAN VISIBLE
-                    if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
-                        for _, child in pairs(container:GetChildren()) do
-                            if child:IsA('Frame') and child:FindFirstChild('Background') then
-                                child.Background.Position = UDim2.new(0, 0, 0, 0)
-                                child.Background.AnchorPoint = Vector2.new(1, 0)
+                    -- PERBAIKAN: Cek flag DAN reset SEMUA child
+                    if container and container:FindFirstChild('IsOpen') then
+                        if container.IsOpen.Value then
+                            -- Section terbuka, reset semua child
+                            for _, child in pairs(container:GetChildren()) do
+                                if child:IsA('Frame') and child:FindFirstChild('Background') then
+                                    child.Background.Position = UDim2.new(0, 0, 0, 0)
+                                    child.Background.AnchorPoint = Vector2.new(1, 0)
+                                end
                             end
                         end
                     end
@@ -1584,7 +1587,7 @@ function Library:Window(p)
                         end
                         
                         local container = v:FindFirstChild('Container')
-                        -- CHECK FLAG
+                        -- PERBAIKAN: Cek flag untuk animasi
                         if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
                             task.spawn(function()
                                 for idx, child in pairs(container:GetChildren()) do
