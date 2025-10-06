@@ -1533,65 +1533,98 @@ function Library:Window(p)
 		end
 
 		local function chg()
-			for i, v in pairs(self.List) do
-				v.Page.Visible = false
-				for i, v in pairs(ScrollingFrame_1:GetChildren()) do
-					if v:IsA('Frame') and v:FindFirstChild('Background') then
-						v.Background.Position = UDim2.new(0, 0, 0,0)
-						v.Background.AnchorPoint = Vector2.new(1 ,0)
-					end
-				end
-				task.spawn(function()
-					for i, v in next, ScrollingFrame_1:GetChildren() do
-						if v:IsA('Frame') and v:FindFirstChild('Background') then
-							tw({
-								v = v.Background,
-								t = 0.3,
-								s = Enum.EasingStyle.Exponential,
-								d = "InOut",
-								g = {AnchorPoint = Vector2.new(0 ,0)}
-							}):Play()
-							task.wait(.05)
-						end
-					end
-				end)
-				InPage_1.Visible = true
-			end
+    for i, v in pairs(self.List) do
+        v.Page.Visible = false
+        -- Reset semua elemen (termasuk yang di dalam section)
+        for i, v in pairs(ScrollingFrame_1:GetChildren()) do
+            if v:IsA('Frame') then
+                if v:FindFirstChild('Background') then
+                    -- Elemen biasa
+                    v.Background.Position = UDim2.new(0, 0, 0, 0)
+                    v.Background.AnchorPoint = Vector2.new(1, 0)
+                elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
+                    -- Section
+                    local section = v:FindFirstChild('Background')
+                    if section then
+                        section.Position = UDim2.new(0, 0, 0, 0)
+                        section.AnchorPoint = Vector2.new(1, 0)
+                    end
+                    -- Reset elemen di dalam section
+                    local container = v:FindFirstChild('Container')
+                    if container then
+                        for _, child in pairs(container:GetChildren()) do
+                            if child:IsA('Frame') and child:FindFirstChild('Background') then
+                                child.Background.Position = UDim2.new(0, 0, 0, 0)
+                                child.Background.AnchorPoint = Vector2.new(1, 0)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        
+        -- Animasi slide in bertahap
+        task.spawn(function()
+            for i, v in pairs(ScrollingFrame_1:GetChildren()) do
+                if v:IsA('Frame') then
+                    if v:FindFirstChild('Background') then
+                        -- Animasi elemen biasa
+                        tw({
+                            v = v.Background,
+                            t = 0.3,
+                            s = Enum.EasingStyle.Exponential,
+                            d = "InOut",
+                            g = {AnchorPoint = Vector2.new(0, 0)}
+                        }):Play()
+                    elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
+                        -- Animasi section
+                        local section = v:FindFirstChild('Background')
+                        if section then
+                            tw({
+                                v = section,
+                                t = 0.3,
+                                s = Enum.EasingStyle.Exponential,
+                                d = "InOut",
+                                g = {AnchorPoint = Vector2.new(0, 0)}
+                            }):Play()
+                        end
+                        
+                        -- Animasi elemen di dalam section (jika section terbuka)
+                        local container = v:FindFirstChild('Container')
+                        if container and container.Visible then
+                            task.spawn(function()
+                                for idx, child in pairs(container:GetChildren()) do
+                                    if child:IsA('Frame') and child:FindFirstChild('Background') then
+                                        task.wait(idx * 0.03) -- Delay lebih kecil untuk smooth
+                                        tw({
+                                            v = child.Background,
+                                            t = 0.3,
+                                            s = Enum.EasingStyle.Exponential,
+                                            d = "InOut",
+                                            g = {AnchorPoint = Vector2.new(0, 0)}
+                                        }):Play()
+                                    end
+                                end
+                            end)
+                        end
+                    end
+                    task.wait(0.05) -- Delay antar elemen utama
+                end
+            end
+        end)
+        InPage_1.Visible = true
+    end
 			for i, v in pairs(TabList_1:GetChildren()) do
-				if v:IsA('Frame') and v.Name ~= 'Line' then
-					tw({
-						v = v.Func.Title,
-						t = 0.15,
-						s = Enum.EasingStyle.Linear,
-						d = "InOut",
-						g = {TextTransparency = 0.7}
-					}):Play()
-					tw({
-						v = v.Func.ImageLabel,
-						t = 0.15,
-						s = Enum.EasingStyle.Linear,
-						d = "InOut",
-						g = {ImageTransparency = 0.7}
-					}):Play()
-				end
-			end
-			tw({
-				v = Title_3,
-				t = 0.15,
-				s = Enum.EasingStyle.Linear,
-				d = "InOut",
-				g = {TextTransparency = 0}
-			}):Play()
-			tw({
-				v = ImageLabel_2,
-				t = 0.15,
-				s = Enum.EasingStyle.Linear,
-				d = "InOut",
-				g = {ImageTransparency = 0}
-			}):Play()
-			Page_1.Visible = true
-			twSelect()
-		end
+        if v:IsA('Frame') and v.Name ~= 'Line' then
+            tw({v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {TextTransparency = 0.7}}):Play()
+            tw({v = v.Func.ImageLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {ImageTransparency = 0.7}}):Play()
+        end
+    end
+    tw({v = Title_3, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {TextTransparency = 0}}):Play()
+    tw({v = ImageLabel_2, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {ImageTransparency = 0}}):Play()
+    Page_1.Visible = true
+    twSelect()
+end
 
 		Click.MouseButton1Click:Connect(chg)
 
@@ -3929,46 +3962,29 @@ function Library:Window(p)
 	UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
 
 	SectionButton.MouseButton1Click:Connect(function()
-		isOpen = not isOpen
-		
-		-- Animate arrow
-		tw({
-			v = Arrow, 
-			t = 0.2, 
-			s = Enum.EasingStyle.Quad, 
-			d = "Out", 
-			g = {Rotation = isOpen and 0 or -90}
-		}):Play()
-		
-		if isOpen then
-			-- Buka section
-			Container.Visible = true
-			Container.Size = UDim2.new(1, 0, 1, -25)
-			for i, v in pairs(Container:GetChildren()) do
-			if v:IsA('Frame') and v:FindFirstChild('Background') then
-				v.Background.Position = UDim2.new(0, 0, 0, 0)
-				v.Background.AnchorPoint = Vector2.new(1, 0)
-				
-				task.spawn(function()
-					task.wait(i * 0.05) -- Delay bertahap untuk setiap elemen
-					tw({
-						v = v.Background,
-						t = 0.3,
-						s = Enum.EasingStyle.Exponential,
-						d = "InOut",
-						g = {AnchorPoint = Vector2.new(0, 0)}
-					}):Play()
-				end)
-			end
-						end
-			updateSize()
-		else
-			-- Tutup section
-			updateSize()
-			task.wait(0.05) -- Delay kecil untuk smooth transition
-			Container.Visible = false
-		end
-	end)
+    isOpen = not isOpen
+    
+    -- Animate arrow
+    tw({
+        v = Arrow, 
+        t = 0.2, 
+        s = Enum.EasingStyle.Quad, 
+        d = "Out", 
+        g = {Rotation = isOpen and 0 or -90}
+    }):Play()
+    
+    if isOpen then
+        -- Buka section tanpa animasi slide
+        Container.Visible = true
+        Container.Size = UDim2.new(1, 0, 1, -25)
+        updateSize()
+    else
+        -- Tutup section
+        updateSize()
+        task.wait(0.05)
+        Container.Visible = false
+    end
+end)
 
 	delay(0.1, updateSize)
 
