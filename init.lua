@@ -4663,7 +4663,7 @@ end
 
 	function Library:Notify(p)
 	local Title = p.Title or 'null'
-	local Desc = p.Desc or ''
+	local Content = p.Content or ''
 	local Duration = p.Duration or 5
 	local Theme = p.Theme or 'Dark'  -- Theme default atau bisa di-pass dari parameter
 
