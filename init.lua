@@ -1533,107 +1533,99 @@ function Library:Window(p)
 		end
 
 		local function chg()
-    -- Hide all pages first
-    for i, v in pairs(self.List) do
+    -- Sembunyikan semua page
+    for _, v in pairs(self.List) do
         v.Page.Visible = false
     end
-    
-    -- STEP 1: Reset ALL positions synchronously
-    for i, v in pairs(ScrollingFrame_1:GetChildren()) do
-        if v:IsA('Frame') then
-            -- Regular elements
-            if v:FindFirstChild('Background') then
-                v.Background.Position = UDim2.new(0, 0, 0, 0)
-                v.Background.AnchorPoint = Vector2.new(1, 0)
-            -- Section elements
-            elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
-                local section = v:FindFirstChild('Background')
+
+    -- STEP 1: Reset posisi (prioritaskan Section dulu baru elemen biasa)
+    for _, v in pairs(ScrollingFrame_1:GetChildren()) do
+        if v:IsA("Frame") then
+            if v.Name == "Real Background" and v:FindFirstChild("Container") then
+                local section = v:FindFirstChild("Background")
                 if section then
                     section.Position = UDim2.new(0, 0, 0, 0)
                     section.AnchorPoint = Vector2.new(1, 0)
                 end
-                
-                local container = v:FindFirstChild('Container')
-                if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
-                    -- Reset ALL children in open sections
-                    for _, child in pairs(container:GetChildren()) do
-                        if child:IsA('Frame') and child:FindFirstChild('Background') then
+                local container = v.Container
+                if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
+                    for _, child in ipairs(container:GetChildren()) do
+                        if child:IsA("Frame") and child:FindFirstChild("Background") then
                             child.Background.Position = UDim2.new(0, 0, 0, 0)
                             child.Background.AnchorPoint = Vector2.new(1, 0)
                         end
                     end
                 end
+            elseif v:FindFirstChild("Background") then
+                v.Background.Position = UDim2.new(0, 0, 0, 0)
+                v.Background.AnchorPoint = Vector2.new(1, 0)
             end
         end
     end
-    
-    -- STEP 2: Wait one frame to ensure resets applied
+
+    -- STEP 2: Pastikan reset sudah terapply
     task.wait()
-    
-    -- STEP 3: Animate everything
+
+    -- STEP 3: Animate (Section dulu, lalu elemen biasa)
     task.spawn(function()
-        for idx, v in pairs(ScrollingFrame_1:GetChildren()) do
-            if v:IsA('Frame') then
-                -- Animate regular elements
-                if v:FindFirstChild('Background') then
+        for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+            if v:IsA("Frame") then
+                if v.Name == "Real Background" and v:FindFirstChild("Background") then
+                    local section = v.Background
                     tw({
-                        v = v.Background,
+                        v = section,
                         t = 0.3,
                         s = Enum.EasingStyle.Exponential,
                         d = "InOut",
-                        g = {AnchorPoint = Vector2.new(0, 0)}
+                        g = { AnchorPoint = Vector2.new(0, 0) }
                     }):Play()
-                    
-                -- Animate section elements
-                elseif v.Name == "Real Background" and v:FindFirstChild('Background') then
-                    local section = v:FindFirstChild('Background')
-                    if section then
-                        tw({
-                            v = section,
-                            t = 0.3,
-                            s = Enum.EasingStyle.Exponential,
-                            d = "InOut",
-                            g = {AnchorPoint = Vector2.new(0, 0)}
-                        }):Play()
-                    end
-                    
-                    local container = v:FindFirstChild('Container')
-                    if container and container:FindFirstChild('IsOpen') and container.IsOpen.Value then
-                        -- Animate section children with stagger
-                        for childIdx, child in pairs(container:GetChildren()) do
-                            if child:IsA('Frame') and child:FindFirstChild('Background') then
+
+                    local container = v:FindFirstChild("Container")
+                    if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
+                        local i = 0
+                        for _, child in ipairs(container:GetChildren()) do
+                            if child:IsA("Frame") and child:FindFirstChild("Background") then
+                                i += 1
                                 task.spawn(function()
-                                    task.wait(childIdx * 0.03)
+                                    task.wait(i * 0.03)
                                     tw({
                                         v = child.Background,
                                         t = 0.3,
                                         s = Enum.EasingStyle.Exponential,
                                         d = "InOut",
-                                        g = {AnchorPoint = Vector2.new(0, 0)}
+                                        g = { AnchorPoint = Vector2.new(0, 0) }
                                     }):Play()
                                 end)
                             end
                         end
                     end
+                elseif v:FindFirstChild("Background") then
+                    tw({
+                        v = v.Background,
+                        t = 0.3,
+                        s = Enum.EasingStyle.Exponential,
+                        d = "InOut",
+                        g = { AnchorPoint = Vector2.new(0, 0) }
+                    }):Play()
                 end
-                
+
                 task.wait(0.05)
             end
         end
     end)
-    
-    -- Show page and update tab appearance
+
+    -- Tampilkan page + update tampilan tab
     InPage_1.Visible = true
-    
-    for i, v in pairs(TabList_1:GetChildren()) do
-        if v:IsA('Frame') and v.Name ~= 'Line' then
-            tw({v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {TextTransparency = 0.7}}):Play()
-            tw({v = v.Func.ImageLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {ImageTransparency = 0.7}}):Play()
+
+    for _, v in pairs(TabList_1:GetChildren()) do
+        if v:IsA("Frame") and v.Name ~= "Line" then
+            tw({ v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0.7 } }):Play()
+            tw({ v = v.Func.ImageLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { ImageTransparency = 0.7 } }):Play()
         end
     end
-    
-    tw({v = Title_3, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {TextTransparency = 0}}):Play()
-    tw({v = ImageLabel_2, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = {ImageTransparency = 0}}):Play()
+
+    tw({ v = Title_3, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0 } }):Play()
+    tw({ v = ImageLabel_2, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { ImageTransparency = 0 } }):Play()
     Page_1.Visible = true
     twSelect()
 end
