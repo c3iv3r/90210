@@ -4142,7 +4142,7 @@ return New
 
 	function Tabs:Notify(p)
 		local Title = p.Title or 'null'
-		local Desc = p.Desc or ''
+		local Content = p.Content or ''
 		local Time = p.Time or 5
 
 		local Shadow = Instance.new("ImageLabel")
@@ -4248,7 +4248,7 @@ return New
 		Description_1.LayoutOrder = 2
 		Description_1.Size = UDim2.new(1, 0,0, 0)
 		Description_1.Font = Enum.Font.GothamBold
-		Description_1.Text = tostring(Desc)
+		Description_1.Text = tostring(Content)
 		Description_1.TextColor3 = themes[IsTheme]['Text & Icon']
 		Description_1.TextSize = 10
 		Description_1.TextTransparency = 0
@@ -4273,7 +4273,7 @@ return New
 
 		Background_1.Size = UDim2.new(1, 0,1, 0) - UDim2.fromOffset(5, 5)
 
-		if Desc and Desc ~= '' then
+		if Content and Content ~= '' then
 			Description_1.Visible = true
 			Frame_2.Visible = true
 		end
