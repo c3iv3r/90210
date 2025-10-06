@@ -455,7 +455,7 @@ do
 
 		return Background, f
 	end
-	function addDropdownSelect(p, p2, Multi, Callback, Value, List)
+	function addDropdownSelect(p, p2, Multi, Callback, Value, Values)
 	local F = Instance.new("Frame")
 	local UIListLayout_1 = Instance.new("UIListLayout")
 	local UIPadding_1 = Instance.new("UIPadding")
@@ -964,7 +964,7 @@ do
 		end
 	end
 
-	for i, v in ipairs(List) do
+	for i, v in ipairs(Values) do
 		itemslist:Add(v, i)
 	end
 
@@ -2685,8 +2685,8 @@ end
 			local Title = p.Title or 'null'
 			local Desc = p.Desc or ''
 			local Image = p.Image or ''
-			local List = p.List or {}
-			local Value = p.Value or List[1]
+			local Values = p.Values or {}
+			local Value = p.Value or Values[1]
 			local Multi = p.Multi or false
 			local Callback = p.Callback or function() end
 
@@ -2695,7 +2695,7 @@ end
 			Config:SetTextTransparencyTitle(0)
 			Config:SetSizeT(125)
 
-			local DropdownSelect = addDropdownSelect(Dropdown, Dropdown, Multi, Callback, Value, List)
+			local DropdownSelect = addDropdownSelect(Dropdown, Dropdown, Multi, Callback, Value, Values)
 
 			local New = {}
 
