@@ -556,7 +556,7 @@ do
 	local UIPadding_4 = Instance.new("UIPadding")
 
 	DropdownSelect.Parent = ScreenGui
-	DropdownSelect.BackgroundColor3 = Color3.fromRGB(24,24,31)
+	DropdownSelect.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
 	DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownSelect.BorderSizePixel = 0
 	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
@@ -829,10 +829,10 @@ do
 		Item_1.Name = "Item"
 		Item_1.Parent = ScrollingFrame_1
 		Item_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-		Item_1.BackgroundTransparency = 0.95
+		Item_1.BackgroundTransparency = 1
 		Item_1.BorderColor3 = Color3.fromRGB(0,0,0)
 		Item_1.BorderSizePixel = 0
-		Item_1.Size = UDim2.new(1, 0,0, 18)
+		Item_1.Size = UDim2.new(1, 0,0, 22)
 
 		TextLabel_1.Parent = Item_1
 		TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
