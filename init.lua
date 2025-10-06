@@ -5,8 +5,8 @@ local themes = {
 	index = {'Dark'},
 	Dark = {
 		['Shadow'] = Color3.fromRGB(15, 15, 15),
-		['Background'] = Color3.fromRGB(20, 20, 20),
-		['Page'] = Color3.fromRGB(18, 18, 18),
+		['Background'] = Color3.fromRGB(0, 0, 0),
+		['Page'] = Color3.fromRGB(15, 15, 15),
 		['Main'] = Color3.fromRGB(50, 50, 50),
 		['Text & Icon'] = Color3.fromRGB(230, 230, 230),
 		['Function'] = {
@@ -29,9 +29,9 @@ local themes = {
 				['Value Background'] = Color3.fromRGB(20, 20, 20),
 				['Value Stroke'] = Color3.fromRGB(230, 230, 230),
 				['Dropdown Select'] = {
-					['Background'] = Color3.fromRGB(15, 15, 15),
-					['Search'] = Color3.fromRGB(15, 15, 15),
-					['Item Background'] = Color3.fromRGB(15, 15, 15),
+					['Background'] = Color3.fromRGB(0, 0, 0),
+					['Search'] = Color3.fromRGB(0, 0, 0),
+					['Item Background'] = Color3.fromRGB(0, 0, 0),
 				}
 			},
 			['Slider'] = {
@@ -1893,6 +1893,18 @@ end
 				end)
 				pcall(Callback)
 			end)
+
+			local New = {}
+
+			function New:SetTitle(t)
+				Config:SetTitle(t)
+			end
+
+			function New:SetDesc(t)
+				Config:SetDesc(t)
+			end
+
+			return New
 		end
 
 		function Func:Slider(p)
