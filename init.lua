@@ -22,7 +22,7 @@ local themes = {
 				}
 			},
 			['Label'] = {
-				['Background'] = Color3.fromRGB(25, 25, 25),
+				['Background'] = Color3.fromRGB(0, 0, 0),
 			},
 			['Dropdown'] = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
