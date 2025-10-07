@@ -566,7 +566,7 @@ do
 
 	local Overlay = Instance.new("Frame")
 	Overlay.Name = "DropdownOverlay"
-	Overlay.Parent = ScreenGui
+	Overlay.Parent = Background_1
 	Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	Overlay.BackgroundTransparency = 0.5  -- Semi-transparent
 	Overlay.BorderSizePixel = 0
