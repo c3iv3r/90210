@@ -1082,6 +1082,7 @@ local Notification = Instance.new("Frame")
 		Shadow.ImageTransparency = 0.5
 		Shadow.ScaleType = Enum.ScaleType.Slice
 		Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+		Shadow.ZIndex = 100
 
 		UIPadding_1.Parent = Shadow
 		UIPadding_1.PaddingBottom = UDim.new(0,5)
@@ -1099,6 +1100,8 @@ local Notification = Instance.new("Frame")
 		Background_1.Size = UDim2.new(1, 0,1, 0)
 		Background_1.ClipsDescendants = true
 		Background_1.GroupTransparency = 1
+		Background_1.ZIndex = 100
+		
 
 		UICorner_1.Parent = Background_1
 		UICorner_1.CornerRadius = UDim.new(0,6)
