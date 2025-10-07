@@ -22,7 +22,7 @@ local themes = {
 				}
 			},
 			['Label'] = {
-				['Background'] = Color3.fromRGB(0, 0, 0),
+				['Background'] = Color3.fromRGB(15, 15, 15),
 			},
 			['Dropdown'] = {
 				['Background'] = Color3.fromRGB(25, 25, 25),
@@ -980,23 +980,23 @@ local Notification = Instance.new("Frame")
 
 	Notification.Name = "Notification"
 	Notification.Parent = ScreenGui
-	Notification.AnchorPoint = Vector2.new(1, 1)
+	Notification.AnchorPoint = Vector2.new(1, 0)
 	Notification.BackgroundColor3 = Color3.fromRGB(255,255,255)
 	Notification.BackgroundTransparency = 1
 	Notification.BorderColor3 = Color3.fromRGB(0,0,0)
 	Notification.BorderSizePixel = 0
-	Notification.Position = UDim2.new(1, 0,1, 0)
+	Notification.Position = UDim2.new(1, 0, 0, 0)
 	Notification.Size = UDim2.new(0, 100,0, 100)
 	Notification.ZIndex = 1000
 
 	UIPaddingUIListLayoutNotification_1.Parent = Notification
-	UIPaddingUIListLayoutNotification_1.PaddingBottom = UDim.new(0,20)
+	UIPaddingUIListLayoutNotification_1.PaddingTop = UDim.new(0, 20)
 	UIPaddingUIListLayoutNotification_1.PaddingRight = UDim.new(0,5)
 
 	UIListLayoutNotification_1.Parent = Notification
 	UIListLayoutNotification_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
 	UIListLayoutNotification_1.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayoutNotification_1.VerticalAlignment = Enum.VerticalAlignment.Bottom
+	UIListLayoutNotification_1.VerticalAlignment = Enum.VerticalAlignment.Top
 
 	function Library:Notify(p)
 	local Title = p.Title or 'null'
@@ -1009,22 +1009,22 @@ local Notification = Instance.new("Frame")
 		Notification = Instance.new("Frame")
 		Notification.Name = "Notification"
 		Notification.Parent = ScreenGui
-		Notification.AnchorPoint = Vector2.new(1, 1)
+		Notification.AnchorPoint = Vector2.new(1, 0)
 		Notification.BackgroundTransparency = 1
-		Notification.Position = UDim2.new(1, 0, 1, 0)
+		Notification.Position = UDim2.new(1, 0, 0, 0)
 		Notification.Size = UDim2.new(0, 100, 0, 100)
 		Notification.ZIndex = 1000
 		
 		local UIPadding = Instance.new("UIPadding")
 		UIPadding.Parent = Notification
-		UIPadding.PaddingBottom = UDim.new(0, 20)
+		UIPadding.PaddingTop = UDim.new(0, 20)
 		UIPadding.PaddingRight = UDim.new(0, 5)
 		
 		local UIListLayout = Instance.new("UIListLayout")
 		UIListLayout.Parent = Notification
 		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
 		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+		UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 	end
 
 
@@ -4179,7 +4179,7 @@ end
     Section_1.Font = Enum.Font.GothamBold
     Section_1.Text = Title
     Section_1.TextColor3 = Color3.fromRGB(255,255,255)
-    Section_1.TextSize = 12
+    Section_1.TextSize = 16
     Section_1.TextXAlignment = Enum.TextXAlignment.Left
 
     addToTheme('Text & Icon', Section_1)
@@ -4189,7 +4189,7 @@ end
     Arrow.AnchorPoint = Vector2.new(1, 0.5)
     Arrow.BackgroundTransparency = 1
     Arrow.Position = UDim2.new(1, -5, 0.5, 0)
-    Arrow.Size = UDim2.new(0, 14, 0, 14)
+    Arrow.Size = UDim2.new(0, 16, 0, 16)
     Arrow.Image = "rbxassetid://14937709869"
     Arrow.ImageTransparency = 0.3
     Arrow.Rotation = Open and 0 or -90
