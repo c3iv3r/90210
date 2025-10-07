@@ -987,6 +987,7 @@ local Notification = Instance.new("Frame")
 	Notification.BorderSizePixel = 0
 	Notification.Position = UDim2.new(1, 0,1, 0)
 	Notification.Size = UDim2.new(0, 100,0, 100)
+	Notification.ZIndex = 1000
 
 	UIPaddingUIListLayoutNotification_1.Parent = Notification
 	UIPaddingUIListLayoutNotification_1.PaddingBottom = UDim.new(0,20)
@@ -1012,6 +1013,7 @@ local Notification = Instance.new("Frame")
 		Notification.BackgroundTransparency = 1
 		Notification.Position = UDim2.new(1, 0, 1, 0)
 		Notification.Size = UDim2.new(0, 100, 0, 100)
+		Notification.ZIndex = 1000
 		
 		local UIPadding = Instance.new("UIPadding")
 		UIPadding.Parent = Notification
@@ -1065,6 +1067,7 @@ local Notification = Instance.new("Frame")
 		Background_1.Size = UDim2.new(1, 0,1, 0)
 		Background_1.ClipsDescendants = true
 		Background_1.GroupTransparency = 1
+		Background_1.ZIndex = 1000
 
 		UICorner_1.Parent = Background_1
 		UICorner_1.CornerRadius = UDim.new(0,6)
