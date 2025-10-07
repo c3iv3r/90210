@@ -816,7 +816,7 @@ TextWrapped=true,
 TextXAlignment="Left",
 RichText=true,
 BackgroundTransparency=1,
-TextSize=14,
+TextSize=12,
 ThemeTag={
 TextColor3="Text"
 },
@@ -837,7 +837,7 @@ TextXAlignment="Left",
 RichText=true,
 BackgroundTransparency=1,
 TextTransparency=.4,
-TextSize=15,
+TextSize=12,
 ThemeTag={
 TextColor3="Text"
 },
@@ -1514,7 +1514,7 @@ TextColor3=(ah~="Primary"and ah~="White")and"Text",
 },
 TextColor3=ah=="Primary"and Color3.new(1,1,1)or ah=="White"and Color3.new(0,0,0)or nil,
 AutomaticSize="XY",
-TextSize=16,
+TextSize=12,
 })
 })
 })
@@ -1567,7 +1567,7 @@ local ao=ah~="Input"
 
 local ap=ac("TextBox",{
 BackgroundTransparency=1,
-TextSize=17,
+TextSize=12,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Regular),
 Size=UDim2.new(1,an and-29 or 0,1,0),
 PlaceholderText=ae,
@@ -1880,7 +1880,7 @@ FontFace=Font.new(ab.Font,Enum.FontWeight.SemiBold),
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=20
+TextSize=12
 })
 local ar=ac("TextLabel",{
 AutomaticSize="XY",
@@ -1893,7 +1893,7 @@ FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=14
+TextSize=12
 })
 
 local as=ac("Frame",{
@@ -1933,7 +1933,7 @@ AutomaticSize="Y",
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 TextXAlignment="Left",
 Text=ag.KeySystem.Note,
-TextSize=16,
+TextSize=12,
 TextTransparency=.4,
 ThemeTag={
 TextColor3="Text",
@@ -1970,7 +1970,7 @@ Text=ag.KeySystem.Thumbnail.Title,
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=16,
+TextSize=12,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 AutomaticSize="XY",
@@ -2132,7 +2132,7 @@ BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.2,
-TextSize=14,
+TextSize=12,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
@@ -2204,7 +2204,7 @@ BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.05,
-TextSize=16,
+TextSize=12,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
@@ -2216,7 +2216,7 @@ BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Regular),
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.2,
-TextSize=14,
+TextSize=12,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
@@ -2721,7 +2721,7 @@ FontFace=Font.new(ab.Font,Enum.FontWeight.SemiBold),
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=20,
+TextSize=12,
 TextWrapped=true,
 Size=UDim2.new(1,ak and-af.IconSize-14 or 0,0,0)
 })
@@ -2759,7 +2759,7 @@ AutomaticSize="Y",
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 TextXAlignment="Left",
 Text=af.Content,
-TextSize=16,
+TextSize=12,
 TextTransparency=.2,
 ThemeTag={
 TextColor3="Text",
@@ -2790,7 +2790,7 @@ Text=af.Thumbnail.Title,
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=16,
+TextSize=12,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 AutomaticSize="XY",
@@ -3100,7 +3100,7 @@ end
 
 local ak=ac("TextLabel",{
 BackgroundTransparency=1,
-TextSize=17,
+TextSize=12,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Regular),
 Size=UDim2.new(1,aj and-29 or 0,1,0),
 TextXAlignment="Left",
@@ -3767,7 +3767,7 @@ local ag
 
 local ah=ac("TextLabel",{
 Text=ae.Title,
-TextSize=17,
+TextSize=12,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 AutomaticSize="XY",
@@ -4022,7 +4022,7 @@ TextWrapped=true,
 BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 Text=ae,
-TextSize=17,
+TextSize=12,
 TextTransparency=1,
 ThemeTag={
 TextColor3="Text",
@@ -4430,7 +4430,7 @@ ao.ImageLabel.ImageTransparency=.4
 
 local ap=ab("TextLabel",{
 Text="Locked",
-TextSize=16,
+TextSize=12,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
 AutomaticSize="XY",
 BackgroundTransparency=1,
@@ -5376,7 +5376,7 @@ TextColor3="Text"
 },
 TextTransparency=.4,
 AutomaticSize="Y",
-TextSize=15,
+TextSize=12,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 LayoutOrder=-1,
@@ -6014,7 +6014,7 @@ ThemeTag={
 TextColor3="Text",
 BackgroundColor3="Text"
 },
-TextSize=15,
+TextSize=12,
 BackgroundTransparency=1,
 TextTransparency=.4,
 LayoutOrder=999,
@@ -6687,7 +6687,7 @@ Text=al,
 
 TextColor3=Color3.fromHex"#ffffff",
 TextTransparency=.2,
-TextSize=14,
+TextSize=12,
 AutomaticSize="Y",
 FontFace=Font.new(ae.Font,Enum.FontWeight.Medium),
 TextXAlignment="Left",
@@ -6871,7 +6871,7 @@ local ay,az,aA=av.Hue,av.Sat,av.Vib
 
 av.UIElements.Title=ae("TextLabel",{
 Text=av.Title,
-TextSize=20,
+TextSize=12,
 FontFace=Font.new(ac.Font,Enum.FontWeight.SemiBold),
 TextXAlignment="Left",
 Size=UDim2.new(1,0,0,0),
@@ -7135,7 +7135,7 @@ local u=ap(p,nil,av.UIElements.Inputs)
 ae("TextLabel",{
 BackgroundTransparency=1,
 TextTransparency=.4,
-TextSize=17,
+TextSize=12,
 FontFace=Font.new(ac.Font,Enum.FontWeight.Regular),
 AutomaticSize="XY",
 ThemeTag={
@@ -8108,7 +8108,7 @@ ThemeTag={
 TextColor3="Text"
 },
 TextTransparency=not ao.Locked and 0.4 or.7,
-TextSize=15,
+TextSize=12,
 Size=UDim2.new(1,0,0,0),
 FontFace=Font.new(ae.Font,Enum.FontWeight.Medium),
 TextWrapped=true,
@@ -8217,7 +8217,7 @@ Text=ao.Title,
 ThemeTag={
 TextColor3="Text"
 },
-TextSize=20,
+TextSize=12,
 TextTransparency=.1,
 Size=UDim2.new(1,-aq,1,0),
 FontFace=Font.new(ae.Font,Enum.FontWeight.SemiBold),
@@ -8436,7 +8436,7 @@ Text="This tab is empty",
 ThemeTag={
 TextColor3="Text"
 },
-TextSize=16,
+TextSize=12,
 TextTransparency=.5,
 BackgroundTransparency=1,
 FontFace=Font.new(ae.Font,Enum.FontWeight.Medium),
@@ -8725,7 +8725,7 @@ ClearTextOnFocus=false,
 BackgroundTransparency=1,
 TextXAlignment="Left",
 FontFace=Font.new(ae.Font,Enum.FontWeight.Regular),
-TextSize=16,
+TextSize=12,
 })
 
 local ao=ag("ImageLabel",{
@@ -8949,7 +8949,7 @@ Text=as,
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=17,
+TextSize=12,
 BackgroundTransparency=1,
 TextXAlignment="Left",
 FontFace=Font.new(ae.Font,Enum.FontWeight.Medium),
@@ -8964,7 +8964,7 @@ Visible=at and true or false,
 ThemeTag={
 TextColor3="Text",
 },
-TextSize=15,
+TextSize=12,
 TextTransparency=.3,
 BackgroundTransparency=1,
 TextXAlignment="Left",
@@ -9141,7 +9141,7 @@ ag("TextLabel",{
 Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
 Text="No results found",
-TextSize=14,
+TextSize=12,
 ThemeTag={
 TextColor3="Text",
 },
@@ -9579,7 +9579,7 @@ BackgroundTransparency=1,
 },{
 ai("TextLabel",{
 Text=aq.User.Anonymous and"Anonymous"or game.Players.LocalPlayer.DisplayName,
-TextSize=17,
+TextSize=12,
 ThemeTag={
 TextColor3="Text",
 },
@@ -9593,7 +9593,7 @@ Name="DisplayName"
 }),
 ai("TextLabel",{
 Text=aq.User.Anonymous and"anonymous"or game.Players.LocalPlayer.Name,
-TextSize=15,
+TextSize=12,
 TextTransparency=.6,
 ThemeTag={
 TextColor3="Text",
@@ -9817,7 +9817,7 @@ BackgroundTransparency=1,
 AutomaticSize="XY",
 Name="Title",
 TextXAlignment="Center",
-TextSize=14,
+TextSize=12,
 ThemeTag={
 TextColor3="Text"
 }
@@ -10637,7 +10637,7 @@ Parent=F.UIElements.Main,
 
 F.UIElements.Title=ai("TextLabel",{
 Text=C.Title,
-TextSize=20,
+TextSize=12,
 FontFace=Font.new(ag.Font,Enum.FontWeight.SemiBold),
 TextXAlignment="Left",
 TextWrapped=true,
@@ -10653,7 +10653,7 @@ Parent=G
 if C.Content then
 ai("TextLabel",{
 Text=C.Content,
-TextSize=16,
+TextSize=12,
 TextTransparency=.4,
 TextWrapped=true,
 RichText=true,
