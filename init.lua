@@ -4084,6 +4084,7 @@ end
 			TextLabel_1.TextTransparency = 0.30000001192092896
 			TextLabel_1.TextWrapped = true
 			TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
+			TextLabel_1.TextTruncate = Enum.TextTruncate.AtEnd
 			TextLabel_1.ClearTextOnFocus = not ClearText
 
 			addToTheme('Text & Value', TextLabel_1)
