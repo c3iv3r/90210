@@ -1400,36 +1400,15 @@ function Library:Window(p)
 	ChSize_1.Image = "rbxassetid://15082210525"
 	ChSize_1.ImageTransparency = 0.5
 
-	local ThemeContainer_1 = Instance.new("Frame")
-    ThemeContainer_1.Name = "ThemeContainer"
-    ThemeContainer_1.Parent = Topbar_1
-    ThemeContainer_1.BackgroundTransparency = 1
-    ThemeContainer_1.BorderSizePixel = 0
-    ThemeContainer_1.Size = UDim2.new(0, 100, 1, 0)  -- Width 100, full height
-    ThemeContainer_1.Position = UDim2.new(0, 80, 0, 0)  -- 10px dari kiri
-    ThemeContainer_1.ZIndex = 2
-
-    local ThemeContainerPadding = Instance.new("UIPadding")
-    ThemeContainerPadding.Parent = ThemeContainer_1
-    ThemeContainerPadding.PaddingTop = UDim.new(0, 5)
-    ThemeContainerPadding.PaddingBottom = UDim.new(0, 5)
-
-    local ThemeContainerLayout = Instance.new("UIListLayout")
-    ThemeContainerLayout.Parent = ThemeContainer_1
-    ThemeContainerLayout.FillDirection = Enum.FillDirection.Horizontal
-    ThemeContainerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-    ThemeContainerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ThemeContainerLayout.Padding = UDim.new(0, 5)
-
 	DropdownValue_1.Name = "DropdownValue"
-	DropdownValue_1.Parent = ThemeContainer_1
-	DropdownValue_1.AnchorPoint = Vector2.new(0, 0.5)
+	DropdownValue_1.Parent = Ct_1
+	DropdownValue_1.AnchorPoint = Vector2.new(1, 0.5)
 	DropdownValue_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
 	DropdownValue_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownValue_1.BorderSizePixel = 0
-	DropdownValue_1.Position = UDim2.new(0, 0,0.5, 0)
-	DropdownValue_1.Size = UDim2.new(0, 80, 0, 20)
-	DropdownValue_1.Transparency = 0
+	DropdownValue_1.Position = UDim2.new(1, 0,0.5, 0)
+	DropdownValue_1.Size = UDim2.new(0, 120,0, 20)
+	DropdownValue_1.Transparency = 1
 
 	Td_1.Name = "Td"
 	Td_1.Parent = Topbar_1
@@ -1448,7 +1427,6 @@ function Library:Window(p)
 	UIListLayout_7.Parent = Td_1
 	UIListLayout_7.Padding = UDim.new(0,8)
 	UIListLayout_7.FillDirection = Enum.FillDirection.Horizontal
-	UIListLayout_7.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout_7.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout_7.VerticalAlignment = Enum.VerticalAlignment.Center
 
@@ -1487,7 +1465,7 @@ function Library:Window(p)
 	Desc_1.TextColor3 = Color3.fromRGB(255,255,255)
 	Desc_1.TextSize = 10
 	Desc_1.TextTransparency = 0.5
-	Desc_1.TextXAlignment = Enum.TextXAlignment.Center
+	Desc_1.TextXAlignment = Enum.TextXAlignment.Left
 	Desc_1.Visible = false
 
 	addToTheme('Text & Icon', Desc_1)
@@ -1511,7 +1489,7 @@ function Library:Window(p)
 	Title_2.Text = Title
 	Title_2.TextColor3 = Color3.fromRGB(255,255,255)
 	Title_2.TextSize = 12
-	Title_2.TextXAlignment = Enum.TextXAlignment.Center
+	Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
 	addToTheme('Text & Icon', Title_2)
 
