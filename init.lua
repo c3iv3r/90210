@@ -561,18 +561,7 @@ do
 	DropdownSelect.BorderSizePixel = 0
 	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
 	DropdownSelect.ClipsDescendants = true
-	DropdownSelect.ZIndex = 20
 	DropdownSelect.Visible = false
-
-	local Overlay = Instance.new("Frame")
-	Overlay.Name = "DropdownOverlay"
-	Overlay.Parent = Shadow_1
-	Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	Overlay.BackgroundTransparency = 0.5  -- Semi-transparent
-	Overlay.BorderSizePixel = 0
-	Overlay.Size = UDim2.new(1, 0, 1, 0)  -- Full screen
-	Overlay.Visible = false
-	Overlay.ZIndex = 15
 
 	addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
 
@@ -728,12 +717,6 @@ do
 			warn("[Dropdown] Window frame tidak ditemukan!")
 			return 
 		end
-
-		Overlay.Visible = true
-		Overlay.BackgroundTransparency = 1
-		tw({v = Overlay, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-			g = {BackgroundTransparency = 0.5}
-		}):Play()
 		
 		DropdownSelect.Visible = true
 		
@@ -762,11 +745,6 @@ do
 
 	local function close()
 		if not isopen then return end
-
-		-- Hide overlay
-		tw({v = Overlay, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
-			g = {BackgroundTransparency = 1}
-		}):Play()
 		
 		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
 		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
@@ -777,26 +755,14 @@ do
 		end)
 	end
 
-	Overlay.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			close()
-		end
-	end)
-
 	U.InputBegan:Connect(function(A)
 		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-			if not isopen then return end
-			
 			local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
-			local mouseX = game:GetService("Players").LocalPlayer:GetMouse().X
-			local mouseY = game:GetService("Players").LocalPlayer:GetMouse().Y
-			
-			if mouseX < B.X or mouseX > B.X + C.X or mouseY < (B.Y - 20 - 1) or mouseY > B.Y + C.Y then
+			if game:GetService "Players".LocalPlayer:GetMouse().X < B.X or game:GetService "Players".LocalPlayer:GetMouse().X > B.X + C.X or game:GetService "Players".LocalPlayer:GetMouse().Y < (B.Y - 20 - 1) or game:GetService "Players".LocalPlayer:GetMouse().Y > B.Y + C.Y then
 				close()
 			end
 		end
 	end)
-
 
 	Click.MouseButton1Click:Connect(function()
 		if not isopen then
@@ -1082,7 +1048,6 @@ local Notification = Instance.new("Frame")
 		Shadow.ImageTransparency = 0.5
 		Shadow.ScaleType = Enum.ScaleType.Slice
 		Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
-		Shadow.ZIndex = 100
 
 		UIPadding_1.Parent = Shadow
 		UIPadding_1.PaddingBottom = UDim.new(0,5)
@@ -1100,8 +1065,6 @@ local Notification = Instance.new("Frame")
 		Background_1.Size = UDim2.new(1, 0,1, 0)
 		Background_1.ClipsDescendants = true
 		Background_1.GroupTransparency = 1
-		Background_1.ZIndex = 100
-		
 
 		UICorner_1.Parent = Background_1
 		UICorner_1.CornerRadius = UDim.new(0,6)
