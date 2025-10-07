@@ -561,7 +561,18 @@ do
 	DropdownSelect.BorderSizePixel = 0
 	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
 	DropdownSelect.ClipsDescendants = true
+	DropdownSelect.ZIndex = 10
 	DropdownSelect.Visible = false
+
+	local Overlay = Instance.new("Frame")
+	Overlay.Name = "DropdownOverlay"
+	Overlay.Parent = ScreenGui
+	Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Overlay.BackgroundTransparency = 0.5  -- Semi-transparent
+	Overlay.BorderSizePixel = 0
+	Overlay.Size = UDim2.new(1, 0, 1, 0)  -- Full screen
+	Overlay.Visible = false
+	Overlay.ZIndex = 9
 
 	addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
 
@@ -717,6 +728,12 @@ do
 			warn("[Dropdown] Window frame tidak ditemukan!")
 			return 
 		end
+
+		Overlay.Visible = true
+		Overlay.BackgroundTransparency = 1
+		tw({v = Overlay, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
+			g = {BackgroundTransparency = 0.5}
+		}):Play()
 		
 		DropdownSelect.Visible = true
 		
@@ -745,6 +762,11 @@ do
 
 	local function close()
 		if not isopen then return end
+
+		-- Hide overlay
+		tw({v = Overlay, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", 
+			g = {BackgroundTransparency = 1}
+		}):Play()
 		
 		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
 		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
@@ -754,6 +776,12 @@ do
 			isopen = false
 		end)
 	end
+
+	Overlay.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			close()
+		end
+	end)
 
 	U.InputBegan:Connect(function(A)
 		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
