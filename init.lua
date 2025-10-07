@@ -561,18 +561,18 @@ do
 	DropdownSelect.BorderSizePixel = 0
 	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
 	DropdownSelect.ClipsDescendants = true
-	DropdownSelect.ZIndex = 10
+	DropdownSelect.ZIndex = 20
 	DropdownSelect.Visible = false
 
 	local Overlay = Instance.new("Frame")
 	Overlay.Name = "DropdownOverlay"
-	Overlay.Parent = Background_1
+	Overlay.Parent = Shadow_1
 	Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	Overlay.BackgroundTransparency = 0.5  -- Semi-transparent
 	Overlay.BorderSizePixel = 0
 	Overlay.Size = UDim2.new(1, 0, 1, 0)  -- Full screen
 	Overlay.Visible = false
-	Overlay.ZIndex = 9
+	Overlay.ZIndex = 15
 
 	addToTheme('Function.Dropdown.Dropdown Select.Background', DropdownSelect)
 
@@ -785,12 +785,18 @@ do
 
 	U.InputBegan:Connect(function(A)
 		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
+			if not isopen then return end
+			
 			local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
-			if game:GetService "Players".LocalPlayer:GetMouse().X < B.X or game:GetService "Players".LocalPlayer:GetMouse().X > B.X + C.X or game:GetService "Players".LocalPlayer:GetMouse().Y < (B.Y - 20 - 1) or game:GetService "Players".LocalPlayer:GetMouse().Y > B.Y + C.Y then
+			local mouseX = game:GetService("Players").LocalPlayer:GetMouse().X
+			local mouseY = game:GetService("Players").LocalPlayer:GetMouse().Y
+			
+			if mouseX < B.X or mouseX > B.X + C.X or mouseY < (B.Y - 20 - 1) or mouseY > B.Y + C.Y then
 				close()
 			end
 		end
 	end)
+
 
 	Click.MouseButton1Click:Connect(function()
 		if not isopen then
