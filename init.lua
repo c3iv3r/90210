@@ -1783,14 +1783,14 @@ function Library:Window(p)
         v.Page.Visible = false
     end
 
-    -- STEP 1: Reset posisi (prioritaskan Section dulu baru elemen biasa)
+    -- STEP 1: Reset posisi ke kiri (start position untuk slide-out dari kiri)
     for _, v in pairs(ScrollingFrame_1:GetChildren()) do
         if v:IsA("Frame") then
             if v.Name == "Real Background" and v:FindFirstChild("Container") then
                 local section = v:FindFirstChild("Background")
                 if section then
                     section.Position = UDim2.new(0, 0, 0, 0)
-                    section.AnchorPoint = Vector2.new(1, 0)
+                    section.AnchorPoint = Vector2.new(1, 0)  -- Anchor di kanan untuk slide dari kiri
                 end
                 local container = v.Container
                 if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
@@ -1808,12 +1808,14 @@ function Library:Window(p)
         end
     end
 
-    -- STEP 2: Pastikan reset sudah terapply
-    task.wait()
+    -- Tampilkan page dan tunggu 1 frame untuk render
+    InPage_1.Visible = true
+    Page_1.Visible = true
+    task.wait()  -- PENTING: Tunggu 1 frame supaya tema ter-apply
 
-    -- STEP 3: Animate (Section dulu, lalu elemen biasa)
+    -- STEP 2: Animasi slide dari kiri ke kanan (anchor dari 1,0 ke 0,0)
     task.spawn(function()
-        for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+        for i, v in ipairs(ScrollingFrame_1:GetChildren()) do
             if v:IsA("Frame") then
                 if v.Name == "Real Background" and v:FindFirstChild("Background") then
                     local section = v.Background
@@ -1827,12 +1829,12 @@ function Library:Window(p)
 
                     local container = v:FindFirstChild("Container")
                     if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
-                        local i = 0
+                        local j = 0
                         for _, child in ipairs(container:GetChildren()) do
                             if child:IsA("Frame") and child:FindFirstChild("Background") then
-                                i += 1
+                                j += 1
                                 task.spawn(function()
-                                    task.wait(i * 0.03)
+                                    task.wait(j * 0.03)
                                     tw({
                                         v = child.Background,
                                         t = 0.3,
@@ -1859,9 +1861,7 @@ function Library:Window(p)
         end
     end)
 
-    -- Tampilkan page + update tampilan tab
-    InPage_1.Visible = true
-
+    -- Update tampilan tab
     for _, v in pairs(TabList_1:GetChildren()) do
         if v:IsA("Frame") and v.Name ~= "Line" then
             tw({ v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0.7 } }):Play()
@@ -1871,7 +1871,6 @@ function Library:Window(p)
 
     tw({ v = Title_3, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0 } }):Play()
     tw({ v = ImageLabel_2, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { ImageTransparency = 0 } }):Play()
-    Page_1.Visible = true
     twSelect()
 end
 
