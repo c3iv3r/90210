@@ -1129,8 +1129,7 @@ function Library:Window(p)
 	local Desc = p.Desc or ''
 	local Icon = p.Icon or 'door-open'
 	local Theme = p.Theme or 'Dark'
-	local Size = UDim2.new(0, 530,0, 400)
-
+	
 	local R, HAA = false, false
 	local HasChangeTheme = p.Theme
 	local IsTheme = p.Theme
