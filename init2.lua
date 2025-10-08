@@ -429,17 +429,63 @@ local SaveManager = {} do
 
         section:Dropdown("SaveManager_ConfigList", { Title = "Config list", Values = self:RefreshConfigList(), Multi = false, Callback = function() end })
         section:Button({Title = "Load Config",
-          Desc = "Load selected config",
-          Callback = function()
-            local name = self.Library.Options.SaveManager_ConfigList:GetValue()
+  Desc = "Load selected config",
+  Callback = function()
+    local dropdown = self.Library.Options.SaveManager_ConfigList
+    
+    -- Debug prints
+    print("=== DEBUG DROPDOWN ===")
+    print("Dropdown object:", dropdown)
+    print("Dropdown.Value:", dropdown and dropdown.Value or "nil")
+    print("Dropdown._DropdownSelect:", dropdown and dropdown._DropdownSelect or "nil")
+    
+    -- Coba beberapa cara ambil value
+    local name = nil
+    
+    if dropdown then
+        -- Cara 1: Langsung dari .Value
+        name = dropdown.Value
+        print("Cara 1 (.Value):", name)
+        
+        -- Cara 2: Dari _DropdownSelect internal
+        if not name and dropdown._DropdownSelect then
+            name = dropdown._DropdownSelect.Value
+            print("Cara 2 (_DropdownSelect.Value):", name)
+        end
+        
+        -- Cara 3: Method GetValue kalau ada
+        if not name and dropdown.GetValue then
+            name = dropdown:GetValue()
+            print("Cara 3 (GetValue):", name)
+        end
+    end
+    
+    print("Final name:", name)
+    print("===================")
+    
+    if not name or name == "" or name == "--" then
+        return self.Library:Notify({ 
+            Title = "Config", 
+            Content = "Please select a config first!", 
+            Duration = 2
+        })
+    end
 
-            local success, err = self:Load(name)
-            if not success then
-                return self.Library:Notify({ Title = "Config", Content = "Failed to load config: " .. err, Duration = 2})
-            end
+    local success, err = self:Load(name)
+    if not success then
+        return self.Library:Notify({ 
+            Title = "Config", 
+            Content = "Failed to load config: " .. err, 
+            Duration = 2
+        })
+    end
 
-            self.Library:Notify({Title = "Config", Content = string.format("Loaded config %q", name), Duration = 2})
-        end})
+    self.Library:Notify({
+        Title = "Config", 
+        Content = string.format("Loaded config %q", name), 
+        Duration = 2
+    })
+end})
         section:Button({Title = "Overwrite Config",
           Desc = "Overwrite selected config",
           Callback = function()
