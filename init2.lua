@@ -431,7 +431,7 @@ local SaveManager = {} do
         section:Button({Title = "Load Config",
           Desc = "Load selected config",
           Callback = function()
-            local name = self.Library.Options.SaveManager_ConfigList.Value
+            local name = self.Library.Options.SaveManager_ConfigList:GetValue()
 
             local success, err = self:Load(name)
             if not success then
@@ -443,7 +443,7 @@ local SaveManager = {} do
         section:Button({Title = "Overwrite Config",
           Desc = "Overwrite selected config",
           Callback = function()
-            local name = self.Library.Options.SaveManager_ConfigList.Value
+            local name = self.Library.Options.SaveManager_ConfigList:GetValue()
 
             local success, err = self:Save(name)
             if not success then
@@ -456,7 +456,7 @@ local SaveManager = {} do
         section:Button({Title = "Delete Config",
           Desc = "Delete selected config",
           Callback = function()
-            local name = self.Library.Options.SaveManager_ConfigList.Value
+            local name = self.Library.Options.SaveManager_ConfigList:GetValue()
 
             local success, err = self:Delete(name)
             if not success then
@@ -478,7 +478,7 @@ local SaveManager = {} do
         section:Button({Title = "Autoload Config",
           Desc = "Set selected config as autoload",
           Callback = function()
-            local name = self.Library.Options.SaveManager_ConfigList.Value
+            local name = self.Library.Options.SaveManager_ConfigList:GetValue()
 
             local success, err = self:SaveAutoloadConfig(name)
             if not success then
