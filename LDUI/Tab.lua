@@ -1129,7 +1129,6 @@ function Library:Window(p)
 	local Desc = p.Desc or ''
 	local Icon = p.Icon or 'door-open'
 	local Theme = p.Theme or 'Dark'
-	local Keybind = p.Config.Keybind or Enum.KeyCode.LeftControl
 	local Size = p.Config.Size or UDim2.new(0, 530,0, 400)
 
 	local R, HAA = false, false
@@ -2711,33 +2710,6 @@ function New:Label(config)
 	local originalParent = ScrollingFrame_1
 	ScrollingFrame_1 = Container
 	local element = Func:Label(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Code(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Code(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:Keybind(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:Keybind(config)
-	ScrollingFrame_1 = originalParent
-	task.defer(updateSize)
-	return element
-end
-
-function New:ColorPicker(config)
-	local originalParent = ScrollingFrame_1
-	ScrollingFrame_1 = Container
-	local element = Func:ColorPicker(config)
 	ScrollingFrame_1 = originalParent
 	task.defer(updateSize)
 	return element
