@@ -1899,7 +1899,7 @@ end
 
 		local Func = {}
 
-		function Func:Toggle(p)
+		function Func:Toggle(id, p)
 			local Value = p.Value or false
 			local Image = p.Image or ''
 			local Callback = p.Callback or function() end
@@ -2028,6 +2028,10 @@ end
 				change()
 			end
 
+			function New:GetValue()
+            return Value
+            end
+
 			return New
 		end
 
@@ -2133,7 +2137,7 @@ end
 			return New
 		end
 
-		function Func:Slider(p)
+		function Func:Slider(id, p)
 			local Title = p.Title or 'null'
 			local Desc = p.Desc or ''
 			local Image = p.Image or ''
@@ -2355,6 +2359,10 @@ end
 					updateSlider(t)
 				end
 			end
+
+			function New:GetValue()
+            return Value
+            end
 
 			return New
 		end
@@ -2919,7 +2927,7 @@ end
 			return New
 		end
 
-		function Func:Dropdown(p)
+		function Func:Dropdown(id, p)
 			local Title = p.Title or 'null'
 			local Desc = p.Desc or ''
 			local Image = p.Image or ''
@@ -2961,6 +2969,10 @@ end
 				local n = t or nil
 				DropdownSelect:Clear(n)
 			end
+
+			function New:GetValue()
+            return Value
+            end
 
 			return New
 		end
@@ -3967,7 +3979,7 @@ end
 			return New
 		end
 
-		function Func:Textbox(p)
+		function Func:Textbox(id, p)
 			local Title = p.Title
 			local Desc = p.Desc or ''
 			local Image = p.Image or ''
@@ -4114,6 +4126,10 @@ end
 			function New:SetPlaceholderText(t)
 				TextLabel_1.PlaceholderText = t
 			end
+
+			function New:GetValue()
+            return Value
+            end
 
 			return New
 		end
@@ -4270,10 +4286,10 @@ function New:SetOpen(state)
 end
 
 -- Tambahkan method untuk setiap tipe elemen
-function New:Toggle(config)
+function New:Toggle(id, config)
 	local originalParent = ScrollingFrame_1
 	ScrollingFrame_1 = Container
-	local element = Func:Toggle(config)
+	local element = Func:Toggle(id, config)
 	ScrollingFrame_1 = originalParent
 	task.defer(updateSize)
 	return element
@@ -4288,19 +4304,19 @@ function New:Button(config)
 	return element
 end
 
-function New:Slider(config)
+function New:Slider(id, config)
 	local originalParent = ScrollingFrame_1
 	ScrollingFrame_1 = Container
-	local element = Func:Slider(config)
+	local element = Func:Slider(id, config)
 	ScrollingFrame_1 = originalParent
 	task.defer(updateSize)
 	return element
 end
 
-function New:Dropdown(config)
+function New:Dropdown(id, config)
 	local originalParent = ScrollingFrame_1
 	ScrollingFrame_1 = Container
-	local element = Func:Dropdown(config)
+	local element = Func:Dropdown(id, config)
 	ScrollingFrame_1 = originalParent
 	task.defer(updateSize)
 	return element
@@ -4342,10 +4358,10 @@ function New:ColorPicker(config)
 	return element
 end
 
-function New:Textbox(config)
+function New:Textbox(id, onfig)
 	local originalParent = ScrollingFrame_1
 	ScrollingFrame_1 = Container
-	local element = Func:Textbox(config)
+	local element = Func:Textbox(id, config)
 	ScrollingFrame_1 = originalParent
 	task.defer(updateSize)
 	return element
