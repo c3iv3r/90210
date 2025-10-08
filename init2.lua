@@ -403,7 +403,7 @@ local SaveManager = {} do
             Title = "Configuration",
             Open = true })
 
-        section:Textbox({ Title = "Config Name",
+        section:Textbox( "SaveManager_ConfigName", { Title = "Config Name",
         Desc = "Enter config name", Value = "", ClearTextOnFocus = false, Placeholder = "Config Name", Callback = function() end })
         section:Button({Title = "Add Config",
         Desc = "",
