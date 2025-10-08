@@ -4135,6 +4135,26 @@ end
 			Type = "Input",  -- TAMBAHKAN ini
 		    Value = Value }
 
+			TextLabel_1:GetPropertyChangedSignal("Text"):Connect(function()
+		    New.Value = TextLabel_1.Text  -- ⭐ Update internal value langsung
+	        end)
+
+			local function onFocusLost()
+		    New.Value = TextLabel_1.Text  -- ⭐ Pastikan value ter-update
+		    if #TextLabel_1.Text > 0 then
+			pcall(Callback, TextLabel_1.Text)
+	    	end
+	        end
+
+			TextLabel_1.FocusLost:Connect(onFocusLost)
+
+			delay(0, function()
+	    	New.Value = TextLabel_1.Text
+	    	if #TextLabel_1.Text > 0 then
+			pcall(Callback, TextLabel_1.Text)
+		    end
+            end)
+
 			function New:SetTitle(t)
 				Config:SetTitle(t)
 			end
@@ -4149,6 +4169,7 @@ end
 
 			function New:SetValue(t)
 				TextLabel_1.Text = t
+				New.Value = t
 			end
 
 			function New:SetClearTextOnFocus(t)
@@ -4158,6 +4179,10 @@ end
 			function New:SetPlaceholderText(t)
 				TextLabel_1.PlaceholderText = t
 			end
+
+			function New:GetText()
+		    return TextLabel_1.Text
+	        end
 
 		 	if idx then
 		    Library.Options[idx] = New
