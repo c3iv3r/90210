@@ -2982,7 +2982,8 @@ end
 			local New = { 
 				Type = "Dropdown",  -- TAMBAHKAN ini
 		        Value = Value,      -- TAMBAHKAN ini
-		        Multi = Multi 
+		        Multi = Multi,
+				_DropdownSelect = DropdownSelect 
 			}
 
 			function New:SetTitle(t)
@@ -3002,14 +3003,36 @@ end
 		    New.Value = t  -- Update internal value
 	        end
 
+			function New:SetValues(values)
+		    if not values or type(values) ~= "table" then return end
+		
+		    -- Clear dropdown dulu
+		    DropdownSelect:Clear()
+		
+		    -- Add semua values baru
+		    for i, v in ipairs(values) do
+			DropdownSelect:Add(v)
+		    end
+		
+		    -- Reset value jadi nil atau values[1]
+		    New.Value = nil
+	        end
+
 			function New:Add(t)
 				DropdownSelect:Add(t)
 			end
 
 			function New:Clear(t)
-				local n = t or nil
-				DropdownSelect:Clear(n)
-			end
+		    local n = t or nil
+		    DropdownSelect:Clear(n)
+		    if n == nil then
+			New.Value = nil  
+		     end
+	        end
+
+			function New:GetValue()
+		    return New.Value
+	        end
 
 			if idx then
 		    Library.Options[idx] = New
