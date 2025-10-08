@@ -781,22 +781,30 @@ do
 	local itemslist = {}
 	local selectedValues = {}
 	local selectedItem
+	
+	local BackingValue = {
+        Current = Multi and {} or nil
+    }
 
-	-- Display logic dari referensi
 	local function Display()
-		local Str = ""
-		
-		if Multi then
-			for text, _ in pairs(selectedValues) do
-				Str = Str .. text .. ", "
-			end
-			Str = Str:sub(1, #Str - 2)
-		else
-			Str = selectedItem or ""
-		end
-		
-		TextLabelValue_1.Text = (Str == "" and "--" or Str)
-	end
+        local Str = ""
+        if Multi then
+            for text, _ in pairs(selectedValues) do
+                Str = Str .. text .. ", "
+            end
+            Str = Str:sub(1, #Str - 2)
+            BackingValue.Current = {}  -- ✅ UPDATE BACKING
+            for k,v in pairs(selectedValues) do
+                table.insert(BackingValue.Current, k)
+            end
+        else
+            Str = selectedItem or ""
+            BackingValue.Current = selectedItem  -- ✅ UPDATE BACKING
+        end
+        TextLabelValue_1.Text = (Str == "" and "--" or Str)
+    end
+        
+	
 
 	function itemslist:Clear(a)
 		local function shouldClear(v)
@@ -1059,7 +1067,18 @@ do
 
 	changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
 
-	return itemslist
+	function itemslist:GetValue()
+        return BackingValue.Current
+    setmetatable(itemslist, {
+        __index = function(t, k)
+            if k == "Value" then
+                return BackingValue.Current
+            end
+            return rawget(t, k)
+        end
+    })
+
+    return itemslist
 end
 end
 
