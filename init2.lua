@@ -411,15 +411,15 @@ local SaveManager = {} do
             local name = self.Library.Options.SaveManager_ConfigName.Value
 
             if name:gsub(" ", "") == "" then
-                return self.Library:Notify("Invalid config name (empty)", 2)
+                return self.Library:Notify({Title = "Config", Content = "Invalid config name (empty)", Duration = 2})
             end
 
             local success, err = self:Save(name)
             if not success then
-                return self.Library:Notify("Failed to create config: " .. err)
+                return self.Library:Notify({Title = "Config", Content = "Failed to create config: " .. err, Duration = 2})
             end
 
-            self.Library:Notify(string.format("Created config %q", name))
+            self.Library:Notify({ Title = "Config", Content = string.format("Created config %q", name), Duration = 2})
 
             self.Library.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
             self.Library.Options.SaveManager_ConfigList:SetValue(nil)
@@ -427,7 +427,7 @@ local SaveManager = {} do
 
         
 
-        section:Dropdown("SaveManager_ConfigList", { Text = "Config list", Values = self:RefreshConfigList(), Multi = false })
+        section:Dropdown("SaveManager_ConfigList", { Title = "Config list", Values = self:RefreshConfigList(), Multi = false })
         section:Button({Title = "Load Config",
           Desc = "Load selected config",
           Callback = function()
@@ -435,10 +435,10 @@ local SaveManager = {} do
 
             local success, err = self:Load(name)
             if not success then
-                return self.Library:Notify("Failed to load config: " .. err)
+                return self.Library:Notify({ Title = "Config", Content = "Failed to load config: " .. err, Duration = 2})
             end
 
-            self.Library:Notify(string.format("Loaded config %q", name))
+            self.Library:Notify({Title = "Config", Content = string.format("Loaded config %q", name), Duration = 2})
         end})
         section:Button({Title = "Overwrite Config",
           Desc = "Overwrite selected config",
@@ -447,10 +447,10 @@ local SaveManager = {} do
 
             local success, err = self:Save(name)
             if not success then
-                return self.Library:Notify("Failed to overwrite config: " .. err)
+                return self.Library:Notify({ Title = "Config", Content = "Failed to overwrite config: " .. err, Duration = 2})
             end
 
-            self.Library:Notify(string.format("Overwrote config %q", name))
+            self.Library:Notify({ Title = "Config", Content = string.format("Overwrote config %q", name), Duration = 2})
         end})
 
         section:Button({Title = "Delete Config",
@@ -460,10 +460,10 @@ local SaveManager = {} do
 
             local success, err = self:Delete(name)
             if not success then
-                return self.Library:Notify("Failed to delete config: " .. err)
+                return self.Library:Notify({ Title = "Config", Content = "Failed to delete config: " .. err, Duration = 2})
             end
 
-            self.Library:Notify(string.format("Deleted config %q", name))
+            self.Library:Notify({ Title = "Config", Content = string.format("Deleted config %q", name), Duration = 2})
             self.Library.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
             self.Library.Options.SaveManager_ConfigList:SetValue(nil)
         end})
@@ -482,21 +482,21 @@ local SaveManager = {} do
 
             local success, err = self:SaveAutoloadConfig(name)
             if not success then
-                return self.Library:Notify("Failed to set autoload config: " .. err)
+                return self.Library:Notify({ Title = "Config", Content = "Failed to set autoload config: " .. err, Duration = 2})
             end
 
-            SaveManager.AutoloadLabel:SetDesc("Current autoload config: " .. name)
-            self.Library:Notify(string.format("Set %q to auto load", name))
+            SaveManager.AutoloadLabel:SetDesc({ Title = "Config", Content = "Current autoload config: " .. name, Duration = 2})
+            self.Library:Notify({ Title = "Config", Content = string.format("Set %q to auto load", name), Duration = 2})
         end})
         section:Button({Title = "Reset Autoload Config",
           Desc = "Reset current autoload config",
           Callback = function()
             local success, err = self:DeleteAutoLoadConfig()
             if not success then
-                return self.Library:Notify("Failed to set autoload config: " .. err)
+                return self.Library:Notify({ Title = "Config", Content = "Failed to set autoload config: " .. err, Duration = 2})
             end
 
-            self.Library:Notify("Set autoload to none")
+            self.Library:Notify({ Title = "Config", Content = "Set autoload to none", Duration = 2})
             SaveManager.AutoloadLabel:SetDesc("Current autoload config: none")
         end})
 
