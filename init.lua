@@ -881,6 +881,7 @@ do
 				else
 					TextLabelValue_1.Text = "--"
 				end
+				Value = selectedList
 				pcall(Callback, selectedList)
 			else
 				for i,v in pairs(ScrollingFrame_1:GetChildren()) do
@@ -935,36 +936,50 @@ do
 		end)
 	end
 
-	function itemslist:SetValue(value)
-		if Multi then
-			selectedValues = {}
+	-- CARI function itemslist:SetValue di dalam addDropdownSelect
+-- GANTI DENGAN INI:
+
+function itemslist:SetValue(value)
+	if Multi then
+		selectedValues = {}
+		if type(value) == "table" then
+			for _, v in ipairs(value) do
+				selectedValues[v] = true
+			end
+			TextLabelValue_1.Text = table.concat(value, ", ")
+		else
 			selectedValues[value] = true
 			TextLabelValue_1.Text = value
-			for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-				if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-					if v.TextLabel.Text == value then
-						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
-					else
-						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
-					end
-				end
-			end
-			pcall(Callback, selectedValues)
-		else
-			Value = value
-			TextLabelValue_1.Text = value
-			for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-				if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-					if v.TextLabel.Text == value then
-						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
-					else
-						tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
-					end
-				end
-			end
-			pcall(Callback, value)
 		end
+		
+		Value = value  -- ⭐ Update Value
+		
+		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+			if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
+				if selectedValues[v.TextLabel.Text] then
+					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+				else
+					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+				end
+			end
+		end
+		pcall(Callback, type(value) == "table" and value or {value})
+	else
+		Value = value  -- ⭐ Update Value
+		TextLabelValue_1.Text = tostring(value)
+		
+		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
+			if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
+				if v.TextLabel.Text == value then
+					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+				else
+					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+				end
+			end
+		end
+		pcall(Callback, value)
 	end
+end
 
 	for i, v in ipairs(Values) do
 		itemslist:Add(v, i)

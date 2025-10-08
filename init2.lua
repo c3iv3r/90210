@@ -427,7 +427,7 @@ local SaveManager = {} do
 
         
 
-        section:Dropdown("SaveManager_ConfigList", { Title = "Config list", Values = self:RefreshConfigList(), Multi = false })
+        section:Dropdown("SaveManager_ConfigList", { Title = "Config list", Values = self:RefreshConfigList(), Multi = false, Callback = function() end })
         section:Button({Title = "Load Config",
           Desc = "Load selected config",
           Callback = function()
