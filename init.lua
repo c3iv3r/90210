@@ -891,6 +891,7 @@ do
 				end
 				hasselect()
 				Value = text
+				New.Value = text
 				TextLabelValue_1.Text = text
 				pcall(Callback, TextLabelValue_1.Text)
 			end
