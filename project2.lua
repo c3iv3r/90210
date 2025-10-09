@@ -4555,7 +4555,7 @@ end
     function Func:Section(p)
     local Title = p.Title or 'null'
     local Open = p.Open == nil and true or p.Open
-    local Icon = p.Icon 
+    local Icon = p.Icon -- Lucide icon name (e.g., "home", "settings")
     local IconSize = p.IconSize or 16
     
     local RealBackground = Instance.new("Frame")
@@ -4591,14 +4591,14 @@ end
     SectionButton.Text = ""
     SectionButton.ZIndex = 2
 
-    
+    -- UIListLayout untuk header (Icon + Text + Arrow)
     UIListLayout_Header.Parent = Section
     UIListLayout_Header.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout_Header.VerticalAlignment = Enum.VerticalAlignment.Center
     UIListLayout_Header.Padding = UDim.new(0, 6)
     UIListLayout_Header.SortOrder = Enum.SortOrder.LayoutOrder
 
-    
+    -- Icon Frame (jika Icon ada)
     local IconFrame
     if Icon then
         IconFrame = Instance.new("Frame")
@@ -4615,8 +4615,8 @@ end
         IconImage.Size = UDim2.new(1, 0, 1, 0)
         IconImage.ImageTransparency = 0.25
         
-        
-        
+        -- Assume you have a Lucide icon loader function
+        -- Format: GetLucideIcon(iconName) returns {Image, ImageRectOffset, ImageRectSize}
         if GetLucideIcon then
             local iconData = GetLucideIcon(Icon)
             if iconData then
@@ -4635,7 +4635,7 @@ end
     Section_1.BackgroundTransparency = 1
     Section_1.BorderColor3 = Color3.fromRGB(0,0,0)
     Section_1.BorderSizePixel = 0
-    Section_1.Size = UDim2.new(1, -(IconSize + 6 + 21 + 6), 0, 20) 
+    Section_1.Size = UDim2.new(1, -(IconSize + 6 + 21 + 6), 0, 20) -- Auto adjust for icon and arrow
     Section_1.Font = Enum.Font.GothamBold
     Section_1.Text = Title
     Section_1.TextColor3 = Color3.fromRGB(255,255,255)
@@ -4668,7 +4668,7 @@ end
     Container.Visible = Open
     Container.ClipsDescendants = false
     
-    
+    -- Flag untuk track state section
     local SectionState = Instance.new("BoolValue")
     SectionState.Name = "IsOpen"
     SectionState.Value = Open
@@ -4681,22 +4681,38 @@ end
     local isOpen = Open
     local currentIcon = Icon
 
-    local function updateSize()
+    local function updateSize(animate)
         task.defer(function()
             local contentHeight = 20
             if isOpen then
                 contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
             end
-            RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+            
+            if animate then
+                -- Animate size change
+                tw({
+                    v = RealBackground,
+                    t = 0.2,
+                    s = Enum.EasingStyle.Quad,
+                    d = "Out",
+                    g = {Size = UDim2.new(1, 0, 0, contentHeight)}
+                }):Play()
+            else
+                -- Instant size change
+                RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+            end
         end)
     end
 
-    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        updateSize(false) -- Don't animate on content changes
+    end)
 
     SectionButton.MouseButton1Click:Connect(function()
         isOpen = not isOpen
         SectionState.Value = isOpen
         
+        -- Animate arrow rotation
         tw({
             v = Arrow, 
             t = 0.2, 
@@ -4706,17 +4722,19 @@ end
         }):Play()
         
         if isOpen then
+            -- Opening: Show content first, then animate size
             Container.Visible = true
-            Container.Size = UDim2.new(1, 0, 1, -25)
-            updateSize()
+            task.wait() -- Wait 1 frame for UIListLayout to calculate
+            updateSize(true) -- Animate
         else
-            updateSize()
-            task.wait(0.05)
+            -- Closing: Animate size first, then hide content
+            updateSize(true) -- Animate
+            task.wait(0.2) -- Wait for animation to complete
             Container.Visible = false
         end
     end)
 
-    delay(0.1, updateSize)
+    delay(0.1, function() updateSize(false) end)
 
     local New = {}
 
@@ -4730,13 +4748,13 @@ end
             return
         end
 
-        
+        -- Destroy old icon if exists
         if IconFrame then
             IconFrame:Destroy()
             IconFrame = nil
         end
 
-        
+        -- Create new icon if iconName provided
         if iconName then
             currentIcon = iconName
 
@@ -4763,12 +4781,12 @@ end
 
             addToTheme('Text & Icon', IconImage)
 
-            
+            -- Adjust text size
             local offset = IconSize + 6 + 21 + 6
             Section_1.Size = UDim2.new(1, -offset, 0, 20)
         else
             currentIcon = nil
-            
+            -- Reset text size
             Section_1.Size = UDim2.new(1, -(21 + 6), 0, 20)
         end
     end
@@ -4787,7 +4805,7 @@ end
         }
     end
 
-    
+    -- Element wrapper methods dengan auto-update
     function New:Toggle(idx, config)
         local originalParent = ScrollingFrame_1
         ScrollingFrame_1 = Container
