@@ -2020,7 +2020,7 @@ end
 			UIPadding_1.PaddingRight = UDim.new(0,13)
 
 			Frame_1.Parent = F_1
-			Frame_1.BackgroundColor3 = Color3.fromRGB(36, 35, 48)
+			Frame_1.BackgroundColor3 = CurrentTheme.ElementBackground
 			Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
 			Frame_1.BorderSizePixel = 0
 			Frame_1.Size = UDim2.new(0, 34,0, 17)
@@ -2030,7 +2030,7 @@ end
 
 			Frame_2.Parent = Frame_1
 			Frame_2.AnchorPoint = Vector2.new(0, 0.5)
-			Frame_2.BackgroundColor3 = Color3.fromRGB(44, 42, 62)
+			Frame_2.BackgroundColor3 = CurrentTheme.WindowBorder
 			Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
 			Frame_2.BorderSizePixel = 0
 			Frame_2.Position = UDim2.new(0, 0,0.5, 0)
