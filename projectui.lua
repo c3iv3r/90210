@@ -1349,7 +1349,7 @@ function Library:Window(p)
 	Background_1.Name = "Background"
 	Background_1.Parent = Shadow_1
 	Background_1.AnchorPoint = Vector2.new(0.5, 0.5)
-	Background_1.BackgroundColor3 = CurrentTheme.WindowBackground
+	Background_1.BackgroundColor3 = CurrentTheme.ElementBackground
 	Background_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Background_1.BorderSizePixel = 0
 	Background_1.Position = UDim2.new(0.5, 0,0.5, 0)
