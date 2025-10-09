@@ -1946,29 +1946,32 @@ function Library:Window(p)
 		end
 
 		local function chg()
-    -- Sembunyikan semua page
+    
     for _, v in pairs(self.List) do
         v.Page.Visible = false
     end
 
-    -- STEP 1: Reset posisi ke kiri (start position untuk slide-out dari kiri)
+    
     for _, v in pairs(ScrollingFrame_1:GetChildren()) do
         if v:IsA("Frame") then
-            if v.Name == "Real Background" and v:FindFirstChild("Container") then
-                local section = v:FindFirstChild("Background")
-                if section then
-                    section.Position = UDim2.new(0, 0, 0, 0)
-                    section.AnchorPoint = Vector2.new(1, 0)  -- Anchor di kanan untuk slide dari kiri
-                end
-                local container = v.Container
+            
+            if v.Name == "Real Background" and v:FindFirstChild("Background") then
+                local section = v.Background
+                
+                section.Position = UDim2.new(0, 0, 0, 0)
+                section.AnchorPoint = Vector2.new(1, 0)
+                
+                
+                local container = v:FindFirstChild("Container")
                 if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
                     for _, child in ipairs(container:GetChildren()) do
-                        if child:IsA("Frame") and child:FindFirstChild("Background") then
+                        if child:IsA("Frame") and child.Name == "Real Background" and child:FindFirstChild("Background") then
                             child.Background.Position = UDim2.new(0, 0, 0, 0)
                             child.Background.AnchorPoint = Vector2.new(1, 0)
                         end
                     end
                 end
+            
             elseif v:FindFirstChild("Background") then
                 v.Background.Position = UDim2.new(0, 0, 0, 0)
                 v.Background.AnchorPoint = Vector2.new(1, 0)
@@ -1976,15 +1979,16 @@ function Library:Window(p)
         end
     end
 
-    -- Tampilkan page dan tunggu 1 frame untuk render
+    
     InPage_1.Visible = true
     Page_1.Visible = true
-    task.wait()  -- PENTING: Tunggu 1 frame supaya tema ter-apply
+    task.wait()
 
-    -- STEP 2: Animasi slide dari kiri ke kanan (anchor dari 1,0 ke 0,0)
+    
     task.spawn(function()
         for i, v in ipairs(ScrollingFrame_1:GetChildren()) do
             if v:IsA("Frame") then
+                
                 if v.Name == "Real Background" and v:FindFirstChild("Background") then
                     local section = v.Background
                     tw({
@@ -1995,11 +1999,12 @@ function Library:Window(p)
                         g = { AnchorPoint = Vector2.new(0, 0) }
                     }):Play()
 
+                    
                     local container = v:FindFirstChild("Container")
                     if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
                         local j = 0
                         for _, child in ipairs(container:GetChildren()) do
-                            if child:IsA("Frame") and child:FindFirstChild("Background") then
+                            if child:IsA("Frame") and child.Name == "Real Background" and child:FindFirstChild("Background") then
                                 j += 1
                                 task.spawn(function()
                                     task.wait(j * 0.03)
@@ -2014,6 +2019,7 @@ function Library:Window(p)
                             end
                         end
                     end
+                
                 elseif v:FindFirstChild("Background") then
                     tw({
                         v = v.Background,
@@ -2029,7 +2035,7 @@ function Library:Window(p)
         end
     end)
 
-    -- Update tampilan tab
+    
     for _, v in pairs(TabList_1:GetChildren()) do
         if v:IsA("Frame") and v.Name ~= "Line" then
             tw({ v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0.7 } }):Play()
