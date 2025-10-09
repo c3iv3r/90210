@@ -1946,68 +1946,64 @@ function Library:Window(p)
 		end
 
 		local function chg()
-    
+    -- Sembunyikan semua page
     for _, v in pairs(self.List) do
         v.Page.Visible = false
     end
 
-    
-    for _, v in pairs(ScrollingFrame_1:GetChildren()) do
-        if v:IsA("Frame") then
+    -- STEP 1: Reset SEMUA elemen ke posisi awal (kiri)
+    for _, element in pairs(ScrollingFrame_1:GetChildren()) do
+        if element:IsA("Frame") and element:FindFirstChild("Background") then
+            local bg = element.Background
+            bg.AnchorPoint = Vector2.new(1, 0)  -- Anchor kanan = posisi di kiri layar
+            bg.Position = UDim2.new(0, 0, 0, 0)
             
-            if v.Name == "Real Background" and v:FindFirstChild("Background") then
-                local section = v.Background
-                
-                section.Position = UDim2.new(0, 0, 0, 0)
-                section.AnchorPoint = Vector2.new(1, 0)
-                
-                
-                local container = v:FindFirstChild("Container")
-                if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
+            -- Jika ini section dengan container
+            if element:FindFirstChild("Container") then
+                local container = element.Container
+                if container:FindFirstChild("IsOpen") and container.IsOpen.Value then
+                    -- Reset semua item dalam container
                     for _, child in ipairs(container:GetChildren()) do
-                        if child:IsA("Frame") and child.Name == "Real Background" and child:FindFirstChild("Background") then
-                            child.Background.Position = UDim2.new(0, 0, 0, 0)
+                        if child:IsA("Frame") and child:FindFirstChild("Background") then
                             child.Background.AnchorPoint = Vector2.new(1, 0)
+                            child.Background.Position = UDim2.new(0, 0, 0, 0)
                         end
                     end
                 end
-            
-            elseif v:FindFirstChild("Background") then
-                v.Background.Position = UDim2.new(0, 0, 0, 0)
-                v.Background.AnchorPoint = Vector2.new(1, 0)
             end
         end
     end
 
-    
+    -- Tampilkan page dan tunggu 1 frame
     InPage_1.Visible = true
     Page_1.Visible = true
     task.wait()
 
-    
+    -- STEP 2: Animate SEMUA elemen dari kiri ke kanan
     task.spawn(function()
-        for i, v in ipairs(ScrollingFrame_1:GetChildren()) do
-            if v:IsA("Frame") then
+        for i, element in ipairs(ScrollingFrame_1:GetChildren()) do
+            if element:IsA("Frame") and element:FindFirstChild("Background") then
+                local bg = element.Background
                 
-                if v.Name == "Real Background" and v:FindFirstChild("Background") then
-                    local section = v.Background
-                    tw({
-                        v = section,
-                        t = 0.3,
-                        s = Enum.EasingStyle.Exponential,
-                        d = "InOut",
-                        g = { AnchorPoint = Vector2.new(0, 0) }
-                    }):Play()
-
-                    
-                    local container = v:FindFirstChild("Container")
-                    if container and container:FindFirstChild("IsOpen") and container.IsOpen.Value then
-                        local j = 0
+                -- Animate elemen utama
+                tw({
+                    v = bg,
+                    t = 0.3,
+                    s = Enum.EasingStyle.Exponential,
+                    d = "InOut",
+                    g = { AnchorPoint = Vector2.new(0, 0) }  -- Slide ke posisi normal
+                }):Play()
+                
+                -- Jika ini section dengan container terbuka
+                if element:FindFirstChild("Container") then
+                    local container = element.Container
+                    if container:FindFirstChild("IsOpen") and container.IsOpen.Value then
+                        local delay = 0
                         for _, child in ipairs(container:GetChildren()) do
-                            if child:IsA("Frame") and child.Name == "Real Background" and child:FindFirstChild("Background") then
-                                j += 1
+                            if child:IsA("Frame") and child:FindFirstChild("Background") then
+                                delay = delay + 1
                                 task.spawn(function()
-                                    task.wait(j * 0.03)
+                                    task.wait(delay * 0.03)
                                     tw({
                                         v = child.Background,
                                         t = 0.3,
@@ -2019,23 +2015,14 @@ function Library:Window(p)
                             end
                         end
                     end
-                
-                elseif v:FindFirstChild("Background") then
-                    tw({
-                        v = v.Background,
-                        t = 0.3,
-                        s = Enum.EasingStyle.Exponential,
-                        d = "InOut",
-                        g = { AnchorPoint = Vector2.new(0, 0) }
-                    }):Play()
                 end
-
+                
                 task.wait(0.05)
             end
         end
     end)
 
-    
+    -- Update tampilan tab
     for _, v in pairs(TabList_1:GetChildren()) do
         if v:IsA("Frame") and v.Name ~= "Line" then
             tw({ v = v.Func.Title, t = 0.15, s = Enum.EasingStyle.Linear, d = "InOut", g = { TextTransparency = 0.7 } }):Play()
@@ -4581,6 +4568,8 @@ end
     RealBackground.BorderSizePixel = 0
     RealBackground.Size = UDim2.new(1, 0,0, 20)
     RealBackground.ClipsDescendants = true
+    Section.AnchorPoint = Vector2.new(0, 0)  
+    Section.Position = UDim2.new(0, 0, 0, 0)
 
     Section.Name = "Background"
     Section.Parent = RealBackground
@@ -4673,6 +4662,7 @@ end
     Container.Size = UDim2.new(1, 0, 1, -25)
     Container.Visible = Open
     Container.ClipsDescendants = false
+    Container.AnchorPoint = Vector2.new(0, 0)
     
     -- Flag untuk track state section
     local SectionState = Instance.new("BoolValue")
