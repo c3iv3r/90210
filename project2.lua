@@ -1955,7 +1955,7 @@ function Library:Window(p)
     for _, element in pairs(ScrollingFrame_1:GetChildren()) do
         if element:IsA("Frame") and element:FindFirstChild("Background") then
             local bg = element.Background
-            bg.AnchorPoint = Vector2.new(1, 0)  -- Anchor kanan = posisi di kiri layar
+            bg.AnchorPoint = Vector2.new(-1, 0)  -- Anchor kanan = posisi di kiri layar
             bg.Position = UDim2.new(0, 0, 0, 0)
             
             -- Jika ini section dengan container
