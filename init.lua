@@ -457,7 +457,45 @@ do
 
 		return Background, f
 	end
+
 	function addDropdownSelect(p, p2, Multi, Callback, Value, Values)
+	
+	
+	
+	local DropdownState = {
+		Type = "Dropdown",
+		Multi = Multi or false,
+		Value = Value,
+		Values = Values or {},
+		AllowNone = true, 
+		Callback = Callback or function() end,
+		Opened = false,
+		Locked = false,
+		
+		
+		Items = {}, 
+		SelectedItems = {}, 
+		
+		
+		UI = {
+			Container = nil,
+			ValueLabel = nil,
+			SearchBox = nil,
+			ScrollFrame = nil,
+			WindowFrame = nil
+		}
+	}
+	
+	
+	if DropdownState.Multi and not DropdownState.Value then
+		DropdownState.Value = {}
+	elseif DropdownState.Multi and type(DropdownState.Value) ~= "table" then
+		DropdownState.Value = {DropdownState.Value}
+	end
+	
+	
+	
+	
 	local F = Instance.new("Frame")
 	local UIListLayout_1 = Instance.new("UIListLayout")
 	local UIPadding_1 = Instance.new("UIPadding")
@@ -540,6 +578,7 @@ do
 
 	addToTheme('Text & Icon', ImageLabel_1)
 
+	
 	local DropdownSelect = Instance.new("Frame")
 	local UICorner_1 = Instance.new("UICorner")
 	local UIStrokeDropdown_1 = Instance.new("UIStroke")
@@ -677,10 +716,13 @@ do
 	UIPadding_4.Parent = Frame_2
 	UIPadding_4.PaddingTop = UDim.new(0,25)
 
-	local Click = click(p2)
-	local isopen = false
-
-	-- OPTIMASI: Cache window reference di awal
+	
+	DropdownState.UI.Container = DropdownSelect
+	DropdownState.UI.ValueLabel = TextLabelValue_1
+	DropdownState.UI.SearchBox = TextBox_1
+	DropdownState.UI.ScrollFrame = ScrollingFrame_1
+	
+	
 	local windowFrame = nil
 	do
 		local current = p2
@@ -694,137 +736,133 @@ do
 			depth = depth + 1
 		end
 	end
-
-	TextBox_1.Changed:Connect(function()
-		local SearchT = string.lower(TextBox_1.Text)
-		for i, v in pairs(ScrollingFrame_1:GetChildren()) do
-			if v:IsA("Frame") then
-				if SearchT ~= "" and v:FindFirstChild("TextLabel") then
-					if string.find(string.lower(v.TextLabel.Text), SearchT) then
-						v.Visible = true
-					else
-						v.Visible = false
+	DropdownState.UI.WindowFrame = windowFrame
+	
+	
+	
+	
+	
+	
+	local function Display()
+		local Str = ""
+		
+		if DropdownState.Multi then
+			
+			for _, ItemData in ipairs(DropdownState.Items) do
+				local title = type(ItemData.Original) == "table" and ItemData.Original.Title or ItemData.Original
+				
+				
+				local isSelected = false
+				for _, selectedVal in ipairs(DropdownState.Value) do
+					local selectedTitle = type(selectedVal) == "table" and selectedVal.Title or selectedVal
+					if title == selectedTitle then
+						isSelected = true
+						break
 					end
-				else
-					v.Visible = true
+				end
+				
+				if isSelected then
+					Str = Str .. title .. ", "
 				end
 			end
-		end
-	end)
-
-	local function open()
-		if isopen then return end
-		
-		if not windowFrame then 
-			warn("[Dropdown] Window frame tidak ditemukan!")
-			return 
+			Str = Str:sub(1, #Str - 2)
+		else
+			
+			Str = type(DropdownState.Value) == "table" and DropdownState.Value.Title or tostring(DropdownState.Value or "")
 		end
 		
-		DropdownSelect.Visible = true
-		
-		-- Position di sisi kanan window
-		local windowRight = windowFrame.AbsolutePosition.X + windowFrame.AbsoluteSize.X
-		local windowTop = windowFrame.AbsolutePosition.Y
-		
-		local targetX = windowRight - 160
-		local targetY = windowTop + 50
-		local finalHeight = windowFrame.AbsoluteSize.Y - 60
-		
-		tw({
-			v = DropdownSelect, 
-			t = 0.15, 
-			s = Enum.EasingStyle.Exponential, 
-			d = "Out", 
-			g = {
-				Size = UDim2.new(0, 150, 0, finalHeight),
-				Position = UDim2.new(0, targetX, 0, targetY)
-			}
-		}):Play()
-		
-		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 0.95}}):Play()
-		isopen = true
+		DropdownState.UI.ValueLabel.Text = (Str == "" and "--" or Str)
 	end
-
-	local function close()
-		if not isopen then return end
-		
-		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
-		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
-		gf:Play()
-		gf.Completed:Connect(function()
-			DropdownSelect.Visible = false
-			isopen = false
+	
+	
+	local function SafeCallback()
+		task.spawn(function()
+			pcall(DropdownState.Callback, DropdownState.Value)
 		end)
 	end
-
-	U.InputBegan:Connect(function(A)
-		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
-			local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
-			if game:GetService "Players".LocalPlayer:GetMouse().X < B.X or game:GetService "Players".LocalPlayer:GetMouse().X > B.X + C.X or game:GetService "Players".LocalPlayer:GetMouse().Y < (B.Y - 20 - 1) or game:GetService "Players".LocalPlayer:GetMouse().Y > B.Y + C.Y then
-				close()
-			end
-		end
-	end)
-
-	Click.MouseButton1Click:Connect(function()
-		if not isopen then
-			open()
-		else
-			close()
-		end
-	end)
-
-	local itemslist = {}
-	local selectedValues = {}
-	local selectedItem
-
-	function itemslist:Clear(a)
-		local function shouldClear(v)
-			if a == nil then
-				return true
-			elseif type(a) == "string" then
-				return v:FindFirstChild("TextLabel") and v.TextLabel.Text == a
-			elseif type(a) == "table" then
-				for _, name in ipairs(a) do
-					if v:FindFirstChild("TextLabel") and v.TextLabel.Text == name then
-						return true
-					end
-				end
-			end
-			return false
-		end
-
-		if Multi then
-			selectedValues = {}
-			TextLabelValue_1.Text = "--"
-			pcall(Callback ,selectedValues)
-		end
-
-		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-			if v:IsA("Frame") and shouldClear(v) then
-				if selectedItem and v:FindFirstChild("TextLabel") and v.TextLabel.Text == selectedItem then
-					selectedItem = nil
-					TextLabelValue_1.Text = "--"
-					pcall(Callback, TextLabelValue_1.Text)
-				end
-				v:Destroy()
-			end
-		end
-
-		if selectedItem == a or TextLabelValue_1.Text == a then
-			selectedItem = nil
-			TextLabelValue_1.Text = "--"
-		end
-
-		if a == nil then
-			selectedItem = nil
-			TextLabelValue_1.Text = "--"
-		end
-
-		Value = nil
+	
+	
+	local function GetTitle(value)
+		return type(value) == "table" and value.Title or value
 	end
-
-	function itemslist:Add(text)
+	
+	
+	local function IsValueInList(value, list)
+		if type(list) ~= "table" then return false end
+		
+		local searchTitle = GetTitle(value)
+		for _, v in ipairs(list) do
+			if GetTitle(v) == searchTitle then
+				return true
+			end
+		end
+		return false
+	end
+	
+	
+	local function RemoveFromList(value, list)
+		local searchTitle = GetTitle(value)
+		for i, v in ipairs(list) do
+			if GetTitle(v) == searchTitle then
+				table.remove(list, i)
+				return true
+			end
+		end
+		return false
+	end
+	
+	
+	local function SelectItem(ItemData, forceState)
+		if DropdownState.Locked then return end
+		
+		local newState = forceState
+		if forceState == nil then
+			newState = not ItemData.Selected
+		end
+		
+		if DropdownState.Multi then
+			if newState then
+				
+				ItemData.Selected = true
+				tw({v = ItemData.UI.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0}}):Play()
+				table.insert(DropdownState.Value, ItemData.Original)
+			else
+				
+				if not DropdownState.AllowNone and #DropdownState.Value == 1 then
+					return 
+				end
+				
+				ItemData.Selected = false
+				tw({v = ItemData.UI.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
+				RemoveFromList(ItemData.Original, DropdownState.Value)
+			end
+		else
+			
+			for _, OtherItem in ipairs(DropdownState.Items) do
+				OtherItem.Selected = false
+				tw({v = OtherItem.UI.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
+			end
+			
+			
+			ItemData.Selected = true
+			tw({v = ItemData.UI.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0}}):Play()
+			DropdownState.Value = ItemData.Original
+		end
+		
+		Display()
+		SafeCallback()
+	end
+	
+	
+	local function CreateItemUI(value, index)
+		local ItemData = {
+			Name = GetTitle(value),
+			Original = value,
+			Selected = false,
+			Index = index,
+			UI = {}
+		}
+		
 		local Item_1 = Instance.new("Frame")
 		local TextLabel_1 = Instance.new("TextLabel")
 
@@ -843,7 +881,7 @@ do
 		TextLabel_1.BorderSizePixel = 0
 		TextLabel_1.Size = UDim2.new(1, 0,1, 0)
 		TextLabel_1.Font = Enum.Font.GothamBold
-		TextLabel_1.Text = text
+		TextLabel_1.Text = ItemData.Name
 		TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
 		TextLabel_1.TextSize = 12
 		TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
@@ -855,140 +893,261 @@ do
 		Instance.new("UICorner", Item_1).CornerRadius = UDim.new(0, 4)
 		Instance.new("UIPadding", Item_1).PaddingLeft = UDim.new(0, 5)
 
-		local ClickItem = click(Item_1)
-		local function unselect()
-			tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
-		end
-		local function hasselect()
-			tw({v = TextLabel_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0}}):Play()
-		end
-
-		ClickItem.MouseButton1Click:Connect(function()
-			if Multi then
-				if selectedValues[text] then
-					selectedValues[text] = nil
-					unselect()
-				else
-					selectedValues[text] = true
-					hasselect()
-				end
-				local selectedList = {}
-				for i, v in pairs(selectedValues) do
-					table.insert(selectedList, i)
-				end
-				if #selectedList > 0 then
-					TextLabelValue_1.Text = table.concat(selectedList, ", ")
-				else
-					TextLabelValue_1.Text = "--"
-				end
-				Value = selectedList
-				pcall(Callback, selectedList)
-			else
-				for i,v in pairs(ScrollingFrame_1:GetChildren()) do
-					if v:IsA("Frame") then
-						tw({v = v.TextLabel, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {TextTransparency = 0.8}}):Play()
-					end
-				end
-				hasselect()
-				Value = text
-				TextLabelValue_1.Text = text
-				pcall(Callback, TextLabelValue_1.Text)
-			end
-		end)
-
-		local function isValueInTable(val, tbl)
-			if type(tbl) ~= "table" then
-				return false
-			end
-
-			for _, v in pairs(tbl) do
-				if v == val then
-					return true
-				end
-			end
-			return false
-		end
-
-		delay(0,function()
-			if Multi then
-				if isValueInTable(text, Value) then
-					hasselect()
-					selectedValues[text] = true
-					local selectedList = {}
-					for i, v in pairs(selectedValues) do
-						table.insert(selectedList, i)
-					end
-					if #selectedList > 0 then
-						TextLabelValue_1.Text = table.concat(selectedList, ", ")
-					else
-						TextLabelValue_1.Text = "--"
-					end
-					pcall(Callback,selectedList)
-				end
-			else
-				if text == Value then
-					hasselect()
-					Value = text
-					TextLabelValue_1.Text = text
-					pcall(Callback,TextLabelValue_1.Text)
-				end
-			end
-		end)
-	end
-
-	-- CARI function itemslist:SetValue di dalam addDropdownSelect
--- GANTI DENGAN INI:
-
-function itemslist:SetValue(value)
-	if Multi then
-		selectedValues = {}
-		if type(value) == "table" then
-			for _, v in ipairs(value) do
-				selectedValues[v] = true
-			end
-			TextLabelValue_1.Text = table.concat(value, ", ")
+		ItemData.UI.Frame = Item_1
+		ItemData.UI.TextLabel = TextLabel_1
+		
+		
+		if DropdownState.Multi then
+			ItemData.Selected = IsValueInList(value, DropdownState.Value)
 		else
-			selectedValues[value] = true
-			TextLabelValue_1.Text = value
+			ItemData.Selected = GetTitle(DropdownState.Value) == ItemData.Name
 		end
 		
-		Value = value  -- ⭐ Update Value
+		
+		if ItemData.Selected then
+			TextLabel_1.TextTransparency = 0
+		end
+		
+		
+		local ClickItem = click(Item_1)
+		ClickItem.MouseButton1Click:Connect(function()
+			SelectItem(ItemData)
+		end)
+		
+		return ItemData
+	end
+	
+	
+	local function Refresh(newValues)
 		
 		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-			if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-				if selectedValues[v.TextLabel.Text] then
-					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
-				else
-					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
-				end
+			if v:IsA("Frame") then
+				v:Destroy()
 			end
 		end
-		pcall(Callback, type(value) == "table" and value or {value})
-	else
-		Value = value  -- ⭐ Update Value
-		TextLabelValue_1.Text = tostring(value)
 		
-		for _, v in ipairs(ScrollingFrame_1:GetChildren()) do
-			if v:IsA("Frame") and v:FindFirstChild("TextLabel") then
-				if v.TextLabel.Text == value then
-					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+		DropdownState.Items = {}
+		DropdownState.Values = newValues or DropdownState.Values
+		
+		
+		for index, value in ipairs(DropdownState.Values) do
+			local ItemData = CreateItemUI(value, index)
+			table.insert(DropdownState.Items, ItemData)
+		end
+		
+		Display()
+		changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
+	end
+	
+	
+	local function Open()
+		if DropdownState.Opened or DropdownState.Locked then return end
+		if not DropdownState.UI.WindowFrame then 
+			warn("[Dropdown] Window frame tidak ditemukan!")
+			return 
+		end
+		
+		DropdownSelect.Visible = true
+		DropdownState.Opened = true
+		
+		
+		local windowRight = DropdownState.UI.WindowFrame.AbsolutePosition.X + DropdownState.UI.WindowFrame.AbsoluteSize.X
+		local windowTop = DropdownState.UI.WindowFrame.AbsolutePosition.Y
+		
+		local targetX = windowRight - 160
+		local targetY = windowTop + 50
+		local finalHeight = DropdownState.UI.WindowFrame.AbsoluteSize.Y - 60
+		
+		tw({
+			v = DropdownSelect, 
+			t = 0.15, 
+			s = Enum.EasingStyle.Exponential, 
+			d = "Out", 
+			g = {
+				Size = UDim2.new(0, 150, 0, finalHeight),
+				Position = UDim2.new(0, targetX, 0, targetY)
+			}
+		}):Play()
+		
+		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 0.95}}):Play()
+	end
+	
+	
+	local function Close()
+		if not DropdownState.Opened then return end
+		
+		DropdownState.Opened = false
+		
+		tw({v = UIStrokeDropdown_1, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Transparency = 1}}):Play()
+		local gf = tw({v = DropdownSelect, t = 0.15, s = Enum.EasingStyle.Linear, d = "Out", g = {Size = UDim2.new(0, 150,0, 0)}})
+		gf:Play()
+		gf.Completed:Connect(function()
+			DropdownSelect.Visible = false
+		end)
+	end
+	
+	
+	
+	
+	
+	
+	TextBox_1.Changed:Connect(function()
+		local SearchT = string.lower(TextBox_1.Text)
+		for _, ItemData in ipairs(DropdownState.Items) do
+			if SearchT ~= "" then
+				if string.find(string.lower(ItemData.Name), SearchT, 1, true) then
+					ItemData.UI.Frame.Visible = true
 				else
-					tw({v = v.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+					ItemData.UI.Frame.Visible = false
 				end
+			else
+				ItemData.UI.Frame.Visible = true
 			end
 		end
-		pcall(Callback, value)
+	end)
+	
+	
+	local Click = click(p2)
+	Click.MouseButton1Click:Connect(function()
+		if not DropdownState.Opened then
+			Open()
+		else
+			Close()
+		end
+	end)
+	
+	
+	U.InputBegan:Connect(function(A)
+		if A.UserInputType == Enum.UserInputType.MouseButton1 or A.UserInputType == Enum.UserInputType.Touch then
+			local B, C = DropdownSelect.AbsolutePosition, DropdownSelect.AbsoluteSize
+			local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+			if mouse.X < B.X or mouse.X > B.X + C.X or mouse.Y < (B.Y - 20 - 1) or mouse.Y > B.Y + C.Y then
+				Close()
+			end
+		end
+	end)
+	
+	
+	
+	
+	local API = {}
+	
+	function API:SetValue(value)
+		if DropdownState.Multi then
+			
+			if type(value) ~= "table" then
+				value = {value}
+			end
+			DropdownState.Value = value
+		else
+			DropdownState.Value = value
+		end
+		
+		
+		for _, ItemData in ipairs(DropdownState.Items) do
+			if DropdownState.Multi then
+				ItemData.Selected = IsValueInList(ItemData.Original, DropdownState.Value)
+			else
+				ItemData.Selected = GetTitle(DropdownState.Value) == ItemData.Name
+			end
+			
+			
+			if ItemData.Selected then
+				tw({v = ItemData.UI.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0}}):Play()
+			else
+				tw({v = ItemData.UI.TextLabel, t = 0.05, s = Enum.EasingStyle.Exponential, d = "Out", g = {TextTransparency = 0.8}}):Play()
+			end
+		end
+		
+		Display()
+		SafeCallback()
 	end
-end
-
-	for i, v in ipairs(Values) do
-		itemslist:Add(v, i)
+	
+	function API:GetValue()
+		return DropdownState.Value
 	end
- 
-	changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
-
-	return itemslist
-end
+	
+	function API:SetValues(newValues)
+		if not newValues or type(newValues) ~= "table" then return end
+		Refresh(newValues)
+	end
+	
+	function API:Add(value)
+		table.insert(DropdownState.Values, value)
+		local ItemData = CreateItemUI(value, #DropdownState.Items + 1)
+		table.insert(DropdownState.Items, ItemData)
+		changecanvas(ScrollingFrame_1, UIListLayout_1, 5)
+	end
+	
+	function API:Clear(specificValue)
+		if specificValue == nil then
+			
+			Refresh({})
+			if DropdownState.Multi then
+				DropdownState.Value = {}
+			else
+				DropdownState.Value = nil
+			end
+			Display()
+			SafeCallback()
+		else
+			
+			local valuesToRemove = type(specificValue) == "table" and specificValue or {specificValue}
+			
+			for i = #DropdownState.Values, 1, -1 do
+				local value = DropdownState.Values[i]
+				for _, removeVal in ipairs(valuesToRemove) do
+					if GetTitle(value) == GetTitle(removeVal) then
+						table.remove(DropdownState.Values, i)
+						
+						
+						if DropdownState.Multi then
+							RemoveFromList(value, DropdownState.Value)
+						elseif GetTitle(DropdownState.Value) == GetTitle(value) then
+							DropdownState.Value = nil
+						end
+						break
+					end
+				end
+			end
+			
+			Refresh(DropdownState.Values)
+		end
+	end
+	
+	function API:Lock()
+		DropdownState.Locked = true
+	end
+	
+	function API:Unlock()
+		DropdownState.Locked = false
+	end
+	
+	function API:Open()
+		Open()
+	end
+	
+	function API:Close()
+		Close()
+	end
+	
+	
+	function API:GetState()
+		return DropdownState
+	end
+	
+	
+	
+	
+	
+	
+	Refresh(DropdownState.Values)
+	
+	
+	Display()
+	
+	return API
+   end
 end
 
 local Notification = Instance.new("Frame")
@@ -2960,86 +3119,105 @@ end
 		end
 
 		function Func:Dropdown(idx, p)
-			if type(idx) == "table" and p == nil then
-		    p = idx
-		    idx = nil
-	        end
-			local Title = p.Title or 'null'
-			local Desc = p.Desc or ''
-			local Image = p.Image or ''
-			local Values = p.Values or {}
-			local Value = p.Value or Values[1]
-			local Multi = p.Multi or false
-			local Callback = p.Callback or function() end
+	if type(idx) == "table" and p == nil then
+		p = idx
+		idx = nil
+	end
+	
+	local Title = p.Title or 'null'
+	local Desc = p.Desc or ''
+	local Image = p.Image or ''
+	local Values = p.Values or {}
+	local Value = p.Value or (p.Multi and {} or Values[1])
+	local Multi = p.Multi or false
+	local AllowNone = p.AllowNone
+	if AllowNone == nil then AllowNone = true end
+	local Callback = p.Callback or function() end
 
-			local Dropdown, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Dropdown')
+	local Dropdown, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Dropdown')
 
-			Config:SetTextTransparencyTitle(0)
-			Config:SetSizeT(125)
+	Config:SetTextTransparencyTitle(0)
+	Config:SetSizeT(125)
 
-			local DropdownSelect = addDropdownSelect(Dropdown, Dropdown, Multi, Callback, Value, Values)
+	local DropdownAPI = addDropdownSelect(Dropdown, Dropdown, Multi, Callback, Value, Values)
+	
+	
+	if p.AllowNone ~= nil then
+		local state = DropdownAPI:GetState()
+		state.AllowNone = AllowNone
+	end
 
-			local New = { 
-				Type = "Dropdown",  -- TAMBAHKAN ini
-		        Value = Value,      -- TAMBAHKAN ini
-		        Multi = Multi,
-				_DropdownSelect = DropdownSelect 
-			}
+	
+	
+	
+	local New = { 
+		Type = "Dropdown",
+		Multi = Multi,
+		_API = DropdownAPI  
+	}
 
-			function New:SetTitle(t)
-				Config:SetTitle(t)
-			end
+	function New:SetTitle(t)
+		Config:SetTitle(t)
+	end
 
-			function New:SetDesc(t)
-				Config:SetDesc(t)
-			end
+	function New:SetDesc(t)
+		Config:SetDesc(t)
+	end
 
-			function New:SetVisible(t)
-				Dropdown.Visible = t
-			end
+	function New:SetVisible(t)
+		Dropdown.Visible = t
+	end
 
-			function New:SetValue(t)
-		    DropdownSelect:SetValue(t)
-		    New.Value = t  -- Update internal value
-	        end
+	function New:SetValue(t)
+		DropdownAPI:SetValue(t)
+	end
 
-			function New:SetValues(values)
-		    if not values or type(values) ~= "table" then return end
-		
-		    -- Clear dropdown dulu
-		    DropdownSelect:Clear()
-		
-		    -- Add semua values baru
-		    for i, v in ipairs(values) do
-			DropdownSelect:Add(v)
-		    end
-		
-		    -- Reset value jadi nil atau values[1]
-		    New.Value = nil
-	        end
+	function New:SetValues(values)
+		DropdownAPI:SetValues(values)
+	end
 
-			function New:Add(t)
-				DropdownSelect:Add(t)
-			end
+	function New:Add(t)
+		DropdownAPI:Add(t)
+	end
 
-			function New:Clear(t)
-		    local n = t or nil
-		    DropdownSelect:Clear(n)
-		    if n == nil then
-			New.Value = nil  
-		     end
-	        end
+	function New:Clear(t)
+		DropdownAPI:Clear(t)
+	end
 
-			function New:GetValue()
-		    return New.Value
-	        end
+	function New:GetValue()
+		return DropdownAPI:GetValue()
+	end
+	
+	function New:Lock()
+		DropdownAPI:Lock()
+		Config:Lock() 
+	end
+	
+	function New:Unlock()
+		DropdownAPI:Unlock()
+		Config:Unlock()
+	end
+	
+	function New:Open()
+		DropdownAPI:Open()
+	end
+	
+	function New:Close()
+		DropdownAPI:Close()
+	end
+	
+	function New:SetAllowNone(allow)
+		local state = DropdownAPI:GetState()
+		state.AllowNone = allow
+	end
 
-			if idx then
-		    Library.Options[idx] = New
-	        end
+	
+	if idx then
+		Library.Options[idx] = New
+	end
 
-			return New
-		end
+	return New
+  end
 
 		function Func:Keybind(p)
 			local Title = p.Title or 'null'
@@ -4041,195 +4219,334 @@ end
 			end
 
 			return New
+   end
+
+	function Func:Textbox(idx, p)
+	    if type(idx) == "table" and p == nil then
+		p = idx
+		idx = nil
+	end
+	
+	local Title = p.Title
+	local Desc = p.Desc or ''
+	local Image = p.Image or ''
+	local Value = p.Value or ''
+	local Placeholder = p.Placeholder or 'Paste Your Text'
+	local ClearText = p.ClearText or p.ClearTextOnFocus or false
+	local Callback = p.Callback or function() end
+	local OnChange = p.OnChange or nil 
+	local Locked = p.Locked or false
+	local MaxLength = p.MaxLength or nil
+
+	local Textbox, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Textbox')
+
+	Config:SetTextTransparencyTitle(0)
+	Config:SetSizeT(145)
+
+	local F = Instance.new("Frame")
+	local UIListLayout_1 = Instance.new("UIListLayout")
+	local UIPadding_1 = Instance.new("UIPadding")
+	local Frame_1 = Instance.new("Frame")
+	local UICorner_1 = Instance.new("UICorner")
+	local UIStroke_1 = Instance.new("UIStroke")
+	local UIPadding_2 = Instance.new("UIPadding")
+	local ImageLabel_1 = Instance.new("ImageLabel")
+	local TextLabel_1 = Instance.new("TextBox")
+	local Frame_2 = Instance.new("Frame")
+
+	F.Name = "F"
+	F.Parent = Textbox
+	F.AnchorPoint = Vector2.new(1, 0.5)
+	F.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	F.BackgroundTransparency = 1
+	F.BorderColor3 = Color3.fromRGB(0,0,0)
+	F.BorderSizePixel = 0
+	F.Position = UDim2.new(1, 0,0.5, 0)
+	F.Size = UDim2.new(0, 150,0.800000012, 0)
+
+	UIListLayout_1.Parent = F
+	UIListLayout_1.Padding = UDim.new(0,15)
+	UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
+
+	UIPadding_1.Parent = F
+	UIPadding_1.PaddingRight = UDim.new(0,13)
+
+	Frame_1.Parent = F
+	Frame_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
+	Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	Frame_1.BorderSizePixel = 0
+	Frame_1.Size = UDim2.new(0, 130,0, 25)
+
+	addToTheme('Function.Textbox.Value Background', Frame_1)
+
+	UICorner_1.Parent = Frame_1
+	UICorner_1.CornerRadius = UDim.new(0,4)
+
+	UIStroke_1.Parent = Frame_1
+	UIStroke_1.Color = Color3.fromRGB(255,255,255)
+	UIStroke_1.Thickness = 1
+	UIStroke_1.Transparency = 0.95
+
+	addToTheme('Function.Textbox.Value Stroke', UIStroke_1)
+
+	UIPadding_2.Parent = Frame_1
+	UIPadding_2.PaddingLeft = UDim.new(0,5)
+	UIPadding_2.PaddingRight = UDim.new(0,5)
+
+	ImageLabel_1.Parent = Frame_1
+	ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
+	ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	ImageLabel_1.BackgroundTransparency = 1
+	ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	ImageLabel_1.BorderSizePixel = 0
+	ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
+	ImageLabel_1.Size = UDim2.new(0, 15,0, 15)
+	ImageLabel_1.Image = "rbxassetid://13868675087"
+	ImageLabel_1.ImageTransparency = 0.30000001192092896
+
+	addToTheme('Text & Value', ImageLabel_1)
+
+	TextLabel_1.Name = "TextLabel"
+	TextLabel_1.Parent = Frame_1
+	TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	TextLabel_1.BackgroundTransparency = 1
+	TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
+	TextLabel_1.BorderSizePixel = 0
+	TextLabel_1.Size = UDim2.new(0.800000012, 0,1, 0)
+	TextLabel_1.Font = Enum.Font.GothamBold
+	TextLabel_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
+	TextLabel_1.PlaceholderText = Placeholder
+	TextLabel_1.RichText = true
+	TextLabel_1.Text = Value
+	TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
+	TextLabel_1.TextSize = 10
+	TextLabel_1.TextTransparency = 0.30000001192092896
+	TextLabel_1.TextWrapped = false
+	TextLabel_1.TextScaled = false
+	TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel_1.TextTruncate = Enum.TextTruncate.AtEnd
+	TextLabel_1.ClearTextOnFocus = not ClearText
+
+	addToTheme('Text & Value', TextLabel_1)
+
+	Frame_2.Parent = Frame_1
+	Frame_2.AnchorPoint = Vector2.new(0.5, 1)
+	Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
+	Frame_2.BackgroundTransparency = 0.949999988079071
+	Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
+	Frame_2.BorderSizePixel = 0
+	Frame_2.Position = UDim2.new(0.5, 0,1, 0)
+	Frame_2.Size = UDim2.new(1.05, 0,0, 2)
+
+	
+	
+	
+	local New = { 
+		Type = "Input",
+		Value = Value,
+		Locked = Locked,
+		_canCallback = not Locked,
+		_connections = {},
+		_maxLength = MaxLength,
+	}
+
+	
+	
+	
+	
+	
+	local function safeCallback(callback, ...)
+		local success, err = pcall(callback, ...)
+		if not success then
+			warn("[Textbox Error]:", err)
 		end
+		return success
+	end
 
-		function Func:Textbox(idx, p)
-			if type(idx) == "table" and p == nil then
-		    p = idx
-		    idx = nil
-	        end
-			local Title = p.Title
-			local Desc = p.Desc or ''
-			local Image = p.Image or ''
-			local Value = p.Value or ''
-			local Placeholder = p.Placeholder or 'Paste Your Text'
-			local ClearText = p.ClearText or p.ClearTextOnFocus or false
-			local Callback = p.Callback or function() end
-
-			local Textbox, Config = background(ScrollingFrame_1, Title, Desc, Image, 'Textbox')
-
-			Config:SetTextTransparencyTitle(0)
-			Config:SetSizeT(145)
-
-			local F = Instance.new("Frame")
-			local UIListLayout_1 = Instance.new("UIListLayout")
-			local UIPadding_1 = Instance.new("UIPadding")
-			local Frame_1 = Instance.new("Frame")
-			local UICorner_1 = Instance.new("UICorner")
-			local UIStroke_1 = Instance.new("UIStroke")
-			local UIPadding_2 = Instance.new("UIPadding")
-			local ImageLabel_1 = Instance.new("ImageLabel")
-			local TextLabel_1 = Instance.new("TextBox")
-			local Frame_2 = Instance.new("Frame")
-
-			F.Name = "F"
-			F.Parent = Textbox
-			F.AnchorPoint = Vector2.new(1, 0.5)
-			F.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			F.BackgroundTransparency = 1
-			F.BorderColor3 = Color3.fromRGB(0,0,0)
-			F.BorderSizePixel = 0
-			F.Position = UDim2.new(1, 0,0.5, 0)
-			F.Size = UDim2.new(0, 150,0.800000012, 0)
-
-			UIListLayout_1.Parent = F
-			UIListLayout_1.Padding = UDim.new(0,15)
-			UIListLayout_1.FillDirection = Enum.FillDirection.Horizontal
-			UIListLayout_1.HorizontalAlignment = Enum.HorizontalAlignment.Right
-			UIListLayout_1.SortOrder = Enum.SortOrder.LayoutOrder
-			UIListLayout_1.VerticalAlignment = Enum.VerticalAlignment.Center
-
-			UIPadding_1.Parent = F
-			UIPadding_1.PaddingRight = UDim.new(0,13)
-
-			Frame_1.Parent = F
-			Frame_1.BackgroundColor3 = Color3.fromRGB(24,24,31)
-			Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
-			Frame_1.BorderSizePixel = 0
-			Frame_1.Size = UDim2.new(0, 130,0, 25)
-
-			addToTheme('Function.Textbox.Value Background', Frame_1)
-
-			UICorner_1.Parent = Frame_1
-			UICorner_1.CornerRadius = UDim.new(0,4)
-
-			UIStroke_1.Parent = Frame_1
-			UIStroke_1.Color = Color3.fromRGB(255,255,255)
-			UIStroke_1.Thickness = 1
-			UIStroke_1.Transparency = 0.95
-
-			addToTheme('Function.Textbox.Value Stroke', UIStroke_1)
-
-			UIPadding_2.Parent = Frame_1
-			UIPadding_2.PaddingLeft = UDim.new(0,5)
-			UIPadding_2.PaddingRight = UDim.new(0,5)
-
-			ImageLabel_1.Parent = Frame_1
-			ImageLabel_1.AnchorPoint = Vector2.new(1, 0.5)
-			ImageLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			ImageLabel_1.BackgroundTransparency = 1
-			ImageLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-			ImageLabel_1.BorderSizePixel = 0
-			ImageLabel_1.Position = UDim2.new(1, 0,0.5, 0)
-			ImageLabel_1.Size = UDim2.new(0, 15,0, 15)
-			ImageLabel_1.Image = "rbxassetid://13868675087"
-			ImageLabel_1.ImageTransparency = 0.30000001192092896
-
-			addToTheme('Text & Value', ImageLabel_1)
-
-			TextLabel_1.Name = "TextLabel"
-			TextLabel_1.Parent = Frame_1
-			TextLabel_1.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			TextLabel_1.BackgroundTransparency = 1
-			TextLabel_1.BorderColor3 = Color3.fromRGB(0,0,0)
-			TextLabel_1.BorderSizePixel = 0
-			TextLabel_1.Size = UDim2.new(0.800000012, 0,1, 0)
-			TextLabel_1.Font = Enum.Font.GothamBold
-			TextLabel_1.PlaceholderColor3 = Color3.fromRGB(178,178,178)
-			TextLabel_1.PlaceholderText = Placeholder
-			TextLabel_1.RichText = true
-			TextLabel_1.Text = Value
-			TextLabel_1.TextColor3 = Color3.fromRGB(255,255,255)
-			TextLabel_1.TextSize = 10
-			TextLabel_1.TextTransparency = 0.30000001192092896
-			TextLabel_1.TextWrapped = false
-			TextLabel_1.TextScaled = false
-			TextLabel_1.TextXAlignment = Enum.TextXAlignment.Left
-			TextLabel_1.TextTruncate = Enum.TextTruncate.AtEnd
-			TextLabel_1.ClearTextOnFocus = not ClearText
-
-			addToTheme('Text & Value', TextLabel_1)
-
-			Frame_2.Parent = Frame_1
-			Frame_2.AnchorPoint = Vector2.new(0.5, 1)
-			Frame_2.BackgroundColor3 = Color3.fromRGB(255,255,255)
-			Frame_2.BackgroundTransparency = 0.949999988079071
-			Frame_2.BorderColor3 = Color3.fromRGB(0,0,0)
-			Frame_2.BorderSizePixel = 0
-			Frame_2.Position = UDim2.new(0.5, 0,1, 0)
-			Frame_2.Size = UDim2.new(1.05, 0,0, 2)
-
-			local function o()
-				if #TextLabel_1.Text > 0 then
-					pcall(Callback, TextLabel_1.Text)
-				end
-			end
-
-			TextLabel_1.FocusLost:Connect(o)
-
-			delay(0, o)
-
-			local New = { 
-			Type = "Input",  -- TAMBAHKAN ini
-		    Value = Value }
-
-			TextLabel_1:GetPropertyChangedSignal("Text"):Connect(function()
-		    New.Value = TextLabel_1.Text  -- ⭐ Update internal value langsung
-	        end)
-
-			local function onFocusLost()
-		    New.Value = TextLabel_1.Text  -- ⭐ Pastikan value ter-update
-		    if #TextLabel_1.Text > 0 then
-			pcall(Callback, TextLabel_1.Text)
-	    	end
-	        end
-
-			TextLabel_1.FocusLost:Connect(onFocusLost)
-
-			delay(0, function()
-	    	New.Value = TextLabel_1.Text
-	    	if #TextLabel_1.Text > 0 then
-			pcall(Callback, TextLabel_1.Text)
-		    end
-            end)
-
-			function New:SetTitle(t)
-				Config:SetTitle(t)
-			end
-
-			function New:SetDesc(t)
-				Config:SetDesc(t)
-			end
-
-			function New:SetVisible(t)
-				Textbox.Visible = t
-			end
-
-			function New:SetValue(t)
-				TextLabel_1.Text = t
-				New.Value = t
-			end
-
-			function New:SetClearTextOnFocus(t)
-				TextLabel_1.ClearTextOnFocus = not t
-			end
-
-			function New:SetPlaceholderText(t)
-				TextLabel_1.PlaceholderText = t
-			end
-
-			function New:GetText()
-		    return TextLabel_1.Text
-	        end
-
-		 	if idx then
-		    Library.Options[idx] = New
-	        end
-
-
-			return New
+	
+	local function validateText(text)
+		if New._maxLength and #text > New._maxLength then
+			return text:sub(1, New._maxLength)
 		end
+		return text
+	end
 
+	
+	local function updateState(text, triggerCallback, skipUIUpdate)
+		text = validateText(text)
+		New.Value = text
+		
+		if not skipUIUpdate then
+			TextLabel_1.Text = text
+		end
+		
+		if triggerCallback and New._canCallback then
+			if #text > 0 then
+				safeCallback(Callback, text)
+			end
+		end
+	end
+
+	
+	
+	
+
+	
+	local textChangedConnection = TextLabel_1:GetPropertyChangedSignal("Text"):Connect(function()
+		local currentText = TextLabel_1.Text
+		
+		
+		if New._maxLength and #currentText > New._maxLength then
+			currentText = currentText:sub(1, New._maxLength)
+			TextLabel_1.Text = currentText
+		end
+		
+		
+		New.Value = currentText
+		
+		
+		if OnChange and New._canCallback then
+			safeCallback(OnChange, currentText)
+		end
+	end)
+	table.insert(New._connections, textChangedConnection)
+
+	
+	local focusLostConnection = TextLabel_1.FocusLost:Connect(function()
+		updateState(TextLabel_1.Text, true, true) 
+	end)
+	table.insert(New._connections, focusLostConnection)
+
+	
+	delay(0, function()
+		updateState(Value, true, true)
+	end)
+
+	
+	
+	
+
+	function New:SetTitle(t)
+		Config:SetTitle(t)
+	end
+
+	function New:SetDesc(t)
+		Config:SetDesc(t)
+	end
+
+	function New:SetVisible(t)
+		Textbox.Visible = t
+	end
+
+	
+	function New:SetValue(t, skipCallback)
+		if New.Locked then return end
+		updateState(t, not skipCallback, false)
+	end
+
+	
+	function New:SetValueSilent(t)
+		New:SetValue(t, true)
+	end
+
+	
+	function New:GetValue()
+		return New.Value
+	end
+
+	
+	function New:GetText()
+		return New:GetValue()
+	end
+
+	
+	function New:Lock()
+		New.Locked = true
+		New._canCallback = false
+		TextLabel_1.TextEditable = false
+		
+		
+		TextLabel_1.TextTransparency = 0.6
+		Frame_1.BackgroundTransparency = 0.5
+		UIStroke_1.Transparency = 0.98
+	end
+
+	function New:Unlock()
+		New.Locked = false
+		New._canCallback = true
+		TextLabel_1.TextEditable = true
+		
+		
+		TextLabel_1.TextTransparency = 0.3
+		Frame_1.BackgroundTransparency = 0
+		UIStroke_1.Transparency = 0.95
+	end
+
+	function New:SetClearTextOnFocus(t)
+		TextLabel_1.ClearTextOnFocus = not t
+	end
+
+	function New:SetPlaceholder(t)
+		TextLabel_1.PlaceholderText = t
+	end
+
+	
+	function New:SetPlaceholderText(t)
+		New:SetPlaceholder(t)
+	end
+
+	
+	function New:SetMaxLength(length)
+		New._maxLength = length
+		if length and #TextLabel_1.Text > length then
+			New:SetValue(TextLabel_1.Text:sub(1, length))
+		end
+	end
+
+	
+	function New:Clear()
+		New:SetValue("")
+	end
+
+	
+	function New:Focus()
+		if not New.Locked then
+			TextLabel_1:CaptureFocus()
+		end
+	end
+
+	function New:Blur()
+		TextLabel_1:ReleaseFocus()
+	end
+
+	
+	function New:Destroy()
+		for _, connection in ipairs(New._connections) do
+			connection:Disconnect()
+		end
+		New._connections = {}
+		Textbox:Destroy()
+	end
+
+	
+	
+	
+
+	
+	if Locked then
+		New:Lock()
+	end
+
+	
+	if idx then
+		Library.Options[idx] = New
+	end
+
+	return New
+  end
 		function Func:Image()
 			local ImageLogo = Instance.new("ImageLabel")
 			local UICorner_1 = Instance.new("UICorner")
@@ -4332,22 +4649,38 @@ end
 
     local isOpen = Open
 
-    local function updateSize()
+    local function updateSize(animate)
         task.defer(function()
             local contentHeight = 20
             if isOpen then
                 contentHeight = contentHeight + 5 + UIListLayout_Container.AbsoluteContentSize.Y
             end
-            RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+            
+            if animate then
+                -- Animate size change
+                tw({
+                    v = RealBackground,
+                    t = 0.2,
+                    s = Enum.EasingStyle.Quad,
+                    d = "Out",
+                    g = {Size = UDim2.new(1, 0, 0, contentHeight)}
+                }):Play()
+            else
+                -- Instant size change
+                RealBackground.Size = UDim2.new(1, 0, 0, contentHeight)
+            end
         end)
     end
 
-    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateSize)
+    UIListLayout_Container:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        updateSize(false) -- Don't animate on content changes
+    end)
 
     SectionButton.MouseButton1Click:Connect(function()
         isOpen = not isOpen
-        SectionState.Value = isOpen -- Update flag
+        SectionState.Value = isOpen
         
+        -- Animate arrow rotation
         tw({
             v = Arrow, 
             t = 0.2, 
@@ -4357,17 +4690,19 @@ end
         }):Play()
         
         if isOpen then
+            -- Opening: Show content first, then animate size
             Container.Visible = true
-            Container.Size = UDim2.new(1, 0, 1, -25)
-            updateSize()
+            task.wait() -- Wait 1 frame for UIListLayout to calculate
+            updateSize(true) -- Animate
         else
-            updateSize()
-            task.wait(0.05)
+            -- Closing: Animate size first, then hide content
+            updateSize(true) -- Animate
+            task.wait(0.2) -- Wait for animation to complete
             Container.Visible = false
         end
     end)
 
-    delay(0.1, updateSize)
+    delay(0.1, function() updateSize(false) end)
 
 	local New = {}
 
