@@ -435,7 +435,7 @@ do
 	UIPadding_1.PaddingRight = UDim.new(0,13)
 
 	DropdownValue.Parent = F
-	DropdownValue.BackgroundColor3 = CurrentTheme.SectionBackground
+	DropdownValue.BackgroundColor3 = CurrentTheme.WindowBackground
 	DropdownValue.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownValue.BorderSizePixel = 0
 	DropdownValue.Size = UDim2.new(0, 100,0, 20)
@@ -505,7 +505,7 @@ do
 	local UIPadding_4 = Instance.new("UIPadding")
 
 	DropdownSelect.Parent = ScreenGui
-	DropdownSelect.BackgroundColor3 = CurrentTheme.SectionBackground
+	DropdownSelect.BackgroundColor3 = CurrentTheme.WindowBackground
 	DropdownSelect.BorderColor3 = Color3.fromRGB(0,0,0)
 	DropdownSelect.BorderSizePixel = 0
 	DropdownSelect.Size = UDim2.new(0, 150,0, 0)
@@ -530,7 +530,7 @@ do
 
 	Search_1.Name = "Search"
 	Search_1.Parent = DropdownSelect
-	Search_1.BackgroundColor3 = CurrentTheme.SectionBackground
+	Search_1.BackgroundColor3 = CurrentTheme.WindowBackground
 	Search_1.BackgroundTransparency = 0.949999988079071
 	Search_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Search_1.BorderSizePixel = 0
@@ -543,7 +543,7 @@ do
 
 	TextBox_1.Parent = Search_1
 	TextBox_1.Active = true
-	TextBox_1.BackgroundColor3 = CurrentTheme.SectionBackground
+	TextBox_1.BackgroundColor3 = CurrentTheme.WindowBackground
 	TextBox_1.BackgroundTransparency = 1
 	TextBox_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	TextBox_1.BorderSizePixel = 0
@@ -2172,7 +2172,7 @@ end
 			F.Name = "F"
 			F.Parent = Button
 			F.AnchorPoint = Vector2.new(1, 0.5)
-			F.BackgroundColor3 = Color3.fromRGB(255,255,255)
+			F.BackgroundColor3 = CurrentTheme.ElementBackground
 			F.BackgroundTransparency = 1
 			F.BorderColor3 = Color3.fromRGB(0,0,0)
 			F.BorderSizePixel = 0
