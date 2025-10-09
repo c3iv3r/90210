@@ -12,12 +12,12 @@ Themes.Dark = {
     TabButtonsBackground = Color3.fromRGB(0, 0, 0),
     TabButtonsBorder = Color3.fromRGB(255, 255, 255),
     
-    TabContentBackground = Color3.fromRGB(0, 0, 0),
+    TabContentBackground = Color3.fromRGB(15, 15, 15),
     
     SectionBackground = Color3.fromRGB(0, 0, 0),
     SectionStroke = Color3.fromRGB(255, 255, 255),
     
-    ElementBackground = Color3.fromRGB(20, 20, 25),
+    ElementBackground = Color3.fromRGB(25, 25, 25),
     ElementStroke = Color3.fromRGB(15, 15, 15),
     ElementStrokeHover = Color3.fromRGB(125, 85, 255),
     ElementStrokeLocked = Color3.fromRGB(40, 40, 40),
