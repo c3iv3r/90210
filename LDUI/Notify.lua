@@ -14,7 +14,7 @@ Themes.Dark = {
     
     TabContentBackground = Color3.fromRGB(0, 0, 0),
     
-    SectionBackground = Color3.fromRGB(0, 0, 0),
+    SectionBackground = Color3.fromRGB(20, 20, 20),
     SectionStroke = Color3.fromRGB(255, 255, 255),
     
     ElementBackground = Color3.fromRGB(20, 20, 25),
