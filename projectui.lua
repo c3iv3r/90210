@@ -4174,7 +4174,7 @@ end
 	UIPadding_1.PaddingRight = UDim.new(0,13)
 
 	Frame_1.Parent = F
-	Frame_1.BackgroundColor3 = CurrentTheme.WindowBorder
+	Frame_1.BackgroundColor3 = CurrentTheme.ElementBackground
 	Frame_1.BorderColor3 = Color3.fromRGB(0,0,0)
 	Frame_1.BorderSizePixel = 0
 	Frame_1.Size = UDim2.new(0, 130,0, 25)
@@ -4185,7 +4185,7 @@ end
 	UICorner_1.CornerRadius = UDim.new(0,4)
 
 	UIStroke_1.Parent = Frame_1
-	UIStroke_1.Color = CurrentTheme.ElementStroke
+	UIStroke_1.Color = CurrentTheme.WindowBorder
 	UIStroke_1.Thickness = 1
 	UIStroke_1.Transparency = 0.95
 

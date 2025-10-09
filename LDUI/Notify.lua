@@ -2,7 +2,7 @@
 local Themes = {}
 
 Themes.Dark = {
-    WindowBackground = Color3.fromRGB(200, 0, 110),
+    WindowBackground = Color3.fromRGB(0, 0, 0),
     WindowBorder = Color3.fromRGB(40, 40, 40),
     WindowStroke = Color3.fromRGB(60, 60, 60),
     
