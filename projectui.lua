@@ -5101,7 +5101,7 @@ end
     Icon_1.Visible = false  -- Start hidden
     Icon_1.ZIndex = 10  -- Ensure di atas elemen lain
 
-    addToTheme('Text & Icon', Icon_1)
+    
 
     -- PENTING: Assign ke variable global
     CloseUIButton = Icon_1
