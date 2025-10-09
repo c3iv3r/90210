@@ -2,7 +2,7 @@
 local Themes = {}
 
 Themes.Dark = {
-    WindowBackground = Color3.fromRGB(0, 0, 0),
+    WindowBackground = Color3.fromRGB(200, 0, 110),
     WindowBorder = Color3.fromRGB(40, 40, 40),
     WindowStroke = Color3.fromRGB(60, 60, 60),
     
@@ -14,7 +14,7 @@ Themes.Dark = {
     
     TabContentBackground = Color3.fromRGB(0, 0, 0),
     
-    SectionBackground = Color3.fromRGB(20, 20, 20),
+    SectionBackground = Color3.fromRGB(0, 0, 0),
     SectionStroke = Color3.fromRGB(255, 255, 255),
     
     ElementBackground = Color3.fromRGB(20, 20, 25),
